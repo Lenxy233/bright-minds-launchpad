@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, ArrowRight, Clock, Users, DollarSign, CheckCircle, Heart } from "lucide-react";
+import { Star, ArrowRight, Clock, Users, DollarSign, CheckCircle, Heart, GraduationCap, Home, ShoppingBag } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 
 interface HeroSectionProps {
@@ -37,6 +37,28 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
               <div className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-purple-800 font-bold text-lg px-4 py-2 rounded-full shadow-lg animate-pulse border-2 border-white">
                 🎨 Creativity Unleashed! ✨
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Target Group Section */}
+        <div className="mb-8 bg-white/50 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">🎯 Perfect For</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-4 border-2 border-blue-200 transform hover:scale-105 transition-all duration-300">
+              <GraduationCap className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+              <h4 className="font-bold text-gray-800 mb-1">👩‍🏫 Teachers</h4>
+              <p className="text-sm text-gray-600">Create engaging classroom materials and supplementary resources</p>
+            </div>
+            <div className="bg-gradient-to-r from-green-100 to-teal-100 rounded-2xl p-4 border-2 border-green-200 transform hover:scale-105 transition-all duration-300">
+              <Home className="w-8 h-8 text-green-600 mx-auto mb-2" />
+              <h4 className="font-bold text-gray-800 mb-1">👨‍👩‍👧‍👦 Parents</h4>
+              <p className="text-sm text-gray-600">Support your child's learning journey at home with fun activities</p>
+            </div>
+            <div className="bg-gradient-to-r from-orange-100 to-yellow-100 rounded-2xl p-4 border-2 border-orange-200 transform hover:scale-105 transition-all duration-300">
+              <ShoppingBag className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+              <h4 className="font-bold text-gray-800 mb-1">📚 Book Sellers</h4>
+              <p className="text-sm text-gray-600">Expand your inventory with digital educational products</p>
             </div>
           </div>
         </div>
