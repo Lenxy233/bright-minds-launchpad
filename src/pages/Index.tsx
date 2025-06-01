@@ -173,6 +173,15 @@ const Index = () => {
             <p className="text-xl text-gray-700">Everything you need to launch your educational products business</p>
           </div>
 
+          {/* Full-width Image */}
+          <div className="w-full mb-16">
+            <img 
+              src="/lovable-uploads/5a15895f-5d6a-416c-8430-ed2e5d95e0a5.png" 
+              alt="Educational bundle overview" 
+              className="w-full h-auto object-cover rounded-2xl shadow-lg"
+            />
+          </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product, index) => (
               <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white/80 backdrop-blur-sm">
