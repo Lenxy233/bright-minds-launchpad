@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, DollarSign } from "lucide-react";
 
@@ -46,7 +47,7 @@ const ProductsSection = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-center">
             <div className="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-3xl p-8 shadow-2xl border-4 border-dashed border-pink-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/b8e1d193-75c4-4a39-acb6-8eeadf659c61.png" 
@@ -72,9 +73,7 @@ const ProductsSection = () => {
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-8 items-center mt-8">
             <div className="bg-gradient-to-br from-green-200 via-yellow-200 to-orange-200 rounded-3xl p-8 shadow-2xl border-4 border-dashed border-green-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/aaa2f68b-24b3-4ea3-bfbd-73dc80ff6dcf.png" 
@@ -97,6 +96,32 @@ const ProductsSection = () => {
               <div className="mt-6 text-center">
                 <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-lg px-4 py-3 rounded-full shadow-lg inline-block border-2 border-white">
                   🔗 Dot to Dot Tracing 🖊️
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-200 via-red-200 to-pink-200 rounded-3xl p-8 shadow-2xl border-4 border-dashed border-orange-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/183b1358-a653-4eca-a1e9-bf9dc5a80101.png" 
+                alt="Time telling activities and clock learning worksheets" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-6 text-center">
+                <div className="bg-gradient-to-r from-orange-400 to-red-400 text-white font-bold text-lg px-4 py-3 rounded-full shadow-lg inline-block border-2 border-white">
+                  ⏰ Time Learning Activities 🕐
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-200 via-pink-200 to-purple-200 rounded-3xl p-8 shadow-2xl border-4 border-dashed border-red-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/4867bb56-b6bd-4d14-a909-681ab6214b9c.png" 
+                alt="Weather education activities and science worksheets" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-6 text-center">
+                <div className="bg-gradient-to-r from-red-400 to-pink-400 text-white font-bold text-lg px-4 py-3 rounded-full shadow-lg inline-block border-2 border-white">
+                  🌤️ Weather Learning 🌈
                 </div>
               </div>
             </div>
