@@ -37,7 +37,7 @@ const Index = () => {
 
   const platforms = [
     { name: "Amazon", image: "/lovable-uploads/39ffc0e5-e1bf-4850-9007-9b5ea749c08e.png" },
-    { name: "Etsy", image: "/lovable-uploads/5a15895f-5d6a-416c-8430-ed2e5d95e0a5.png" },
+    { name: "Etsy", image: "/lovable-uploads/bd50071c-c65b-4a99-b68f-e5f4952d9dc0.png" },
     { name: "Gumroad", image: "/lovable-uploads/7bf380e9-8171-4109-9722-47cd9ee4acb5.png" },
     { name: "Fiverr", image: "/lovable-uploads/5d136223-da36-45ba-9203-4822b9d6d04c.png" },
     { name: "YouTube", image: "/lovable-uploads/7a7b4288-9799-4063-b00e-78a922ef7431.png" }
