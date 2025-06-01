@@ -1,13 +1,25 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, CheckCircle, ArrowRight, Users, DollarSign, Clock } from "lucide-react";
+import { Star, BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, CheckCircle, ArrowRight, Users, DollarSign, Clock, Instagram, Facebook, Youtube } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 
 const Index = () => {
   const handlePurchase = () => {
     // This would integrate with payment processing
     console.log("Purchase button clicked");
+  };
+
+  const handleSocialClick = (platform: string) => {
+    // Replace these URLs with your actual social media accounts
+    const socialUrls = {
+      instagram: "https://instagram.com/brightmindsacademy",
+      facebook: "https://facebook.com/brightmindsacademy", 
+      youtube: "https://youtube.com/@brightmindsacademy"
+    };
+    
+    window.open(socialUrls[platform as keyof typeof socialUrls], '_blank');
   };
 
   const products = [
@@ -331,6 +343,35 @@ const Index = () => {
             </div>
             <h4 className="text-xl font-bold">Bright Minds Academy</h4>
           </div>
+          
+          {/* Social Media Buttons */}
+          <div className="flex justify-center space-x-4 mb-6">
+            <Button
+              onClick={() => handleSocialClick('instagram')}
+              variant="outline"
+              size="icon"
+              className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 border-0 text-white hover:text-white transition-all duration-300 transform hover:scale-105"
+            >
+              <Instagram className="w-5 h-5" />
+            </Button>
+            <Button
+              onClick={() => handleSocialClick('facebook')}
+              variant="outline"
+              size="icon"
+              className="bg-blue-600 hover:bg-blue-700 border-0 text-white hover:text-white transition-all duration-300 transform hover:scale-105"
+            >
+              <Facebook className="w-5 h-5" />
+            </Button>
+            <Button
+              onClick={() => handleSocialClick('youtube')}
+              variant="outline"
+              size="icon"
+              className="bg-red-600 hover:bg-red-700 border-0 text-white hover:text-white transition-all duration-300 transform hover:scale-105"
+            >
+              <Youtube className="w-5 h-5" />
+            </Button>
+          </div>
+          
           <p className="text-gray-400 mb-4">Empowering the next generation through innovative educational products</p>
           <p className="text-sm text-gray-500">© 2024 Bright Minds Academy. All rights reserved.</p>
         </div>
