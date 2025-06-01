@@ -47,7 +47,7 @@ const ProductsSection = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
             <div className="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-pink-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/b8e1d193-75c4-4a39-acb6-8eeadf659c61.png" 
@@ -55,7 +55,7 @@ const ProductsSection = () => {
                 className="w-full h-auto rounded-2xl shadow-lg"
               />
               <div className="mt-4 text-center">
-                <div className="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-lg px-4 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                <div className="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-sm px-3 py-2 rounded-full shadow-lg inline-block border-2 border-white">
                   ✂️ Scissors Cutting Skill ✂️
                 </div>
               </div>
@@ -68,8 +68,34 @@ const ProductsSection = () => {
                 className="w-full h-auto rounded-2xl shadow-lg"
               />
               <div className="mt-4 text-center">
-                <div className="bg-gradient-to-r from-blue-400 to-green-400 text-white font-bold text-lg px-4 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                <div className="bg-gradient-to-r from-blue-400 to-green-400 text-white font-bold text-sm px-3 py-2 rounded-full shadow-lg inline-block border-2 border-white">
                   🎨 Colouring Books Design 🖍️
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-200 via-yellow-200 to-orange-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-green-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/aaa2f68b-24b3-4ea3-bfbd-73dc80ff6dcf.png" 
+                alt="Alphabet matching activities and educational worksheets" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-4 text-center">
+                <div className="bg-gradient-to-r from-green-400 to-yellow-400 text-white font-bold text-sm px-3 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                  🔤 Alphabet Matching 📝
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-yellow-200 via-orange-200 to-red-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-yellow-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/012a16e7-1d39-4676-911a-d55fc31ccf4c.png" 
+                alt="Dot to dot activities and connecting the dots worksheets" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-4 text-center">
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-sm px-3 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                  🔗 Dot to Dot Activities 🖊️
                 </div>
               </div>
             </div>
