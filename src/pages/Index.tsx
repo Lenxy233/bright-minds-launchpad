@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +21,7 @@ const Index = () => {
     { icon: Rocket, title: "40+ Simple Home Science Experiments", description: "Hands-on learning activities" },
     { icon: Video, title: "Editable Animated YouTube Videos", description: "Kid-friendly content for YouTube channels" },
     { icon: Rocket, title: "Introduction to Robotics", description: "STEM education resources" },
-    { icon: DollarSign, title: "Reseller Rights Included", description: "Commercial license to sell products" }
+    { icon: DollarSign, title: "PLR Rights Included", description: "Commercial license to sell products" }
   ];
 
   const benefits = [
@@ -30,7 +29,7 @@ const Index = () => {
     "No experience required - everything is ready-made",
     "Sell on popular platforms: Amazon, Etsy, Gumroad, Fiverr",
     "Create your own YouTube educational channel",
-    "Commercial rights included - keep 100% profits",
+    "PLR rights included - keep 100% profits",
     "Instant download - start immediately"
   ];
 
@@ -54,7 +53,7 @@ const Index = () => {
       name: "Mike Chen",
       role: "Entrepreneur",
       rating: 5,
-      comment: "I was skeptical at first, but this bundle exceeded all my expectations. The quality is professional-grade and the commercial rights make it perfect for reselling. Already planning to expand to Amazon!"
+      comment: "I was skeptical at first, but this bundle exceeded all my expectations. The quality is professional-grade and the PLR rights make it perfect for reselling. Already planning to expand to Amazon!"
     },
     {
       name: "Emily Rodriguez",
@@ -122,7 +121,7 @@ const Index = () => {
                 <ArrowRight className="w-6 h-6 text-purple-500" />
                 <span className="text-5xl font-bold text-green-600">$47.99</span>
               </div>
-              <p className="text-sm text-gray-600">One-time payment • Instant access • Commercial rights included</p>
+              <p className="text-sm text-gray-600">One-time payment • Instant access • PLR rights included</p>
             </div>
           </div>
 
@@ -154,7 +153,7 @@ const Index = () => {
             </div>
             <div className="text-center p-4 bg-white/60 rounded-lg backdrop-blur-sm">
               <DollarSign className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="font-semibold text-gray-700">Commercial Rights</p>
+              <p className="font-semibold text-gray-700">PLR Rights</p>
             </div>
             <div className="text-center p-4 bg-white/60 rounded-lg backdrop-blur-sm">
               <CheckCircle className="w-8 h-8 text-pink-500 mx-auto mb-2" />
@@ -305,7 +304,7 @@ const Index = () => {
           </div>
           
           <p className="text-sm opacity-75">
-            30-day money-back guarantee • Instant download • Commercial rights included
+            30-day money-back guarantee • Instant download • PLR rights included
           </p>
         </div>
       </section>
