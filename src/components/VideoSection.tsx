@@ -40,7 +40,7 @@ const VideoSection = () => {
                     padding: 0,
                     margin: 0
                   }}
-                  src="https://www.canva.com/design/DAGpJs93IOo/ikIbbGjv-qNgkF1JK2vKUw/view?embed"
+                  src="https://www.canva.com/design/DAGpJt_RJJ4/BmqGyRKbmD1QJ3LtDldYZQ/view?embed"
                   allowFullScreen
                   allow="fullscreen"
                   title="Educational Products Showcase Video"
@@ -54,12 +54,12 @@ const VideoSection = () => {
               </p>
               <div className="mt-4">
                 <a 
-                  href="https://www.canva.com/design/DAGpJs93IOo/ikIbbGjv-qNgkF1JK2vKUw/view?utm_content=DAGpJs93IOo&utm_campaign=designshare&utm_medium=embeds&utm_source=link" 
+                  href="https://www.canva.com/design/DAGpJt_RJJ4/BmqGyRKbmD1QJ3LtDldYZQ/watch" 
                   target="_blank" 
                   rel="noopener"
                   className="text-sm text-gray-500 hover:text-purple-600 transition-colors"
                 >
-                  Ocean Adventures: Exploring the Amazing World of Sea Creatures! by Sandra Kwarko
+                  Educational Products Showcase by Sandra Kwarko
                 </a>
               </div>
             </div>
