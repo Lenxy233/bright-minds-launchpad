@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -90,7 +91,7 @@ const Index = () => {
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 flex items-center justify-center">
               <img 
-                src="/lovable-uploads/d1b36522-cc01-46aa-9c26-788f983ddca6.png" 
+                src="/lovable-uploads/69fc66c6-3b7b-4fa2-9348-5adcf71e90ee.png" 
                 alt="Bright Minds Academy Logo" 
                 className="w-10 h-10 object-contain"
               />
@@ -324,7 +325,7 @@ const Index = () => {
           <div className="flex items-center justify-center space-x-2 mb-4">
             <div className="w-8 h-8 flex items-center justify-center">
               <img 
-                src="/lovable-uploads/d1b36522-cc01-46aa-9c26-788f983ddca6.png" 
+                src="/lovable-uploads/69fc66c6-3b7b-4fa2-9348-5adcf71e90ee.png" 
                 alt="Bright Minds Academy Logo" 
                 className="w-8 h-8 object-contain"
               />
