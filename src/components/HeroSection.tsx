@@ -11,17 +11,35 @@ interface HeroSectionProps {
 const HeroSection = ({ onPurchase }: HeroSectionProps) => {
   return (
     <section className="py-20 px-4 relative">
-      <div className="container mx-auto text-center max-w-4xl">
+      <div className="container mx-auto text-center max-w-6xl">
         <Badge className="mb-6 bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 text-purple-800 border-purple-300 shadow-lg text-lg px-4 py-2 animate-bounce">
           🎉 Super Fun Limited Time Offer - 97% OFF! 🎊
         </Badge>
-        <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-pink-600 via-purple-600 via-blue-600 via-green-600 to-yellow-600 bg-clip-text text-transparent leading-tight">
-          Start Your Own Educational Digital Products Brand
-        </h2>
-        <p className="text-xl text-gray-700 mb-8 leading-relaxed bg-white/40 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-          🌟 Launch your educational business with our complete bundle of 200+ ready-made digital products! 
-          From illustrated storybooks to interactive games - everything you need to succeed! 🚀
-        </p>
+        
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-8">
+          <div className="text-left lg:text-left">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-600 via-purple-600 via-blue-600 via-green-600 to-yellow-600 bg-clip-text text-transparent leading-tight">
+              Start Your Own Educational Digital Products Brand
+            </h2>
+            <p className="text-xl text-gray-700 mb-8 leading-relaxed bg-white/40 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+              🌟 Launch your educational business with our complete bundle of 200+ ready-made digital products! 
+              From illustrated storybooks to interactive games - everything you need to succeed! 🚀
+            </p>
+          </div>
+          
+          <div className="relative">
+            <div className="bg-gradient-to-br from-pink-200 via-purple-200 via-blue-200 to-green-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-purple-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/bbbd85ae-7ba7-4c79-a28c-1a6709f8a026.png" 
+                alt="Creative child with colorful painted hands - representing educational creativity and fun learning" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-purple-800 font-bold text-lg px-4 py-2 rounded-full shadow-lg animate-pulse border-2 border-white">
+                🎨 Creativity Unleashed! ✨
+              </div>
+            </div>
+          </div>
+        </div>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
           <div className="text-center bg-gradient-to-r from-green-100 to-blue-100 p-6 rounded-3xl shadow-xl border-4 border-dashed border-green-300">
