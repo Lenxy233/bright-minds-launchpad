@@ -20,15 +20,16 @@ const VideoSection = () => {
                 width="100%"
                 height="100%"
                 className="w-full h-full rounded-2xl"
-                allow="autoplay; fullscreen"
+                allow="autoplay; fullscreen; microphone; camera; encrypted-media; picture-in-picture"
                 allowFullScreen
                 title="Educational Products Showcase Video"
+                loading="lazy"
               />
             </div>
             
             <div className="text-center mt-6">
               <p className="text-gray-600 text-lg bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-purple-300">
-                💡 <strong>Click to play</strong> and discover the magic of our educational resources! ✨
+                🔊 <strong>Click to play with sound</strong> and discover the magic of our educational resources! ✨
               </p>
             </div>
           </div>
