@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, DollarSign } from "lucide-react";
 
@@ -97,7 +96,7 @@ const ProductsSection = () => {
               />
               <div className="mt-6 text-center">
                 <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-lg px-4 py-3 rounded-full shadow-lg inline-block border-2 border-white">
-                  🔗 Dot to Dot Activities 🖊️
+                  🔗 Dot to Dot Tracing 🖊️
                 </div>
               </div>
             </div>
