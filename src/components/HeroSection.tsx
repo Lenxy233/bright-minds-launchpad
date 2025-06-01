@@ -40,22 +40,6 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
             </div>
           </div>
         </div>
-
-        {/* New section with the children reading image */}
-        <div className="mb-8">
-          <div className="bg-gradient-to-br from-orange-200 via-yellow-200 to-green-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-orange-300 max-w-4xl mx-auto">
-            <img 
-              src="/lovable-uploads/fb6473d5-5f6c-405c-9df7-c1fa0676913e.png" 
-              alt="Four children sitting together reading colorful educational books - showcasing the joy of learning" 
-              className="w-full h-auto rounded-2xl shadow-lg"
-            />
-            <div className="mt-4 text-center">
-              <div className="inline-block bg-gradient-to-r from-blue-400 to-green-400 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg border-2 border-white">
-                📚 Inspiring Young Minds Every Day! 🌟
-              </div>
-            </div>
-          </div>
-        </div>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
           <div className="text-center bg-gradient-to-r from-green-100 to-blue-100 p-6 rounded-3xl shadow-xl border-4 border-dashed border-green-300">
