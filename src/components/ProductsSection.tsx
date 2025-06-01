@@ -47,7 +47,7 @@ const ProductsSection = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 items-center">
             <div className="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-pink-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/b8e1d193-75c4-4a39-acb6-8eeadf659c61.png" 
@@ -148,6 +148,32 @@ const ProductsSection = () => {
               <div className="mt-4 text-center">
                 <div className="bg-gradient-to-r from-indigo-400 to-cyan-400 text-white font-bold text-sm px-3 py-2 rounded-full shadow-lg inline-block border-2 border-white">
                   🍎 Food & Seasons Learning 🌱
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-cyan-200 via-teal-200 to-green-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-cyan-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/48ebe3e4-7806-452b-be6f-5e676cbd833d.png" 
+                alt="Alphabet learning and letter tracing educational worksheets" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-4 text-center">
+                <div className="bg-gradient-to-r from-cyan-400 to-teal-400 text-white font-bold text-sm px-3 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                  📝 Alphabet Learning 🔤
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-teal-200 via-emerald-200 to-green-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-teal-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/65f507f9-c4c2-46d8-94c8-ecc830938f3d.png" 
+                alt="Maze and puzzle activities brain training educational worksheets" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-4 text-center">
+                <div className="bg-gradient-to-r from-teal-400 to-emerald-400 text-white font-bold text-sm px-3 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                  🧩 Maze & Puzzle Activities 🧠
                 </div>
               </div>
             </div>
