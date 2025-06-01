@@ -1,5 +1,3 @@
-
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -40,7 +38,8 @@ const Index = () => {
     { name: "Etsy", image: "/lovable-uploads/bd50071c-c65b-4a99-b68f-e5f4952d9dc0.png" },
     { name: "Gumroad", image: "/lovable-uploads/7bf380e9-8171-4109-9722-47cd9ee4acb5.png" },
     { name: "Fiverr", image: "/lovable-uploads/5d136223-da36-45ba-9203-4822b9d6d04c.png" },
-    { name: "YouTube", image: "/lovable-uploads/7a7b4288-9799-4063-b00e-78a922ef7431.png" }
+    { name: "YouTube", image: "/lovable-uploads/7a7b4288-9799-4063-b00e-78a922ef7431.png" },
+    { name: "Shopify", image: "/lovable-uploads/e77596f7-8486-4a62-82bf-1e38750b33fc.png" }
   ];
 
   return (
@@ -243,4 +242,3 @@ const Index = () => {
 };
 
 export default Index;
-
