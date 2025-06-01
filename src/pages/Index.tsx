@@ -88,8 +88,12 @@ const Index = () => {
       <header className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-              <Brain className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 flex items-center justify-center">
+              <img 
+                src="/lovable-uploads/d1b36522-cc01-46aa-9c26-788f983ddca6.png" 
+                alt="Bright Minds Academy Logo" 
+                className="w-10 h-10 object-contain"
+              />
             </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
               Bright Minds Academy
@@ -318,8 +322,12 @@ const Index = () => {
       <footer className="bg-gray-900 text-white py-12 px-4">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-              <Brain className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 flex items-center justify-center">
+              <img 
+                src="/lovable-uploads/d1b36522-cc01-46aa-9c26-788f983ddca6.png" 
+                alt="Bright Minds Academy Logo" 
+                className="w-8 h-8 object-contain"
+              />
             </div>
             <h4 className="text-xl font-bold">Bright Minds Academy</h4>
           </div>
