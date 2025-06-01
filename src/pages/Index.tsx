@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -176,9 +177,9 @@ const Index = () => {
           {/* Full-width Image */}
           <div className="w-full mb-16">
             <img 
-              src="/lovable-uploads/5a15895f-5d6a-416c-8430-ed2e5d95e0a5.png" 
+              src="/lovable-uploads/ea30b98c-47a6-4347-b9b6-39ffdce1a6b7.png" 
               alt="Educational bundle overview" 
-              className="w-full h-auto object-cover rounded-2xl shadow-lg"
+              className="w-full h-auto object-contain rounded-2xl shadow-lg max-h-96"
             />
           </div>
 
