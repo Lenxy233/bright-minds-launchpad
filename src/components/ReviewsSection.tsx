@@ -1,6 +1,13 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const ReviewsSection = () => {
   const reviews = [
@@ -58,24 +65,36 @@ const ReviewsSection = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((review, index) => (
-            <Card key={index} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-white/90 to-yellow-50/90 backdrop-blur-sm rounded-3xl transform hover:scale-105 border-4 border-dashed border-yellow-200">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-1 mb-4 justify-center">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400 animate-pulse" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4 italic font-medium">"{review.comment}"</p>
-                <div className="border-t-2 border-dashed border-purple-200 pt-4">
-                  <p className="font-bold text-gray-800">{review.name}</p>
-                  <p className="text-sm text-purple-600 font-semibold">{review.role}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full max-w-5xl mx-auto"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {reviews.map((review, index) => (
+              <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-white/90 to-yellow-50/90 backdrop-blur-sm rounded-3xl transform hover:scale-105 border-4 border-dashed border-yellow-200 h-full">
+                  <CardContent className="p-6 flex flex-col h-full">
+                    <div className="flex items-center gap-1 mb-4 justify-center">
+                      {[...Array(review.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400 animate-pulse" />
+                      ))}
+                    </div>
+                    <p className="text-gray-700 mb-4 italic font-medium flex-grow">"{review.comment}"</p>
+                    <div className="border-t-2 border-dashed border-purple-200 pt-4">
+                      <p className="font-bold text-gray-800">{review.name}</p>
+                      <p className="text-sm text-purple-600 font-semibold">{review.role}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-2 border-white shadow-lg hover:shadow-xl" />
+          <CarouselNext className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-2 border-white shadow-lg hover:shadow-xl" />
+        </Carousel>
       </div>
     </section>
   );
