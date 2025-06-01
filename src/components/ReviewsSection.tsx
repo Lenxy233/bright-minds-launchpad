@@ -1,15 +1,30 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 const ReviewsSection = () => {
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 3000); // Auto-advance every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [api]);
+
   const reviews = [
     {
       name: "Sarah Johnson",
@@ -66,6 +81,7 @@ const ReviewsSection = () => {
         </div>
 
         <Carousel
+          setApi={setApi}
           opts={{
             align: "start",
             loop: true,
