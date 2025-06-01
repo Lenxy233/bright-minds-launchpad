@@ -6,6 +6,8 @@ import BenefitsSection from "@/components/BenefitsSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const Index = () => {
   const handlePurchase = () => {
@@ -31,6 +33,19 @@ const Index = () => {
       <ReviewsSection />
       <CTASection onPurchase={handlePurchase} />
       <Footer />
+
+      {/* Fixed floating button */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+        <Button 
+          onClick={handlePurchase} 
+          size="lg" 
+          className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-purple-800 hover:text-purple-900 text-lg px-8 py-4 rounded-full font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 animate-pulse border-4 border-white"
+        >
+          <Sparkles className="mr-2 w-5 h-5 animate-spin" />
+          🎯 Get Instant Access Now ✨
+          <ArrowRight className="ml-2 w-5 h-5" />
+        </Button>
+      </div>
     </div>
   );
 };
