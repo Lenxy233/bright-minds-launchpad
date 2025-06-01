@@ -48,11 +48,11 @@ const ProductsSection = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 items-center">
-            <div className="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-pink-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-pink-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/b8e1d193-75c4-4a39-acb6-8eeadf659c61.png" 
                 alt="Scissors cutting skill activities and educational materials" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -61,11 +61,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-200 via-blue-200 to-green-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-blue-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-purple-200 via-blue-200 to-green-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-blue-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/0cc9d733-7771-46ef-97e1-3c3208a21a21.png" 
                 alt="Colouring books design templates and illustrations for kids" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-blue-400 to-green-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -74,11 +74,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-green-200 via-yellow-200 to-orange-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-green-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-green-200 via-yellow-200 to-orange-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-green-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/aaa2f68b-24b3-4ea3-bfbd-73dc80ff6dcf.png" 
                 alt="Alphabet matching activities and educational worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-green-400 to-yellow-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -87,11 +87,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-yellow-200 via-orange-200 to-red-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-yellow-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-yellow-200 via-orange-200 to-red-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-yellow-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/012a16e7-1d39-4676-911a-d55fc31ccf4c.png" 
                 alt="Dot to dot activities and connecting the dots worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -100,11 +100,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-orange-200 via-red-200 to-pink-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-orange-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-orange-200 via-red-200 to-pink-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-orange-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/183b1358-a653-4eca-a1e9-bf9dc5a80101.png" 
                 alt="Time telling activities and clock learning worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-orange-400 to-red-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -113,11 +113,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-red-200 via-pink-200 to-purple-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-red-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-red-200 via-pink-200 to-purple-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-red-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/4867bb56-b6bd-4d14-a909-681ab6214b9c.png" 
                 alt="Weather education activities and science worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-red-400 to-pink-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -126,11 +126,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-200 via-indigo-200 to-blue-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-purple-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-purple-200 via-indigo-200 to-blue-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-purple-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/d3565059-b51d-4fdb-b422-deb6680966b6.png" 
                 alt="Tracing activities with shapes, lines, colors and numbers worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-purple-400 to-indigo-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -139,11 +139,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-indigo-200 via-blue-200 to-cyan-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-indigo-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-indigo-200 via-blue-200 to-cyan-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-indigo-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/d43a82c0-ed3b-41d8-af27-8574780d2de9.png" 
                 alt="Food and seasonal learning activities educational worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-indigo-400 to-cyan-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -152,11 +152,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-cyan-200 via-teal-200 to-green-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-cyan-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-cyan-200 via-teal-200 to-green-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-cyan-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/48ebe3e4-7806-452b-be6f-5e676cbd833d.png" 
                 alt="Alphabet learning and letter tracing educational worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-cyan-400 to-teal-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
@@ -165,11 +165,11 @@ const ProductsSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-teal-200 via-emerald-200 to-green-200 rounded-3xl p-4 shadow-2xl border-4 border-dashed border-teal-300 transform hover:scale-105 transition-all duration-300">
+            <div className="bg-gradient-to-br from-teal-200 via-emerald-200 to-green-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-teal-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/65f507f9-c4c2-46d8-94c8-ecc830938f3d.png" 
                 alt="Maze and puzzle activities brain training educational worksheets" 
-                className="w-full h-auto rounded-2xl shadow-lg"
+                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
               />
               <div className="mt-3 text-center">
                 <div className="bg-gradient-to-r from-teal-400 to-emerald-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
