@@ -1,4 +1,5 @@
 
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,11 +36,11 @@ const Index = () => {
   ];
 
   const platforms = [
-    { name: "Amazon", color: "bg-orange-500" },
-    { name: "Etsy", color: "bg-orange-600" },
-    { name: "Gumroad", color: "bg-pink-500" },
-    { name: "Fiverr", color: "bg-green-500" },
-    { name: "YouTube", color: "bg-red-500" }
+    { name: "Amazon", image: "/lovable-uploads/39ffc0e5-e1bf-4850-9007-9b5ea749c08e.png" },
+    { name: "Etsy", image: "/lovable-uploads/5a15895f-5d6a-416c-8430-ed2e5d95e0a5.png" },
+    { name: "Gumroad", image: "/lovable-uploads/7bf380e9-8171-4109-9722-47cd9ee4acb5.png" },
+    { name: "Fiverr", image: "/lovable-uploads/5d136223-da36-45ba-9203-4822b9d6d04c.png" },
+    { name: "YouTube", image: "/lovable-uploads/7a7b4288-9799-4063-b00e-78a922ef7431.png" }
   ];
 
   return (
@@ -174,15 +175,19 @@ const Index = () => {
               ))}
             </div>
             <div className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl p-8 text-center">
-              <h4 className="text-2xl font-bold text-gray-800 mb-4">Start Selling On</h4>
+              <h4 className="text-2xl font-bold text-gray-800 mb-6">Start Selling On</h4>
               <div className="grid grid-cols-2 gap-4">
                 {platforms.map((platform, index) => (
-                  <div key={index} className={`${platform.color} text-white rounded-lg py-3 px-4 font-semibold`}>
-                    {platform.name}
+                  <div key={index} className="bg-white rounded-lg py-4 px-3 shadow-sm hover:shadow-md transition-shadow">
+                    <img 
+                      src={platform.image} 
+                      alt={platform.name} 
+                      className="w-full h-12 object-contain"
+                    />
                   </div>
                 ))}
               </div>
-              <p className="text-gray-600 mt-4 text-sm">And many more platforms!</p>
+              <p className="text-gray-600 mt-6 text-sm">And many more platforms!</p>
             </div>
           </div>
         </div>
@@ -238,3 +243,4 @@ const Index = () => {
 };
 
 export default Index;
+
