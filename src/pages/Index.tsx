@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -100,7 +99,7 @@ const Index = () => {
               Bright Minds Academy
             </h1>
           </div>
-          <Button onClick={handlePurchase} className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+          <Button onClick={handlePurchase} className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 animate-fade-in">
             Get Started Now
           </Button>
         </div>
@@ -139,7 +138,7 @@ const Index = () => {
             <Button 
               onClick={handlePurchase} 
               size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-slide-in-right"
             >
               Get Instant Access Now
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -306,7 +305,7 @@ const Index = () => {
             <Button 
               onClick={handlePurchase} 
               size="lg" 
-              className="bg-white text-purple-600 hover:bg-gray-100 text-lg px-12 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+              className="bg-white text-purple-600 hover:bg-gray-100 text-lg px-12 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 animate-slide-in-right"
             >
               Get Instant Access - $47.99
               <ArrowRight className="ml-2 w-5 h-5" />
