@@ -36,6 +36,52 @@ const ProductsSection = () => {
           />
         </div>
 
+        {/* Product Preview Section */}
+        <div className="mb-16 bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-4 border-dashed border-purple-300">
+          <div className="text-center mb-8">
+            <h4 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
+              🌟 Sneak Peek: Adorable Characters Inside! 🎀
+            </h4>
+            <p className="text-lg text-gray-700 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-4 inline-block shadow-lg">
+              Get a glimpse of the cute characters and designs your customers will love! 💕
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-pink-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/b8e1d193-75c4-4a39-acb6-8eeadf659c61.png" 
+                alt="Cute bunny character stickers and illustrations for educational materials" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-4 text-center">
+                <div className="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-lg px-4 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                  🐰 Adorable Bunny Characters 🥕
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-200 via-blue-200 to-green-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-blue-300 transform hover:scale-105 transition-all duration-300">
+              <img 
+                src="/lovable-uploads/0cc9d733-7771-46ef-97e1-3c3208a21a21.png" 
+                alt="Magical unicorn coloring pages and illustrations for kids" 
+                className="w-full h-auto rounded-2xl shadow-lg"
+              />
+              <div className="mt-4 text-center">
+                <div className="bg-gradient-to-r from-blue-400 to-green-400 text-white font-bold text-lg px-4 py-2 rounded-full shadow-lg inline-block border-2 border-white">
+                  🦄 Magical Unicorn Designs ✨
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="text-center mt-8">
+            <p className="text-gray-600 text-lg bg-yellow-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-yellow-300">
+              🎨 <strong>Plus hundreds more</strong> characters, stories, games, and activities! 🌈
+            </p>
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product, index) => (
             <Card key={index} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm rounded-3xl border-4 border-dashed border-purple-200 hover:border-pink-300">
