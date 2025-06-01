@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, CheckCircle, ArrowRight, Users, DollarSign, Clock } from "lucide-react";
+import CountdownTimer from "@/components/CountdownTimer";
 
 const Index = () => {
   const handlePurchase = () => {
@@ -114,15 +115,19 @@ const Index = () => {
             From illustrated storybooks to interactive games - everything you need to succeed!
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-3xl line-through text-gray-400">$1,827</span>
+                <span className="text-3xl line-through text-red-500 font-semibold">$1,827</span>
                 <ArrowRight className="w-6 h-6 text-purple-500" />
                 <span className="text-5xl font-bold text-green-600">$47.99</span>
               </div>
               <p className="text-sm text-gray-600">One-time payment • Instant access • PLR rights included</p>
             </div>
+          </div>
+
+          <div className="mb-8">
+            <CountdownTimer />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -289,7 +294,7 @@ const Index = () => {
           
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8">
             <div className="text-center mb-6">
-              <span className="text-2xl line-through opacity-60">$1,827</span>
+              <span className="text-2xl line-through opacity-60 text-red-300">$1,827</span>
               <span className="text-5xl font-bold ml-4">$47.99</span>
             </div>
             <p className="mb-6 opacity-90">⏰ Limited time offer - Price increases soon!</p>
