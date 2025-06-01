@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Card, from Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, CheckCircle, ArrowRight, Users, DollarSign, Clock } from "lucide-react";
 
