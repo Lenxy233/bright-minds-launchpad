@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, DollarSign } from "lucide-react";
 
@@ -47,21 +46,7 @@ const ProductsSection = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-6 items-center">
-            {/* Amazon KDP Inspiration Books */}
-            <div className="bg-gradient-to-br from-cyan-200 via-blue-200 to-teal-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-cyan-300 transform hover:scale-105 transition-all duration-300">
-              <img 
-                src="/lovable-uploads/6d9ca897-8497-44f2-bd2a-09c3cc1eb7d9.png" 
-                alt="Amazon KDP book covers featuring 'Plastic-Free the Way to Be!' and 'The Deep Dive Detectives' - professional children's book designs" 
-                className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-110 transition-transform duration-300 cursor-pointer"
-              />
-              <div className="mt-3 text-center">
-                <div className="bg-gradient-to-r from-cyan-400 to-blue-400 text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg inline-block border-2 border-white">
-                  📚 Amazon KDP Ready Books 🌟
-                </div>
-              </div>
-            </div>
-
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 items-center">
             <div className="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-3xl p-6 shadow-2xl border-4 border-dashed border-pink-300 transform hover:scale-105 transition-all duration-300">
               <img 
                 src="/lovable-uploads/b8e1d193-75c4-4a39-acb6-8eeadf659c61.png" 

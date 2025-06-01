@@ -1,6 +1,8 @@
+
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ProductsSection from "@/components/ProductsSection";
+import AmazonKDPSection from "@/components/AmazonKDPSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import CTASection from "@/components/CTASection";
@@ -28,6 +30,7 @@ const Index = () => {
       <Header onPurchase={handlePurchase} />
       <HeroSection onPurchase={handlePurchase} />
       <ProductsSection />
+      <AmazonKDPSection />
       <BenefitsSection />
       <ReviewsSection />
       <CTASection onPurchase={handlePurchase} />
