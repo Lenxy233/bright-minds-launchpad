@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +17,12 @@ const NewProductLaunch = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", { firstName, lastName, email, request });
-    // Handle form submission here
+    
+    // Redirect to payment based on selected bundle
+    if (request === "kids-curriculum") {
+      window.open("https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08", "_blank");
+    }
+    // Handle form submission here for other bundles
   };
 
   const bundleOptions = [
