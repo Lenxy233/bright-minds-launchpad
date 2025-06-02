@@ -7,12 +7,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Sparkles, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 const NewProductLaunch = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [selectedBundles, setSelectedBundles] = useState<string[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleBundleChange = (bundleValue: string, checked: boolean) => {
     if (checked) {
@@ -41,18 +48,43 @@ const NewProductLaunch = () => {
     ).filter(Boolean);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", { firstName, lastName, email, selectedBundles, total: calculateTotal() });
     
-    // For now, we'll open all payment pages since we don't have a combined checkout
-    // In a real implementation, you'd create a single checkout session with multiple line items
-    selectedBundles.forEach(bundle => {
-      const bundleOption = bundleOptions.find(option => option.value === bundle);
-      if (bundleOption) {
-        window.open(bundleOption.url, "_blank");
+    if (selectedBundles.length === 0) {
+      alert("Please select at least one bundle to proceed.");
+      return;
+    }
+
+    setIsProcessing(true);
+    
+    try {
+      const selectedBundleDetails = getSelectedBundleDetails();
+      
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          bundles: selectedBundleDetails,
+          customerInfo: {
+            firstName,
+            lastName,
+            email,
+          },
+        },
+      });
+
+      if (error) {
+        throw error;
       }
-    });
+
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error("Error creating checkout:", error);
+      alert("There was an error processing your order. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const totalAmount = calculateTotal();
@@ -220,10 +252,10 @@ const NewProductLaunch = () => {
                     type="submit" 
                     size="lg" 
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                    disabled={selectedBundles.length === 0}
+                    disabled={selectedBundles.length === 0 || isProcessing}
                   >
                     <ShoppingCart className="mr-2 w-5 h-5" />
-                    Complete Order - ${totalAmount.toFixed(2)}
+                    {isProcessing ? "Processing..." : `Complete Order - $${totalAmount.toFixed(2)}`}
                   </Button>
                 </div>
               </Tabs>
