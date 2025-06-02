@@ -1,10 +1,9 @@
 
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Sparkles } from "lucide-react";
@@ -14,27 +13,36 @@ const NewProductLaunch = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [request, setRequest] = useState("");
+  const [selectedBundles, setSelectedBundles] = useState<string[]>([]);
+
+  const handleBundleChange = (bundleValue: string, checked: boolean) => {
+    if (checked) {
+      setSelectedBundles([...selectedBundles, bundleValue]);
+    } else {
+      setSelectedBundles(selectedBundles.filter(bundle => bundle !== bundleValue));
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", { firstName, lastName, email, request });
+    console.log("Form submitted:", { firstName, lastName, email, selectedBundles });
     
-    // Redirect to payment based on selected bundle
-    if (request === "kids-curriculum") {
-      window.open("https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08", "_blank");
-    } else if (request === "video-bundle") {
-      window.open("https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09", "_blank");
-    } else if (request === "animation-video") {
-      window.open("https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a", "_blank");
-    }
-    // Handle form submission here for other bundles
+    // Open payment pages for each selected bundle
+    selectedBundles.forEach(bundle => {
+      if (bundle === "kids-curriculum") {
+        window.open("https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08", "_blank");
+      } else if (bundle === "video-bundle") {
+        window.open("https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09", "_blank");
+      } else if (bundle === "animation-video") {
+        window.open("https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a", "_blank");
+      }
+    });
   };
 
   const bundleOptions = [
-    { value: "kids-curriculum", label: "Kids Curriculum Bundle - $19.99" },
-    { value: "video-bundle", label: "Video Bundle - $19.99" },
-    { value: "animation-video", label: "Animation Video Bundle - $19.99" }
+    { value: "kids-curriculum", label: "Kids Curriculum Bundle", price: "$19.99" },
+    { value: "video-bundle", label: "Video Bundle", price: "$19.99" },
+    { value: "animation-video", label: "Animation Video Bundle", price: "$19.99" }
   ];
 
   return (
@@ -110,20 +118,24 @@ const NewProductLaunch = () => {
                 </TabsContent>
 
                 <TabsContent value="request" className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="request" className="text-lg font-medium">Choose Your Bundle</Label>
-                    <Select value={request} onValueChange={setRequest} required>
-                      <SelectTrigger className="h-12 text-lg">
-                        <SelectValue placeholder="Select a bundle option" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {bundleOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value} className="text-lg py-3">
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="space-y-4">
+                    <Label className="text-lg font-medium">Choose Your Bundles (Select one or more)</Label>
+                    <div className="space-y-4">
+                      {bundleOptions.map((option) => (
+                        <div key={option.value} className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                          <Checkbox
+                            id={option.value}
+                            checked={selectedBundles.includes(option.value)}
+                            onCheckedChange={(checked) => handleBundleChange(option.value, checked as boolean)}
+                          />
+                          <div className="flex-1">
+                            <label htmlFor={option.value} className="text-lg font-medium cursor-pointer">
+                              {option.label} - {option.price}
+                            </label>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   
                   <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border-2 border-purple-200">
@@ -153,6 +165,7 @@ const NewProductLaunch = () => {
                     type="submit" 
                     size="lg" 
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    disabled={selectedBundles.length === 0}
                   >
                     <Sparkles className="mr-2 w-5 h-5" />
                     Submit Request
