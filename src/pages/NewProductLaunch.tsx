@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,8 @@ const NewProductLaunch = () => {
     // Redirect to payment based on selected bundle
     if (request === "kids-curriculum") {
       window.open("https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08", "_blank");
+    } else if (request === "video-bundle") {
+      window.open("https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09", "_blank");
     }
     // Handle form submission here for other bundles
   };
