@@ -7,6 +7,7 @@ import VideoSection from "@/components/VideoSection";
 import ScienceActivitiesSection from "@/components/ScienceActivitiesSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import ReviewsSection from "@/components/ReviewsSection";
+import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ const Index = () => {
       <ScienceActivitiesSection />
       <BenefitsSection />
       <ReviewsSection />
+      <FAQSection />
       <CTASection onPurchase={handlePurchase} />
       <Footer />
 
