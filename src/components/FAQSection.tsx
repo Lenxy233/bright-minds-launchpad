@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, Mail, Shield, Sparkles, Gift } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const FAQSection = () => {
   const faqs = [
@@ -113,7 +114,13 @@ const FAQSection = () => {
         <div className="space-y-4">
           <p className="text-gray-700">
             Yes. After purchasing the main bundle, you will have the option to upgrade to the{" "}
-            <strong>New Product Launch</strong>, which offers additional content, unique templates, and new niche resources to further enhance your creative library.
+            <Link 
+              to="/new-product-launch" 
+              className="font-bold text-purple-600 hover:text-purple-800 underline hover:no-underline transition-colors"
+            >
+              New Product Launch
+            </Link>
+            , which offers additional content, unique templates, and new niche resources to further enhance your creative library.
           </p>
         </div>
       )
