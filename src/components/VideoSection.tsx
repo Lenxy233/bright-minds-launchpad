@@ -15,52 +15,29 @@ const VideoSection = () => {
         <div className="flex justify-center">
           <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-4 border-dashed border-purple-300 max-w-4xl">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-300">
-              <div style={{
-                position: 'relative',
-                width: '100%',
-                height: 0,
-                paddingTop: '56.2500%',
-                paddingBottom: 0,
-                boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
-                marginTop: '1.6em',
-                marginBottom: '0.9em',
-                overflow: 'hidden',
-                borderRadius: '8px',
-                willChange: 'transform'
-              }}>
-                <iframe
-                  loading="lazy"
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    top: 0,
-                    left: 0,
-                    border: 'none',
-                    padding: 0,
-                    margin: 0
-                  }}
-                  src="https://www.canva.com/design/DAGpJt_RJJ4/BmqGyRKbmD1QJ3LtDldYZQ/view?embed"
-                  allowFullScreen
-                  allow="fullscreen"
-                  title="Educational Products Showcase Video"
-                />
+              <div className="text-center p-8">
+                <a 
+                  href="https://www.canva.com/design/DAGpJt_RJJ4/BmqGyRKbmD1QJ3LtDldYZQ/watch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white text-xl font-bold px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                >
+                  🎬 Watch Educational Products Showcase Video 🌟
+                </a>
+                <p className="text-gray-600 mt-4 text-lg">
+                  Click to watch our amazing educational products in action!
+                </p>
               </div>
             </div>
             
             <div className="text-center mt-6">
               <p className="text-gray-600 text-lg bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-purple-300">
-                🔊 <strong>Click to play with sound</strong> and discover the magic of our educational resources! ✨
+                🔊 <strong>Full video experience</strong> with sound and all features! ✨
               </p>
               <div className="mt-4">
-                <a 
-                  href="https://www.canva.com/design/DAGpJt_RJJ4/BmqGyRKbmD1QJ3LtDldYZQ/watch" 
-                  target="_blank" 
-                  rel="noopener"
-                  className="text-sm text-gray-500 hover:text-purple-600 transition-colors"
-                >
+                <span className="text-sm text-gray-500">
                   Educational Products Showcase by Sandra Kwarko
-                </a>
+                </span>
               </div>
             </div>
           </div>
