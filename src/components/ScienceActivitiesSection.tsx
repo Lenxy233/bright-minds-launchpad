@@ -21,7 +21,7 @@ const ScienceActivitiesSection = () => {
           <div className="relative">
             <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 shadow-xl border-4 border-dashed border-green-300">
               <img 
-                src="/lovable-uploads/5d136223-da36-45ba-9203-4822b9d6d04c.png" 
+                src="/lovable-uploads/7713de76-ba70-4aed-9824-4d21f12d9617.png" 
                 alt="Child making green slime science experiment"
                 className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300"
               />
@@ -102,7 +102,7 @@ const ScienceActivitiesSection = () => {
               className="bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 hover:from-green-600 hover:via-blue-600 hover:to-purple-600 text-white text-lg px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               <FlaskConical className="mr-2 w-5 h-5" />
-              Get Your Science Bundle Now! ✨
+              Get Instant Access Now! ✨
             </Button>
           </div>
         </div>
