@@ -7,12 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Sparkles, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
 
 const NewProductLaunch = () => {
   const [firstName, setFirstName] = useState("");
@@ -61,26 +55,14 @@ const NewProductLaunch = () => {
     try {
       const selectedBundleDetails = getSelectedBundleDetails();
       
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: {
-          bundles: selectedBundleDetails,
-          customerInfo: {
-            firstName,
-            lastName,
-            email,
-          },
-        },
+      // Open each selected bundle's Stripe checkout link in new tabs
+      selectedBundleDetails.forEach((bundle) => {
+        if (bundle?.url) {
+          window.open(bundle.url, '_blank');
+        }
       });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data?.url) {
-        window.open(data.url, '_blank');
-      }
     } catch (error) {
-      console.error("Error creating checkout:", error);
+      console.error("Error opening checkout:", error);
       alert("There was an error processing your order. Please try again.");
     } finally {
       setIsProcessing(false);
