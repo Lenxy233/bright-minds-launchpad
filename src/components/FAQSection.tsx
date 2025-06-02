@@ -113,7 +113,7 @@ const FAQSection = () => {
         <div className="space-y-4">
           <p className="text-gray-700">
             Yes. After purchasing the main bundle, you will have the option to upgrade to the{" "}
-            <strong>Expansion Pack</strong>, which offers additional content, unique templates, and new niche resources to further enhance your creative library.
+            <strong>New Product Launch</strong>, which offers additional content, unique templates, and new niche resources to further enhance your creative library.
           </p>
         </div>
       )
