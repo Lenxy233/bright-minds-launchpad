@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,8 @@ const NewProductLaunch = () => {
       window.open("https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08", "_blank");
     } else if (request === "video-bundle") {
       window.open("https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09", "_blank");
+    } else if (request === "animation-video") {
+      window.open("https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a", "_blank");
     }
     // Handle form submission here for other bundles
   };
