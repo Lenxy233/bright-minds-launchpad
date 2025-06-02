@@ -1,76 +1,41 @@
+
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Sparkles, ShoppingCart } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const NewProductLaunch = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedBundles, setSelectedBundles] = useState<string[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [request, setRequest] = useState("");
 
-  const handleBundleChange = (bundleValue: string, checked: boolean) => {
-    if (checked) {
-      setSelectedBundles([...selectedBundles, bundleValue]);
-    } else {
-      setSelectedBundles(selectedBundles.filter(bundle => bundle !== bundleValue));
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form submitted:", { firstName, lastName, email, request });
+    
+    // Redirect to payment based on selected bundle
+    if (request === "kids-curriculum") {
+      window.open("https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08", "_blank");
+    } else if (request === "video-bundle") {
+      window.open("https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09", "_blank");
+    } else if (request === "animation-video") {
+      window.open("https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a", "_blank");
     }
+    // Handle form submission here for other bundles
   };
 
   const bundleOptions = [
-    { value: "kids-curriculum", label: "Kids Curriculum Bundle", price: 19.99, url: "https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08" },
-    { value: "video-bundle", label: "Video Bundle", price: 19.99, url: "https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09" },
-    { value: "animation-video", label: "Animation Video Bundle", price: 19.99, url: "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a" }
+    { value: "kids-curriculum", label: "Kids Curriculum Bundle - $19.99" },
+    { value: "video-bundle", label: "Video Bundle - $19.99" },
+    { value: "animation-video", label: "Animation Video Bundle - $19.99" }
   ];
-
-  const calculateTotal = () => {
-    return selectedBundles.reduce((total, bundleValue) => {
-      const bundle = bundleOptions.find(option => option.value === bundleValue);
-      return total + (bundle?.price || 0);
-    }, 0);
-  };
-
-  const getSelectedBundleDetails = () => {
-    return selectedBundles.map(bundleValue => 
-      bundleOptions.find(option => option.value === bundleValue)
-    ).filter(Boolean);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (selectedBundles.length === 0) {
-      alert("Please select at least one bundle to proceed.");
-      return;
-    }
-
-    setIsProcessing(true);
-    
-    try {
-      const selectedBundleDetails = getSelectedBundleDetails();
-      
-      // Open each selected bundle's Stripe checkout link in new tabs
-      selectedBundleDetails.forEach((bundle) => {
-        if (bundle?.url) {
-          window.open(bundle.url, '_blank');
-        }
-      });
-    } catch (error) {
-      console.error("Error opening checkout:", error);
-      alert("There was an error processing your order. Please try again.");
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const totalAmount = calculateTotal();
-  const selectedBundleDetails = getSelectedBundleDetails();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 via-blue-100 to-green-100 py-8 px-4">
@@ -98,10 +63,9 @@ const NewProductLaunch = () => {
           <CardContent>
             <form onSubmit={handleSubmit}>
               <Tabs defaultValue="personal" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-8">
+                <TabsList className="grid w-full grid-cols-2 mb-8">
                   <TabsTrigger value="personal" className="text-lg py-3">Personal Info</TabsTrigger>
-                  <TabsTrigger value="request" className="text-lg py-3">Select Bundles</TabsTrigger>
-                  <TabsTrigger value="summary" className="text-lg py-3">Order Summary</TabsTrigger>
+                  <TabsTrigger value="request" className="text-lg py-3">Request Details</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="personal" className="space-y-6">
@@ -146,24 +110,20 @@ const NewProductLaunch = () => {
                 </TabsContent>
 
                 <TabsContent value="request" className="space-y-6">
-                  <div className="space-y-4">
-                    <Label className="text-lg font-medium">Choose Your Bundles (Select one or more)</Label>
-                    <div className="space-y-4">
-                      {bundleOptions.map((option) => (
-                        <div key={option.value} className="flex items-center space-x-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                          <Checkbox
-                            id={option.value}
-                            checked={selectedBundles.includes(option.value)}
-                            onCheckedChange={(checked) => handleBundleChange(option.value, checked as boolean)}
-                          />
-                          <div className="flex-1">
-                            <label htmlFor={option.value} className="text-lg font-medium cursor-pointer">
-                              {option.label} - ${option.price}
-                            </label>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="request" className="text-lg font-medium">Choose Your Bundle</Label>
+                    <Select value={request} onValueChange={setRequest} required>
+                      <SelectTrigger className="h-12 text-lg">
+                        <SelectValue placeholder="Select a bundle option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {bundleOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value} className="text-lg py-3">
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                   
                   <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border-2 border-purple-200">
@@ -188,56 +148,14 @@ const NewProductLaunch = () => {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="summary" className="space-y-6">
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border-2 border-purple-200">
-                    <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center gap-2">
-                      <ShoppingCart className="w-6 h-6" />
-                      Order Summary
-                    </h3>
-                    
-                    {selectedBundleDetails.length === 0 ? (
-                      <p className="text-gray-600">No bundles selected. Please go back and select your desired bundles.</p>
-                    ) : (
-                      <div className="space-y-4">
-                        <div className="bg-white rounded-lg p-4 shadow-sm">
-                          <h4 className="font-semibold text-purple-700 mb-3">Selected Items:</h4>
-                          <div className="space-y-2">
-                            {selectedBundleDetails.map((bundle) => (
-                              <div key={bundle?.value} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                                <span className="text-gray-700">{bundle?.label}</span>
-                                <span className="font-semibold text-purple-600">${bundle?.price}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="mt-4 pt-4 border-t-2 border-purple-200">
-                            <div className="flex justify-between items-center">
-                              <span className="text-xl font-bold text-purple-800">Total:</span>
-                              <span className="text-2xl font-bold text-purple-600">${totalAmount.toFixed(2)}</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="bg-white rounded-lg p-4 shadow-sm">
-                          <h4 className="font-semibold text-purple-700 mb-2">Customer Information:</h4>
-                          <div className="text-gray-700 space-y-1">
-                            <p><span className="font-medium">Name:</span> {firstName} {lastName}</p>
-                            <p><span className="font-medium">Email:</span> {email}</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </TabsContent>
-
                 <div className="mt-8 flex justify-center">
                   <Button 
                     type="submit" 
                     size="lg" 
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                    disabled={selectedBundles.length === 0 || isProcessing}
                   >
-                    <ShoppingCart className="mr-2 w-5 h-5" />
-                    {isProcessing ? "Processing..." : `Complete Order - $${totalAmount.toFixed(2)}`}
+                    <Sparkles className="mr-2 w-5 h-5" />
+                    Submit Request
                   </Button>
                 </div>
               </Tabs>
