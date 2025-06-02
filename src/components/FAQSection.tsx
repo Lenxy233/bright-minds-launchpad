@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, Mail, Shield, Sparkles, Gift } from "lucide-react";
@@ -35,7 +34,7 @@ const FAQSection = () => {
               </li>
               <li className="flex items-start">
                 <span className="text-pink-500 mr-2">🎥</span>
-                Full video and audio training with 20 step-by-step tutorials and companion MP3s
+                Animated Videos to start your Youtube Channel
               </li>
             </ul>
           </div>
