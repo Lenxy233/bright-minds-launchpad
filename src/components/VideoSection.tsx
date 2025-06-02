@@ -1,4 +1,6 @@
 
+import { Play } from "lucide-react";
+
 const VideoSection = () => {
   return (
     <section className="py-20 px-4 bg-gradient-to-r from-purple-100/60 via-pink-100/60 to-blue-100/60 backdrop-blur-sm relative">
@@ -15,17 +17,28 @@ const VideoSection = () => {
         <div className="flex justify-center">
           <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-4 border-dashed border-purple-300 max-w-4xl">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-300">
-              <div className="text-center p-8">
+              {/* Video Preview Container */}
+              <div className="relative bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 aspect-video flex items-center justify-center">
+                {/* Video Thumbnail/Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-blue-600/20 to-pink-600/20"></div>
+                
+                {/* Play Button */}
                 <a 
                   href="https://www.canva.com/design/DAGpJt_RJJ4/BmqGyRKbmD1QJ3LtDldYZQ/watch"
                   rel="noopener noreferrer"
-                  className="inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 text-white text-xl font-bold px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  className="relative z-10 group"
                 >
-                  🎬 Watch Educational Products Showcase Video 🌟
+                  <div className="bg-white/90 hover:bg-white rounded-full p-6 shadow-2xl transform group-hover:scale-110 transition-all duration-300">
+                    <Play className="w-16 h-16 text-purple-600 ml-1" fill="currentColor" />
+                  </div>
                 </a>
-                <p className="text-gray-600 mt-4 text-lg">
-                  Click to watch our amazing educational products in action!
-                </p>
+
+                {/* Video Title Overlay */}
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <h4 className="text-2xl font-bold bg-black/50 backdrop-blur-sm rounded-lg p-3">
+                    🌟 Educational Products Showcase
+                  </h4>
+                </div>
               </div>
             </div>
             
