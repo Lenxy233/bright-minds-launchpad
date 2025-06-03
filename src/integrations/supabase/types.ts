@@ -9,7 +9,75 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_purchases: {
+        Row: {
+          amount: number
+          bundle_type: string
+          created_at: string | null
+          currency: string | null
+          email: string
+          id: string
+          purchased_at: string | null
+          status: string | null
+          stripe_session_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          bundle_type: string
+          created_at?: string | null
+          currency?: string | null
+          email: string
+          id?: string
+          purchased_at?: string | null
+          status?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          bundle_type?: string
+          created_at?: string | null
+          currency?: string | null
+          email?: string
+          id?: string
+          purchased_at?: string | null
+          status?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
