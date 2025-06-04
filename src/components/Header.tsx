@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Sparkles, User } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
@@ -44,7 +44,7 @@ const Header = ({ onPurchase }: HeaderProps) => {
               </Link>
             </Button>
           )}
-          <Button onClick={onPurchase} className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in">
+          <Button onClick={scrollToProducts} className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in">
             Get Started Now ✨
           </Button>
         </div>
