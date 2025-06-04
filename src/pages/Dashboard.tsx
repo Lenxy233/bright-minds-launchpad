@@ -6,8 +6,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Download, Package, User, LogOut } from "lucide-react";
+import { Package, User, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import FileDownloadList from "@/components/FileDownloadList";
 
 interface Purchase {
   id: string;
@@ -180,15 +181,10 @@ const Dashboard = () => {
                         <p>Amount: ${(purchase.amount / 100).toFixed(2)}</p>
                         <p>Purchased: {new Date(purchase.purchased_at).toLocaleDateString()}</p>
                       </div>
-                      {purchase.status === 'completed' && (
-                        <Button 
-                          className="mt-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
-                          size="sm"
-                        >
-                          <Download className="w-4 h-4 mr-2" />
-                          Download Content
-                        </Button>
-                      )}
+                      <FileDownloadList 
+                        bundleType={purchase.bundle_type} 
+                        purchaseStatus={purchase.status}
+                      />
                     </div>
                   ))}
                 </div>
@@ -212,7 +208,7 @@ const Dashboard = () => {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   );
