@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,17 +43,17 @@ const NewProductLaunch = () => {
           "kids-curriculum": { 
             baseAmount: 1999, 
             baseUrl: "https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08",
-            withPromptsUrl: "https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08" // You'll need to create this in Stripe
+            withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           },
           "video-bundle": { 
             baseAmount: 1999, 
             baseUrl: "https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09",
-            withPromptsUrl: "https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09" // You'll need to create this in Stripe
+            withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           },
           "animation-video": { 
             baseAmount: 1999, 
             baseUrl: "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a",
-            withPromptsUrl: "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a" // You'll need to create this in Stripe
+            withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           }
         };
 
@@ -87,13 +86,13 @@ const NewProductLaunch = () => {
         // For non-authenticated users, redirect directly
         const urls = {
           "kids-curriculum": includeAiPrompts 
-            ? "https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08" // You'll need to update this
+            ? "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
             : "https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08",
           "video-bundle": includeAiPrompts 
-            ? "https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09" // You'll need to update this
+            ? "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
             : "https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09",
           "animation-video": includeAiPrompts 
-            ? "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a" // You'll need to update this
+            ? "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
             : "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a"
         };
 
