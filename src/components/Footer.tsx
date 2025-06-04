@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -58,12 +57,18 @@ const Footer = () => {
         
         <p className="text-gray-300 mb-4 font-semibold">🌟 Empowering the next generation through innovative educational products 🎨</p>
         
-        <div className="mb-4">
+        <div className="mb-4 space-y-2">
           <Link 
             to="/privacy-policy" 
-            className="text-gray-300 hover:text-white underline text-sm transition-colors"
+            className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
             Privacy Policy
+          </Link>
+          <Link 
+            to="/data-protection-policy" 
+            className="text-gray-300 hover:text-white underline text-sm transition-colors block"
+          >
+            Data Protection Policy
           </Link>
         </div>
         
