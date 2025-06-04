@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ProductsSection from "@/components/ProductsSection";
@@ -14,7 +15,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 const Index = () => {
   const handlePurchase = () => {
-    window.open("https://buy.stripe.com/dRm4gz93DdYP5Ew3mLgMw07", "_blank");
+    window.open("https://buy.stripe.com/3cIbJ1bbL1c34As3mLgMw0b", "_blank");
   };
 
   return (
