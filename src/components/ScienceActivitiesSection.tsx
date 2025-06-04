@@ -4,7 +4,7 @@ import { FlaskConical, TestTube, Microscope, Sparkles } from "lucide-react";
 
 const ScienceActivitiesSection = () => {
   const handlePurchase = () => {
-    window.open("https://buy.stripe.com/dRm4gz93DdYP5Ew3mLgMw07", "_blank");
+    window.open("https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c", "_blank");
   };
 
   return (
