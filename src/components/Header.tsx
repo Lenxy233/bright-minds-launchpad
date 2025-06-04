@@ -29,16 +29,12 @@ const Header = ({ onPurchase }: HeaderProps) => {
         </div>
         
         <div className="flex items-center gap-4">
-          {user ? (
+          {user && (
             <Button asChild variant="outline" className="flex items-center gap-2">
               <Link to="/dashboard">
                 <User className="w-4 h-4" />
                 Dashboard
               </Link>
-            </Button>
-          ) : (
-            <Button asChild variant="outline">
-              <Link to="/auth">Sign In</Link>
             </Button>
           )}
           <Button onClick={onPurchase} className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in">
