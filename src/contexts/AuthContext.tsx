@@ -50,34 +50,70 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-        }
-      }
-    });
+    try {
+      // First, check if this email has a completed purchase
+      const { data: purchaseData, error: purchaseError } = await supabase
+        .from('user_purchases')
+        .select('email, status')
+        .eq('email', email)
+        .eq('status', 'completed')
+        .maybeSingle();
 
-    if (error) {
+      if (purchaseError) {
+        console.error('Error checking purchase:', purchaseError);
+        toast({
+          title: "Error",
+          description: "Unable to verify purchase. Please try again.",
+          variant: "destructive",
+        });
+        return { error: purchaseError };
+      }
+
+      if (!purchaseData) {
+        toast({
+          title: "Registration Not Allowed",
+          description: "You can only register with an email that has completed a purchase. Please use the email you used for your purchase.",
+          variant: "destructive",
+        });
+        return { error: { message: "No valid purchase found for this email" } };
+      }
+
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          }
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Please check your email to confirm your account.",
+        });
+      }
+
+      return { error };
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
-    } else {
-      toast({
-        title: "Success",
-        description: "Please check your email to confirm your account.",
-      });
+      return { error };
     }
-
-    return { error };
   };
 
   const signIn = async (email: string, password: string) => {

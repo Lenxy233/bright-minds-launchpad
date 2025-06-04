@@ -59,6 +59,16 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin-bottom: 15px;"><strong>Email:</strong> ${email}</p>
           </div>
 
+          <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="color: #856404; margin-bottom: 15px;">⚠️ Important: Registration Instructions</h3>
+            <p style="margin-bottom: 15px; color: #856404; font-weight: bold;">
+              You MUST register using this exact email address: <span style="background: #fff; padding: 2px 8px; border-radius: 4px; border: 1px solid #ddd;">${email}</span>
+            </p>
+            <p style="color: #856404;">
+              This is the email you used for your purchase. Using a different email will prevent you from accessing your content.
+            </p>
+          </div>
+
           <div style="background: #f8fafc; padding: 25px; border-radius: 10px; margin-bottom: 30px;">
             <h3 style="color: #1e293b; margin-bottom: 15px;">🚀 Access Your Content</h3>
             <p style="margin-bottom: 20px; color: #475569;">Create your account to access your purchased content and track your progress:</p>
@@ -78,7 +88,7 @@ const handler = async (req: Request): Promise<Response> => {
           </div>
 
           <div style="border-top: 2px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b;">
-            <p>If you already have an account, simply <a href="https://brightmindsacademy.de/auth" style="color: #7c3aed;">sign in</a> to access your new content.</p>
+            <p>Remember to use the email address <strong>${email}</strong> when creating your account.</p>
             <p style="margin-top: 20px;">Have questions? Reply to this email and we'll help you get started!</p>
             <p style="margin-top: 15px; font-size: 14px;">
               Best regards,<br>
