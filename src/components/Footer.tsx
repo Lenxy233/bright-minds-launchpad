@@ -77,6 +77,12 @@ const Footer = () => {
           >
             Terms & Conditions
           </Link>
+          <Link 
+            to="/earnings-disclaimer" 
+            className="text-gray-300 hover:text-white underline text-sm transition-colors block"
+          >
+            Earnings Disclaimer
+          </Link>
         </div>
         
         <p className="text-sm text-gray-400">© 2024 Bright Minds Academy. All rights reserved. ✨</p>

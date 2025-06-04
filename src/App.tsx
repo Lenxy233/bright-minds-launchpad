@@ -13,6 +13,7 @@ import NewProductLaunch from "./pages/NewProductLaunch";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import DataProtectionPolicy from "./pages/DataProtectionPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import EarningsDisclaimer from "./pages/EarningsDisclaimer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/data-protection-policy" element={<DataProtectionPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/earnings-disclaimer" element={<EarningsDisclaimer />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
