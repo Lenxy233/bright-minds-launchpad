@@ -11,6 +11,13 @@ interface HeaderProps {
 const Header = ({ onPurchase }: HeaderProps) => {
   const { user } = useAuth();
 
+  const scrollToProducts = () => {
+    const productsSection = document.querySelector('#products-section');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="bg-gradient-to-r from-pink-200/80 via-purple-200/80 to-blue-200/80 backdrop-blur-sm border-b border-purple-200 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -37,7 +44,7 @@ const Header = ({ onPurchase }: HeaderProps) => {
               </Link>
             </Button>
           )}
-          <Button onClick={onPurchase} className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in">
+          <Button onClick={scrollToProducts} className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in">
             Get Started Now ✨
           </Button>
         </div>
