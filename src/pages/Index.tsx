@@ -12,10 +12,13 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   const handlePurchase = () => {
-    window.open("https://buy.stripe.com/3cIbJ1bbL1c34As3mLgMw0b", "_blank");
+    navigate("/new-product-launch");
   };
 
   return (
