@@ -31,6 +31,47 @@ const Legal = () => {
           </Link>
         </div>
 
+        {/* Navigation Header */}
+        <Card className="bg-white/90 backdrop-blur-sm shadow-xl border-2 border-purple-200 mb-8">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+              Legal Policies
+            </CardTitle>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                to="/legal#privacy-policy" 
+                className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link 
+                to="/legal#data-protection-policy" 
+                className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Data Protection Policy
+              </Link>
+              <Link 
+                to="/legal#terms-and-conditions" 
+                className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Terms & Conditions
+              </Link>
+              <Link 
+                to="/legal#earnings-disclaimer" 
+                className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Earnings Disclaimer
+              </Link>
+              <Link 
+                to="/legal#refund-policy" 
+                className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Refund Policy
+              </Link>
+            </div>
+          </CardHeader>
+        </Card>
+
         {/* Privacy Policy Section */}
         <Card id="privacy-policy" className="bg-white/90 backdrop-blur-sm shadow-xl border-2 border-purple-200 mb-8">
           <CardHeader className="text-center">
