@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Youtube, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const handleSocialClick = (platform: string) => {
@@ -56,6 +57,16 @@ const Footer = () => {
         </div>
         
         <p className="text-gray-300 mb-4 font-semibold">🌟 Empowering the next generation through innovative educational products 🎨</p>
+        
+        <div className="mb-4">
+          <Link 
+            to="/privacy-policy" 
+            className="text-gray-300 hover:text-white underline text-sm transition-colors"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+        
         <p className="text-sm text-gray-400">© 2024 Bright Minds Academy. All rights reserved. ✨</p>
       </div>
     </footer>
