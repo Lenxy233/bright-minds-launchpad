@@ -37,7 +37,7 @@ serve(async (req) => {
 
       if (customerEmail) {
         // Update purchase status to completed
-        const { error } = await supabaseClient
+        const { error: updateError } = await supabaseClient
           .from('user_purchases')
           .update({ 
             status: 'completed',
@@ -47,15 +47,46 @@ serve(async (req) => {
           .eq('email', customerEmail)
           .eq('status', 'pending');
 
-        if (error) {
-          console.error("Error updating purchase:", error);
-          return new Response(JSON.stringify({ error: error.message }), {
+        if (updateError) {
+          console.error("Error updating purchase:", updateError);
+          return new Response(JSON.stringify({ error: updateError.message }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
         }
 
         console.log("Successfully updated purchase for:", customerEmail);
+
+        // Get the purchase details to determine bundle type
+        const { data: purchaseData, error: fetchError } = await supabaseClient
+          .from('user_purchases')
+          .select('bundle_type, amount')
+          .eq('email', customerEmail)
+          .eq('stripe_session_id', sessionId)
+          .single();
+
+        if (fetchError) {
+          console.error("Error fetching purchase details:", fetchError);
+        } else if (purchaseData) {
+          // Send confirmation email
+          try {
+            const emailResponse = await supabaseClient.functions.invoke('send-purchase-email', {
+              body: {
+                email: customerEmail,
+                bundleType: purchaseData.bundle_type,
+                amount: purchaseData.amount
+              }
+            });
+
+            if (emailResponse.error) {
+              console.error("Error sending confirmation email:", emailResponse.error);
+            } else {
+              console.log("Confirmation email sent successfully to:", customerEmail);
+            }
+          } catch (emailError) {
+            console.error("Error invoking email function:", emailError);
+          }
+        }
       }
     }
 
