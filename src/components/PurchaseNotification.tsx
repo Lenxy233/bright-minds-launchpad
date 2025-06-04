@@ -15,8 +15,21 @@ const PurchaseNotification = ({ onClose }: PurchaseNotificationProps) => {
     "Maria G.", "Chris B.", "Amanda S.", "Kevin J.", "Nicole F."
   ];
 
+  const locations = [
+    "New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX", "Phoenix, AZ",
+    "Philadelphia, PA", "San Antonio, TX", "San Diego, CA", "Dallas, TX", "San Jose, CA",
+    "Austin, TX", "Jacksonville, FL", "Fort Worth, TX", "Columbus, OH", "Charlotte, NC",
+    "San Francisco, CA", "Indianapolis, IN", "Seattle, WA", "Denver, CO", "Boston, MA",
+    "El Paso, TX", "Nashville, TN", "Detroit, MI", "Oklahoma City, OK", "Portland, OR",
+    "Las Vegas, NV", "Memphis, TN", "Louisville, KY", "Baltimore, MD", "Milwaukee, WI"
+  ];
+
   const getRandomCustomer = () => {
     return customerNames[Math.floor(Math.random() * customerNames.length)];
+  };
+
+  const getRandomLocation = () => {
+    return locations[Math.floor(Math.random() * locations.length)];
   };
 
   const getRandomHours = () => {
@@ -41,6 +54,9 @@ const PurchaseNotification = ({ onClose }: PurchaseNotificationProps) => {
             <div>
               <p className="text-sm font-semibold text-gray-800">
                 🎉 {getRandomCustomer()} just purchased!
+              </p>
+              <p className="text-xs text-gray-600">
+                📍 {getRandomLocation()}
               </p>
               <p className="text-xs text-gray-600">
                 Bright Minds Academy Bundle • {getRandomHours()} hours ago
