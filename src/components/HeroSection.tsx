@@ -87,11 +87,11 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Button 
-            onClick={scrollToProducts} 
+            onClick={onPurchase} 
             size="lg" 
             className="bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-green-500 hover:from-pink-600 hover:via-purple-600 hover:via-blue-600 hover:to-green-600 text-lg px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 animate-slide-in-right border-4 border-white"
           >
-            🎯 Get Started Now 🌟
+            🎯 Get Instant Access Now ✨
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
           <div className="flex items-center gap-1 text-yellow-500 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
