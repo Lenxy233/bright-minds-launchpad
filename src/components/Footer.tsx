@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -69,6 +70,12 @@ const Footer = () => {
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
             Data Protection Policy
+          </Link>
+          <Link 
+            to="/terms-and-conditions" 
+            className="text-gray-300 hover:text-white underline text-sm transition-colors block"
+          >
+            Terms & Conditions
           </Link>
         </div>
         
