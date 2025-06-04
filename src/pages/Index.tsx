@@ -10,6 +10,7 @@ import ReviewsSection from "@/components/ReviewsSection";
 import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import PurchaseNotifications from "@/components/PurchaseNotifications";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
@@ -40,6 +41,9 @@ const Index = () => {
       <FAQSection />
       <CTASection onPurchase={handlePurchase} />
       <Footer />
+
+      {/* Purchase Notifications */}
+      <PurchaseNotifications />
 
       {/* Fixed floating button */}
       <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
