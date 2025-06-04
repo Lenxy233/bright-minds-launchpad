@@ -83,6 +83,12 @@ const Footer = () => {
           >
             Earnings Disclaimer
           </Link>
+          <Link 
+            to="/refund-policy" 
+            className="text-gray-300 hover:text-white underline text-sm transition-colors block"
+          >
+            Refund Policy
+          </Link>
         </div>
         
         <p className="text-sm text-gray-400">© 2024 Bright Minds Academy. All rights reserved. ✨</p>
