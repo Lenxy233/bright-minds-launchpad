@@ -26,7 +26,7 @@ const CTASection = ({ onPurchase }: CTASectionProps) => {
         <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 mb-8 border-4 border-dashed border-white/40 shadow-2xl">
           <div className="text-center mb-6">
             <span className="text-2xl line-through opacity-60 text-red-200">$1,827</span>
-            <span className="text-5xl font-bold ml-4">$25</span>
+            <span className="text-5xl font-bold ml-4">$39</span>
             <Sparkles className="inline-block w-8 h-8 ml-2 text-yellow-300 animate-spin" />
           </div>
           <p className="mb-6 opacity-90 font-bold text-lg">⏰ Limited time offer - Price increases soon! 🎯</p>
@@ -35,7 +35,7 @@ const CTASection = ({ onPurchase }: CTASectionProps) => {
             size="lg" 
             className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-purple-800 hover:text-purple-900 text-lg px-12 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 animate-slide-in-right border-4 border-white"
           >
-            🎯 Get Instant Access - $25 ✨
+            🎯 Get Instant Access - $39 ✨
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </div>

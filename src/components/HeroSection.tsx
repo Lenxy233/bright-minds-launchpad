@@ -68,7 +68,7 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
             <div className="flex items-center justify-center gap-2 mb-2">
               <span className="text-3xl line-through text-red-500 font-semibold">$1,827</span>
               <ArrowRight className="w-6 h-6 text-purple-500 animate-bounce" />
-              <span className="text-5xl font-bold text-green-600">$25</span>
+              <span className="text-5xl font-bold text-green-600">$39</span>
               <Heart className="w-8 h-8 text-red-500 animate-pulse" />
             </div>
             <p className="text-sm text-gray-600 font-semibold">✨ One-time payment • 🚀 Instant access • 💎 PLR rights included</p>
