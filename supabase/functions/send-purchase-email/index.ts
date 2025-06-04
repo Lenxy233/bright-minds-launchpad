@@ -13,6 +13,7 @@ interface PurchaseEmailRequest {
   email: string;
   bundleType: string;
   amount: number;
+  customerName?: string;
 }
 
 const getBundleName = (bundleType: string) => {
@@ -34,22 +35,27 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { email, bundleType, amount }: PurchaseEmailRequest = await req.json();
+    const { email, bundleType, amount, customerName }: PurchaseEmailRequest = await req.json();
     
     console.log("Sending purchase confirmation email to:", email);
 
     const bundleName = getBundleName(bundleType);
     const formattedAmount = (amount / 100).toFixed(2);
+    const firstName = customerName || "Friend";
 
     const emailResponse = await resend.emails.send({
       from: "Bright Minds Academy <membership@brightmindsacademy.de>",
       to: [email],
-      subject: `Thank you for your purchase - ${bundleName}`,
+      subject: `Congratulations ${firstName}! Welcome to Bright Minds Academy`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #7c3aed; margin-bottom: 10px;">🎉 Thank You for Your Purchase!</h1>
             <img src="https://ezgwdqegozawvuchpaor.supabase.co/storage/v1/object/public/uploads/69fc66c6-3b7b-4fa2-9348-5adcf71e90ee.png" alt="Bright Minds Academy" style="width: 60px; height: 60px; margin: 20px 0;">
+            <h1 style="color: #7c3aed; margin-bottom: 10px;">🎉 Congratulations ${firstName}!</h1>
+            <h2 style="color: #1e293b; margin-bottom: 20px;">Welcome to Bright Minds Academy</h2>
+            <p style="font-size: 18px; color: #475569; margin-bottom: 30px;">
+              You've just launched into a future full of fun, growth, and greatness!
+            </p>
           </div>
           
           <div style="background: linear-gradient(135deg, #fdf2f8, #f3e8ff); padding: 30px; border-radius: 15px; margin-bottom: 30px;">
@@ -59,19 +65,9 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin-bottom: 15px;"><strong>Email:</strong> ${email}</p>
           </div>
 
-          <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
-            <h3 style="color: #856404; margin-bottom: 15px;">⚠️ Important: Registration Instructions</h3>
-            <p style="margin-bottom: 15px; color: #856404; font-weight: bold;">
-              You MUST register using this exact email address: <span style="background: #fff; padding: 2px 8px; border-radius: 4px; border: 1px solid #ddd;">${email}</span>
-            </p>
-            <p style="color: #856404;">
-              This is the email you used for your purchase. Using a different email will prevent you from accessing your content.
-            </p>
-          </div>
-
           <div style="background: #f8fafc; padding: 25px; border-radius: 10px; margin-bottom: 30px;">
-            <h3 style="color: #1e293b; margin-bottom: 15px;">🚀 Access Your Content</h3>
-            <p style="margin-bottom: 20px; color: #475569;">Create your account to access your purchased content and track your progress:</p>
+            <h3 style="color: #1e293b; margin-bottom: 15px;">🚀 Create Your Account</h3>
+            <p style="margin-bottom: 20px; color: #475569;">Go ahead and create your account using this email:</p>
             <div style="text-align: center;">
               <a href="https://brightmindsacademy.de/auth" 
                  style="background: linear-gradient(135deg, #7c3aed, #ec4899); 
@@ -82,9 +78,19 @@ const handler = async (req: Request): Promise<Response> => {
                         font-weight: bold; 
                         display: inline-block;
                         margin: 10px;">
-                Create Your Account ✨
+                Click Here to Create Your Account ✨
               </a>
             </div>
+          </div>
+
+          <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="color: #856404; margin-bottom: 15px;">⚠️ Important: Registration Instructions</h3>
+            <p style="margin-bottom: 15px; color: #856404; font-weight: bold;">
+              You MUST register using this exact email address: <span style="background: #fff; padding: 2px 8px; border-radius: 4px; border: 1px solid #ddd;">${email}</span>
+            </p>
+            <p style="color: #856404;">
+              This is the email you used for your purchase. Using a different email will prevent you from accessing your content.
+            </p>
           </div>
 
           <div style="border-top: 2px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b;">
