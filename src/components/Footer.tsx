@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -60,31 +59,31 @@ const Footer = () => {
         
         <div className="mb-4 space-y-2">
           <Link 
-            to="/privacy-policy" 
+            to="/legal#privacy-policy" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
             Privacy Policy
           </Link>
           <Link 
-            to="/data-protection-policy" 
+            to="/legal#data-protection-policy" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
             Data Protection Policy
           </Link>
           <Link 
-            to="/terms-and-conditions" 
+            to="/legal#terms-and-conditions" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
             Terms & Conditions
           </Link>
           <Link 
-            to="/earnings-disclaimer" 
+            to="/legal#earnings-disclaimer" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
             Earnings Disclaimer
           </Link>
           <Link 
-            to="/refund-policy" 
+            to="/legal#refund-policy" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
             Refund Policy

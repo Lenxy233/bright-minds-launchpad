@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,11 +9,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import NewProductLaunch from "./pages/NewProductLaunch";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import DataProtectionPolicy from "./pages/DataProtectionPolicy";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import EarningsDisclaimer from "./pages/EarningsDisclaimer";
-import RefundPolicy from "./pages/RefundPolicy";
+import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,11 +30,13 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/new-product-launch" element={<NewProductLaunch />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/data-protection-policy" element={<DataProtectionPolicy />} />
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-            <Route path="/earnings-disclaimer" element={<EarningsDisclaimer />} />
-            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/legal" element={<Legal />} />
+            {/* Redirect old policy routes to the new legal page with anchors */}
+            <Route path="/privacy-policy" element={<Legal />} />
+            <Route path="/data-protection-policy" element={<Legal />} />
+            <Route path="/terms-and-conditions" element={<Legal />} />
+            <Route path="/earnings-disclaimer" element={<Legal />} />
+            <Route path="/refund-policy" element={<Legal />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
