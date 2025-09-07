@@ -24,20 +24,29 @@ const resources = {
   zh: { translation: zh },
 };
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: 'en',
-    debug: false,
-    detection: {
-      order: ['navigator', 'htmlTag'],
-      caches: ['localStorage'],
-    },
-    interpolation: {
-      escapeValue: false,
-    },
-  });
+// Initialize i18n asynchronously to avoid interfering with React initialization
+const initI18n = async () => {
+  if (!i18n.isInitialized) {
+    await i18n
+      .use(LanguageDetector)
+      .use(initReactI18next)
+      .init({
+        resources,
+        fallbackLng: 'en',
+        debug: false,
+        detection: {
+          order: ['navigator', 'htmlTag'],
+          caches: ['localStorage'],
+        },
+        interpolation: {
+          escapeValue: false,
+        },
+      });
+  }
+  return i18n;
+};
+
+// Initialize immediately but asynchronously
+initI18n();
 
 export default i18n;
