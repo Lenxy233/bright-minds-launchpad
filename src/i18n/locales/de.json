@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "title": "Verwandeln Sie das Lernen Ihres Kindes mit Spaßigen Bildungsaktivitäten!",
+    "subtitle": "Sofort herunterladen und zusehen, wie Ihre Kinder mit unseren fesselnden Aktivitäten und Unterrichtsplänen lernen und Spaß haben.",
+    "cta": "Holen Sie sich Ihr Bundle Jetzt - Nur 19,99$!"
+  },
+  "products": {
+    "title": "Wählen Sie Ihr Perfektes Bundle",
+    "kidsBundle": {
+      "title": "Kinder-Lehrplan Bundle",
+      "description": "Komplette Bildungsaktivitäten und Unterrichtspläne für Alter 3-12",
+      "price": "19,99$"
+    },
+    "videoBundle": {
+      "title": "Video-Lern Bundle",
+      "description": "Professionelle Video-Tutorials und Trainingsinhalte",
+      "price": "19,99$"
+    },
+    "animationBundle": {
+      "title": "Animations-Video Bundle",
+      "description": "Fesselnde animierte Videos für kreatives Lernen",
+      "price": "19,99$"
+    }
+  },
+  "benefits": {
+    "title": "Warum Eltern Unsere Bundles Lieben",
+    "instant": "Sofortiger Download",
+    "instantDesc": "Sofortiger Zugang zu allen Materialien",
+    "quality": "Hochwertige Inhalte",
+    "qualityDesc": "Professionell gestaltete Bildungsmaterialien",
+    "support": "Lebenslanger Support",
+    "supportDesc": "Hilfe, wann immer Sie sie brauchen"
+  },
+  "faq": {
+    "title": "Häufig Gestellte Fragen",
+    "q1": "Was ist in jedem Bundle enthalten?",
+    "a1": "Jedes Bundle enthält umfassende Bildungsmaterialien, Aktivitäten, Unterrichtspläne und Ressourcen, die speziell für verschiedene Altersgruppen und Lernstile entwickelt wurden.",
+    "q2": "Wie greife ich auf meinen Kauf zu?",
+    "a2": "Nach dem Kauf erhalten Sie sofortigen Zugang zum Herunterladen aller Materialien. Sie können auch jederzeit von Ihrem Dashboard aus darauf zugreifen.",
+    "q3": "Gibt es eine Geld-zurück-Garantie?",
+    "a3": "Ja! Wir bieten eine 30-tägige Geld-zurück-Garantie. Wenn Sie nicht zufrieden sind, kontaktieren Sie uns für eine vollständige Rückerstattung."
+  },
+  "purchase": {
+    "notification": "hat gerade gekauft!",
+    "bundle": "Bright Minds Academy Bundle",
+    "hoursAgo": "Stunden her"
+  },
+  "cta": {
+    "title": "Bereit, das Lernen Ihres Kindes zu Verwandeln?",
+    "subtitle": "Schließen Sie sich Tausenden von Eltern an, die bereits die Freude an spaßigen, bildenden Aktivitäten entdeckt haben.",
+    "button": "Holen Sie sich Ihr Bundle Jetzt - 19,99$"
+  },
+  "footer": {
+    "company": "Bright Minds Academy",
+    "description": "Kinder durch fesselnde Bildungsinhalte und Aktivitäten stärken.",
+    "links": "Schnelle Links",
+    "legal": "Rechtliches",
+    "contact": "Kontaktieren Sie Uns",
+    "rights": "Alle Rechte vorbehalten."
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "dashboard": "Dashboard"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Etwas ist schief gelaufen",
+    "retry": "Erneut Versuchen",
+    "back": "Zurück",
+    "home": "Startseite"
+  }
+}

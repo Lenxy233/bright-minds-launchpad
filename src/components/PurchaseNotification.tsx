@@ -1,12 +1,14 @@
 
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface PurchaseNotificationProps {
   onClose: () => void;
 }
 
 const PurchaseNotification = ({ onClose }: PurchaseNotificationProps) => {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(true);
 
   const customerNames = [
@@ -53,13 +55,13 @@ const PurchaseNotification = ({ onClose }: PurchaseNotificationProps) => {
             <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
             <div>
               <p className="text-sm font-semibold text-gray-800">
-                🎉 {getRandomCustomer()} just purchased!
+                🎉 {getRandomCustomer()} {t('purchase.notification')}
               </p>
               <p className="text-xs text-gray-600">
                 📍 {getRandomLocation()}
               </p>
               <p className="text-xs text-gray-600">
-                Bright Minds Academy Bundle • {getRandomHours()} hours ago
+                {t('purchase.bundle')} • {getRandomHours()} {t('purchase.hoursAgo')}
               </p>
             </div>
           </div>

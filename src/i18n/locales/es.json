@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "title": "¡Transforma el Aprendizaje de tu Hijo con Actividades Educativas Divertidas!",
+    "subtitle": "Descarga instantáneamente y ve a tus hijos aprender mientras se divierten con nuestras actividades y planes de lección atractivos.",
+    "cta": "¡Obtén tu Paquete Ahora - Solo $19.99!"
+  },
+  "products": {
+    "title": "Elige tu Paquete Perfecto",
+    "kidsBundle": {
+      "title": "Paquete de Currículo Infantil",
+      "description": "Actividades educativas completas y planes de lección para edades 3-12",
+      "price": "$19.99"
+    },
+    "videoBundle": {
+      "title": "Paquete de Video Aprendizaje",
+      "description": "Tutoriales en video profesionales y contenido de capacitación",
+      "price": "$19.99"
+    },
+    "animationBundle": {
+      "title": "Paquete de Video Animación",
+      "description": "Videos animados atractivos para aprendizaje creativo",
+      "price": "$19.99"
+    }
+  },
+  "benefits": {
+    "title": "Por qué los Padres Aman Nuestros Paquetes",
+    "instant": "Descarga Instantánea",
+    "instantDesc": "Acceso inmediato a todos los materiales",
+    "quality": "Contenido de Alta Calidad",
+    "qualityDesc": "Materiales educativos diseñados profesionalmente",
+    "support": "Soporte De Por Vida",
+    "supportDesc": "Obtén ayuda cuando la necesites"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "q1": "¿Qué incluye cada paquete?",
+    "a1": "Cada paquete contiene materiales educativos integrales, actividades, planes de lección y recursos específicamente diseñados para diferentes grupos de edad y estilos de aprendizaje.",
+    "q2": "¿Cómo accedo a mi compra?",
+    "a2": "Después de la compra, recibirás acceso instantáneo para descargar todos los materiales. También puedes acceder a ellos en cualquier momento desde tu panel.",
+    "q3": "¿Hay garantía de devolución de dinero?",
+    "a3": "¡Sí! Ofrecemos una garantía de devolución de dinero de 30 días. Si no estás satisfecho, contáctanos para un reembolso completo."
+  },
+  "purchase": {
+    "notification": "¡acaba de comprar!",
+    "bundle": "Paquete Bright Minds Academy",
+    "hoursAgo": "horas atrás"
+  },
+  "cta": {
+    "title": "¿Listo para Transformar el Aprendizaje de tu Hijo?",
+    "subtitle": "Únete a miles de padres que ya han descubierto la alegría de actividades educativas divertidas.",
+    "button": "Obtén tu Paquete Ahora - $19.99"
+  },
+  "footer": {
+    "company": "Bright Minds Academy",
+    "description": "Empoderando a los niños a través de contenido educativo atractivo y actividades.",
+    "links": "Enlaces Rápidos",
+    "legal": "Legal",
+    "contact": "Contáctanos",
+    "rights": "Todos los derechos reservados."
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "dashboard": "Panel"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "retry": "Intentar de Nuevo",
+    "back": "Atrás",
+    "home": "Inicio"
+  }
+}

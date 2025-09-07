@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "title": "Transformez l'Apprentissage de votre Enfant avec des Activités Éducatives Amusantes!",
+    "subtitle": "Téléchargez instantanément et regardez vos enfants apprendre en s'amusant avec nos activités et plans de cours engageants.",
+    "cta": "Obtenez votre Pack Maintenant - Seulement 19,99$!"
+  },
+  "products": {
+    "title": "Choisissez votre Pack Parfait",
+    "kidsBundle": {
+      "title": "Pack Curriculum Enfants",
+      "description": "Activités éducatives complètes et plans de cours pour âges 3-12",
+      "price": "19,99$"
+    },
+    "videoBundle": {
+      "title": "Pack d'Apprentissage Vidéo",
+      "description": "Tutoriels vidéo professionnels et contenu de formation",
+      "price": "19,99$"
+    },
+    "animationBundle": {
+      "title": "Pack Vidéo d'Animation",
+      "description": "Vidéos animées engageantes pour l'apprentissage créatif",
+      "price": "19,99$"
+    }
+  },
+  "benefits": {
+    "title": "Pourquoi les Parents Adorent nos Packs",
+    "instant": "Téléchargement Instantané",
+    "instantDesc": "Accès immédiat à tous les matériaux",
+    "quality": "Contenu de Haute Qualité",
+    "qualityDesc": "Matériaux éducatifs conçus professionnellement",
+    "support": "Support à Vie",
+    "supportDesc": "Obtenez de l'aide quand vous en avez besoin"
+  },
+  "faq": {
+    "title": "Questions Fréquemment Posées",
+    "q1": "Qu'est-ce qui est inclus dans chaque pack?",
+    "a1": "Chaque pack contient des matériaux éducatifs complets, des activités, des plans de cours et des ressources spécifiquement conçus pour différents groupes d'âge et styles d'apprentissage.",
+    "q2": "Comment accéder à mon achat?",
+    "a2": "Après l'achat, vous recevrez un accès instantané pour télécharger tous les matériaux. Vous pouvez également y accéder à tout moment depuis votre tableau de bord.",
+    "q3": "Y a-t-il une garantie de remboursement?",
+    "a3": "Oui! Nous offrons une garantie de remboursement de 30 jours. Si vous n'êtes pas satisfait, contactez-nous pour un remboursement complet."
+  },
+  "purchase": {
+    "notification": "vient d'acheter!",
+    "bundle": "Pack Bright Minds Academy",
+    "hoursAgo": "heures"
+  },
+  "cta": {
+    "title": "Prêt à Transformer l'Apprentissage de votre Enfant?",
+    "subtitle": "Rejoignez des milliers de parents qui ont déjà découvert la joie des activités éducatives amusantes.",
+    "button": "Obtenez votre Pack Maintenant - 19,99$"
+  },
+  "footer": {
+    "company": "Bright Minds Academy",
+    "description": "Autonomiser les enfants grâce à du contenu éducatif et des activités engageants.",
+    "links": "Liens Rapides",
+    "legal": "Légal",
+    "contact": "Contactez-nous",
+    "rights": "Tous droits réservés."
+  },
+  "auth": {
+    "signIn": "Se Connecter",
+    "signUp": "S'inscrire",
+    "email": "Email",
+    "password": "Mot de Passe",
+    "dashboard": "Tableau de Bord"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Quelque chose s'est mal passé",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "home": "Accueil"
+  }
+}

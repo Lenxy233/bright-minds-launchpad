@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "title": "Trasforma l'Apprendimento di tuo Figlio con Attività Educative Divertenti!",
+    "subtitle": "Scarica istantaneamente e guarda i tuoi bambini imparare divertendosi con le nostre attività coinvolgenti e piani di lezione.",
+    "cta": "Ottieni il tuo Bundle Ora - Solo $19.99!"
+  },
+  "products": {
+    "title": "Scegli il tuo Bundle Perfetto",
+    "kidsBundle": {
+      "title": "Bundle Curriculum Bambini",
+      "description": "Attività educative complete e piani di lezione per età 3-12",
+      "price": "$19.99"
+    },
+    "videoBundle": {
+      "title": "Bundle Apprendimento Video",
+      "description": "Tutorial video professionali e contenuti di formazione",
+      "price": "$19.99"
+    },
+    "animationBundle": {
+      "title": "Bundle Video Animazione",
+      "description": "Video animati coinvolgenti per l'apprendimento creativo",
+      "price": "$19.99"
+    }
+  },
+  "benefits": {
+    "title": "Perché i Genitori Amano i Nostri Bundle",
+    "instant": "Download Istantaneo",
+    "instantDesc": "Accesso immediato a tutti i materiali",
+    "quality": "Contenuto di Alta Qualità",
+    "qualityDesc": "Materiali educativi progettati professionalmente",
+    "support": "Supporto a Vita",
+    "supportDesc": "Ottieni aiuto quando ne hai bisogno"
+  },
+  "faq": {
+    "title": "Domande Frequenti",
+    "q1": "Cosa è incluso in ogni bundle?",
+    "a1": "Ogni bundle contiene materiali educativi completi, attività, piani di lezione e risorse specificamente progettate per diversi gruppi di età e stili di apprendimento.",
+    "q2": "Come accedo al mio acquisto?",
+    "a2": "Dopo l'acquisto, riceverai accesso istantaneo per scaricare tutti i materiali. Puoi anche accedervi in qualsiasi momento dalla tua dashboard.",
+    "q3": "C'è una garanzia di rimborso?",
+    "a3": "Sì! Offriamo una garanzia di rimborso di 30 giorni. Se non sei soddisfatto, contattaci per un rimborso completo."
+  },
+  "purchase": {
+    "notification": "ha appena acquistato!",
+    "bundle": "Bundle Bright Minds Academy",
+    "hoursAgo": "ore fa"
+  },
+  "cta": {
+    "title": "Pronto a Trasformare l'Apprendimento di tuo Figlio?",
+    "subtitle": "Unisciti a migliaia di genitori che hanno già scoperto la gioia delle attività educative divertenti.",
+    "button": "Ottieni il tuo Bundle Ora - $19.99"
+  },
+  "footer": {
+    "company": "Bright Minds Academy",
+    "description": "Potenziare i bambini attraverso contenuti educativi coinvolgenti e attività.",
+    "links": "Link Veloci",
+    "legal": "Legale",
+    "contact": "Contattaci",
+    "rights": "Tutti i diritti riservati."
+  },
+  "auth": {
+    "signIn": "Accedi",
+    "signUp": "Registrati",
+    "email": "Email",
+    "password": "Password",
+    "dashboard": "Dashboard"
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Qualcosa è andato storto",
+    "retry": "Riprova",
+    "back": "Indietro",
+    "home": "Home"
+  }
+}

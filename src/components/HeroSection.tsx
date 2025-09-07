@@ -2,12 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, ArrowRight, Clock, Users, DollarSign, CheckCircle, Heart, GraduationCap, Home, ShoppingBag } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
+import { useTranslation } from 'react-i18next';
 
 interface HeroSectionProps {
   onPurchase: () => void;
 }
 
 const HeroSection = ({ onPurchase }: HeroSectionProps) => {
+  const { t } = useTranslation();
+  
   const scrollToProducts = () => {
     const productsSection = document.querySelector('#products-section');
     if (productsSection) {
@@ -25,11 +28,10 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-8">
           <div className="text-left lg:text-left">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-600 via-purple-600 via-blue-600 via-green-600 to-yellow-600 bg-clip-text text-transparent leading-tight">
-              Start Your Own Educational Digital Products Brand
+              {t('hero.title')}
             </h2>
             <p className="text-xl text-gray-700 mb-8 leading-relaxed bg-white/40 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-              🌟 Launch your educational business with our complete bundle of 200+ ready-made digital products! 
-              From illustrated storybooks to interactive games - everything you need to succeed! 🚀
+              {t('hero.subtitle')}
             </p>
           </div>
           
@@ -91,7 +93,7 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
             size="lg" 
             className="bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-green-500 hover:from-pink-600 hover:via-purple-600 hover:via-blue-600 hover:to-green-600 text-lg px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 animate-slide-in-right border-4 border-white"
           >
-            🎯 Get Instant Access Now ✨
+            {t('hero.cta')}
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
           <div className="flex items-center gap-1 text-yellow-500 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
