@@ -8,6 +8,7 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import PurchasesCard from "@/components/dashboard/PurchasesCard";
 import QuickActionsCard from "@/components/dashboard/QuickActionsCard";
+import FileManagementCard from "@/components/dashboard/FileManagementCard";
 
 interface Purchase {
   id: string;
@@ -93,7 +94,7 @@ const Dashboard = () => {
           onSignOut={signOut} 
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <ProfileCard 
             firstName={profile?.first_name}
             lastName={profile?.last_name}
@@ -104,7 +105,10 @@ const Dashboard = () => {
           <PurchasesCard purchases={purchases} />
         </div>
 
-        <QuickActionsCard />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <QuickActionsCard />
+          <FileManagementCard />
+        </div>
       </div>
     </div>
   );
