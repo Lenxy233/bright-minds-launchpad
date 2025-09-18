@@ -16,6 +16,7 @@ interface Purchase {
   amount: number;
   status: string;
   purchased_at: string;
+  includes_ai_prompts?: boolean;
 }
 
 interface Profile {
@@ -42,7 +43,7 @@ const Dashboard = () => {
       // Fetch purchases
       const { data: purchasesData, error: purchasesError } = await supabase
         .from('user_purchases')
-        .select('*')
+        .select('*, includes_ai_prompts')
         .eq('user_id', user?.id)
         .order('purchased_at', { ascending: false });
 

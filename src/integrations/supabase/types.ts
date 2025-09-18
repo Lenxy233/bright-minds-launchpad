@@ -79,6 +79,7 @@ export type Database = {
           currency: string | null
           email: string
           id: string
+          includes_ai_prompts: boolean | null
           purchased_at: string | null
           status: string | null
           stripe_session_id: string | null
@@ -92,6 +93,7 @@ export type Database = {
           currency?: string | null
           email: string
           id?: string
+          includes_ai_prompts?: boolean | null
           purchased_at?: string | null
           status?: string | null
           stripe_session_id?: string | null
@@ -105,6 +107,7 @@ export type Database = {
           currency?: string | null
           email?: string
           id?: string
+          includes_ai_prompts?: boolean | null
           purchased_at?: string | null
           status?: string | null
           stripe_session_id?: string | null

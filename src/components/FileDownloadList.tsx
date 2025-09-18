@@ -1,25 +1,26 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, File, Loader2, ExternalLink } from "lucide-react";
+import { Download, File, Loader2, ExternalLink, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 interface FileDownloadListProps {
   bundleType: string;
   purchaseStatus: string;
+  includesAiPrompts?: boolean;
 }
 
 interface FileItem {
   name: string;
   id: string;
   size: number;
-  type: 'file' | 'link';
+  type: 'file' | 'link' | 'ai-file';
   url?: string;
   description?: string;
 }
 
-const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps) => {
+const FileDownloadList = ({ bundleType, purchaseStatus, includesAiPrompts }: FileDownloadListProps) => {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [downloadingFile, setDownloadingFile] = useState<string | null>(null);
@@ -35,7 +36,7 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
 
   const fetchFiles = async () => {
     try {
-      // Fetch both storage files and bundle links in parallel
+      // Fetch main bundle files and links
       const [storageResponse, bundleLinksResponse] = await Promise.all([
         supabase.storage
           .from('product-files')
@@ -77,9 +78,30 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
         });
       }
 
+      // Fetch AI prompts if user purchased them
+      if (includesAiPrompts) {
+        const aiPromptsResponse = await supabase.storage
+          .from('100+ AI IMAGE DESIGN STYLE PROMPTS')
+          .list('', {
+            limit: 100,
+          });
+
+        if (aiPromptsResponse.data && !aiPromptsResponse.error) {
+          const aiFiles = aiPromptsResponse.data.filter(item => !item.id) || [];
+          aiFiles.forEach(file => {
+            combinedFiles.push({
+              name: `AI Prompts: ${file.name}`,
+              id: `ai-${file.name}`,
+              size: file.metadata?.size || 0,
+              type: 'ai-file'
+            });
+          });
+        }
+      }
+
       setFiles(combinedFiles);
 
-      // Show error only if both requests failed
+      // Show error only if main requests failed
       if (storageResponse.error && bundleLinksResponse.error) {
         console.error('Error fetching files:', storageResponse.error, bundleLinksResponse.error);
         toast({
@@ -110,8 +132,11 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
           description: "Opening files in new tab...",
         });
       }
+    } else if (file.type === 'ai-file') {
+      // Download AI prompts file
+      downloadAiPromptsFile(file.name.replace('AI Prompts: ', ''));
     } else {
-      // Download file from storage
+      // Download regular file from storage
       downloadFile(file.name);
     }
   };
@@ -152,6 +177,49 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
       toast({
         title: "Download Error",
         description: "Failed to download file. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setDownloadingFile(null);
+    }
+  };
+
+  const downloadAiPromptsFile = async (fileName: string) => {
+    setDownloadingFile(`AI Prompts: ${fileName}`);
+    try {
+      const { data, error } = await supabase.storage
+        .from('100+ AI IMAGE DESIGN STYLE PROMPTS')
+        .download(fileName);
+
+      if (error) {
+        console.error('Error downloading AI prompts file:', error);
+        toast({
+          title: "Download Error",
+          description: "Failed to download AI prompts file. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Create download link
+      const url = URL.createObjectURL(data);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: "Success",
+        description: `${fileName} downloaded successfully!`,
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Download Error",
+        description: "Failed to download AI prompts file. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -201,6 +269,8 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
             <div className="flex items-center gap-2">
               {file.type === 'link' ? (
                 <ExternalLink className="w-4 h-4 text-blue-600" />
+              ) : file.type === 'ai-file' ? (
+                <Sparkles className="w-4 h-4 text-purple-600" />
               ) : (
                 <File className="w-4 h-4 text-blue-600" />
               )}

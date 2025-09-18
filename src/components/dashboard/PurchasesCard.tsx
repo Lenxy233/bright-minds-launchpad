@@ -10,6 +10,7 @@ interface Purchase {
   amount: number;
   status: string;
   purchased_at: string;
+  includes_ai_prompts?: boolean;
 }
 
 interface PurchasesCardProps {
@@ -80,6 +81,7 @@ const PurchasesCard = ({ purchases }: PurchasesCardProps) => {
                 <FileDownloadList 
                   bundleType={purchase.bundle_type} 
                   purchaseStatus={purchase.status}
+                  includesAiPrompts={purchase.includes_ai_prompts}
                 />
               </div>
             ))}
