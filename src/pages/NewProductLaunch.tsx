@@ -53,6 +53,11 @@ const NewProductLaunch = () => {
             baseAmount: 1999, 
             baseUrl: "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a",
             withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
+          },
+          "bma-bundle": { 
+            baseAmount: 1999, 
+            baseUrl: "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c",
+            withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           }
         };
 
@@ -92,7 +97,10 @@ const NewProductLaunch = () => {
             : "https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09",
           "animation-video": includeAiPrompts 
             ? "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
-            : "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a"
+            : "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a",
+          "bma-bundle": includeAiPrompts 
+            ? "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
+            : "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c"
         };
 
         const url = urls[request as keyof typeof urls];

@@ -26,6 +26,8 @@ const PurchasesCard = ({ purchases }: PurchasesCardProps) => {
         return 'Video Bundle';
       case 'animation-video':
         return 'Animation Video Bundle';
+      case 'bma-bundle':
+        return 'BMA Bundle';
       default:
         return bundleType;
     }
