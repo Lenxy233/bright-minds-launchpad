@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      bundle_links: {
+        Row: {
+          bundle_type: string
+          created_at: string
+          description: string | null
+          id: string
+          link_title: string | null
+          link_url: string
+          updated_at: string
+        }
+        Insert: {
+          bundle_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          link_title?: string | null
+          link_url: string
+          updated_at?: string
+        }
+        Update: {
+          bundle_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          link_title?: string | null
+          link_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null

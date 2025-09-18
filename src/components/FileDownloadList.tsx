@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, File, Loader2 } from "lucide-react";
+import { Download, File, Loader2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -14,6 +14,9 @@ interface FileItem {
   name: string;
   id: string;
   size: number;
+  type: 'file' | 'link';
+  url?: string;
+  description?: string;
 }
 
 const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps) => {
@@ -32,29 +35,59 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
 
   const fetchFiles = async () => {
     try {
-      const { data, error } = await supabase.storage
-        .from('product-files')
-        .list(bundleType, {
-          limit: 100,
-        });
+      // Fetch both storage files and bundle links in parallel
+      const [storageResponse, bundleLinksResponse] = await Promise.all([
+        supabase.storage
+          .from('product-files')
+          .list(bundleType, {
+            limit: 100,
+          }),
+        supabase
+          .from('bundle_links')
+          .select('*')
+          .eq('bundle_type', bundleType)
+      ]);
 
-      if (error) {
-        console.error('Error fetching files:', error);
+      const combinedFiles: FileItem[] = [];
+
+      // Add storage files
+      if (storageResponse.data && !storageResponse.error) {
+        const fileItems = storageResponse.data.filter(item => !item.id) || [];
+        fileItems.forEach(file => {
+          combinedFiles.push({
+            name: file.name,
+            id: file.name,
+            size: file.metadata?.size || 0,
+            type: 'file'
+          });
+        });
+      }
+
+      // Add bundle links
+      if (bundleLinksResponse.data && !bundleLinksResponse.error) {
+        bundleLinksResponse.data.forEach(link => {
+          combinedFiles.push({
+            name: link.link_title || 'Bundle Files',
+            id: link.id,
+            size: 0,
+            type: 'link',
+            url: link.link_url,
+            description: link.description
+          });
+        });
+      }
+
+      setFiles(combinedFiles);
+
+      // Show error only if both requests failed
+      if (storageResponse.error && bundleLinksResponse.error) {
+        console.error('Error fetching files:', storageResponse.error, bundleLinksResponse.error);
         toast({
           title: "Error",
           description: "Failed to load files. Please try again.",
           variant: "destructive",
         });
-        return;
       }
-
-      // Filter out folders and only show files
-      const fileItems = data?.filter(item => !item.id) || [];
-      setFiles(fileItems.map(file => ({
-        name: file.name,
-        id: file.name,
-        size: file.metadata?.size || 0
-      })));
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -64,6 +97,22 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleItemClick = async (file: FileItem) => {
+    if (file.type === 'link') {
+      // Open shareable link in new tab
+      if (file.url) {
+        window.open(file.url, '_blank');
+        toast({
+          title: "Success",
+          description: "Opening files in new tab...",
+        });
+      }
+    } else {
+      // Download file from storage
+      downloadFile(file.name);
     }
   };
 
@@ -150,9 +199,16 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
         {files.map((file) => (
           <div key={file.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
             <div className="flex items-center gap-2">
-              <File className="w-4 h-4 text-blue-600" />
+              {file.type === 'link' ? (
+                <ExternalLink className="w-4 h-4 text-blue-600" />
+              ) : (
+                <File className="w-4 h-4 text-blue-600" />
+              )}
               <div>
                 <span className="text-sm font-medium">{file.name}</span>
+                {file.description && (
+                  <p className="text-xs text-gray-500">{file.description}</p>
+                )}
                 {file.size > 0 && (
                   <span className="text-xs text-gray-500 ml-2">
                     ({formatFileSize(file.size)})
@@ -161,13 +217,15 @@ const FileDownloadList = ({ bundleType, purchaseStatus }: FileDownloadListProps)
               </div>
             </div>
             <Button
-              onClick={() => downloadFile(file.name)}
+              onClick={() => handleItemClick(file)}
               disabled={downloadingFile === file.name}
               size="sm"
               className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
             >
               {downloadingFile === file.name ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
+              ) : file.type === 'link' ? (
+                <ExternalLink className="w-4 h-4" />
               ) : (
                 <Download className="w-4 h-4" />
               )}
