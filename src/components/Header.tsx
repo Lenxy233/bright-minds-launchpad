@@ -36,6 +36,12 @@ const Header = ({ onPurchase }: HeaderProps) => {
         </div>
         
         <div className="flex items-center gap-4">
+          <Button asChild variant="outline" className="flex items-center gap-2">
+            <Link to="/learning-app">
+              <Sparkles className="w-4 h-4" />
+              Kids Learning
+            </Link>
+          </Button>
           {user && (
             <Button asChild variant="outline" className="flex items-center gap-2">
               <Link to="/dashboard">

@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import NewProductLaunch from "./pages/NewProductLaunch";
 import Legal from "./pages/Legal";
+import LearningApp from "./pages/LearningApp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/new-product-launch" element={<NewProductLaunch />} />
+            <Route path="/learning-app" element={<LearningApp />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
