@@ -51,33 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
     try {
-      // First, check if this email has a completed purchase
-      const { data: purchaseData, error: purchaseError } = await supabase
-        .from('user_purchases')
-        .select('email, status')
-        .eq('email', email)
-        .eq('status', 'completed')
-        .maybeSingle();
-
-      if (purchaseError) {
-        console.error('Error checking purchase:', purchaseError);
-        toast({
-          title: "Error",
-          description: "Unable to verify purchase. Please try again.",
-          variant: "destructive",
-        });
-        return { error: purchaseError };
-      }
-
-      if (!purchaseData) {
-        toast({
-          title: "Registration Not Allowed",
-          description: "You can only register with an email that has completed a purchase. Please use the email you used for your purchase.",
-          variant: "destructive",
-        });
-        return { error: { message: "No valid purchase found for this email" } };
-      }
-
+      // TODO: RESTORE PURCHASE REQUIREMENT BEFORE PRODUCTION
+      // Purchase requirement temporarily removed for testing
+      // Original code checked user_purchases table for completed purchase before allowing signup
+      
       const redirectUrl = `${window.location.origin}/`;
       
       const { error } = await supabase.auth.signUp({
