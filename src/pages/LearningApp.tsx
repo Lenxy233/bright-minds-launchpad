@@ -118,12 +118,15 @@ const LearningApp = () => {
 
             {/* Features Grid */}
             <section className="grid md:grid-cols-3 gap-8 mb-16">
-              <Card className="border-2 border-purple-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow">
+              <Card 
+                className="border-2 border-purple-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => navigate('/story-books')}
+              >
                 <CardHeader>
                   <BookOpen className="w-12 h-12 text-purple-600 mb-4" />
-                  <CardTitle>Explore & Learn</CardTitle>
+                  <CardTitle>Story Books</CardTitle>
                   <CardDescription>
-                    Browse worksheets by grade, subject, and difficulty. Free exploration for curious minds!
+                    Read along with audio narration. Interactive stories that come alive!
                   </CardDescription>
                 </CardHeader>
               </Card>

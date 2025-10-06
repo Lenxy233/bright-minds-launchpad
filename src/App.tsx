@@ -12,6 +12,9 @@ import NewProductLaunch from "./pages/NewProductLaunch";
 import Legal from "./pages/Legal";
 import LearningApp from "./pages/LearningApp";
 import ParentDashboard from "./pages/ParentDashboard";
+import StoryBooks from "./pages/StoryBooks";
+import StoryBookReader from "./pages/StoryBookReader";
+import StoryBookUpload from "./pages/StoryBookUpload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +36,13 @@ const App = () => (
             } />
             <Route path="/new-product-launch" element={<NewProductLaunch />} />
             <Route path="/learning-app" element={<LearningApp />} />
+            <Route path="/story-books" element={<StoryBooks />} />
+            <Route path="/story-books/:id" element={<StoryBookReader />} />
+            <Route path="/story-books/upload" element={
+              <ProtectedRoute>
+                <StoryBookUpload />
+              </ProtectedRoute>
+            } />
             <Route path="/parent-dashboard" element={
               <ProtectedRoute>
                 <ParentDashboard />
