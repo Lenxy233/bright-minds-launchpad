@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, Upload, CheckCircle2 } from 'lucide-react';
 
 interface StoryData {
@@ -419,40 +420,93 @@ const BatchStoryUpload = () => {
           </h1>
         </div>
 
-        <Card className="p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4">{selectedCategory} Stories</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Ready to upload {selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length} stories to the "{selectedCategory}" category.
-          </p>
-          
-          <div className="space-y-2 mb-6">
-            {(selectedCategory === 'Environmental Education' ? environmentalEducationStories : computerScienceStories).map((story, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
-              >
-                <span className="font-medium">{story.title}</span>
-                {uploadedStories.includes(story.title) && (
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
-                )}
-              </div>
-            ))}
-          </div>
+        <Tabs 
+          value={selectedCategory} 
+          onValueChange={(value) => {
+            setSelectedCategory(value as 'Computer Science' | 'Environmental Education' | 'Critical Thinking');
+            setUploadedStories([]);
+          }}
+          className="mb-6"
+        >
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="Environmental Education">Environmental Education</TabsTrigger>
+            <TabsTrigger value="Computer Science">Computer Science</TabsTrigger>
+          </TabsList>
 
-          <Button
-            onClick={handleBatchUpload}
-            disabled={uploading || uploadedStories.length === (selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length)}
-            className="w-full gap-2"
-            size="lg"
-          >
-            <Upload className="h-5 w-5" />
-            {uploading
-              ? `Uploading... (${uploadedStories.length}/${selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length})`
-              : uploadedStories.length === (selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length)
-              ? "All Stories Uploaded!"
-              : "Start Batch Upload"}
-          </Button>
-        </Card>
+          <TabsContent value="Environmental Education">
+            <Card className="p-6">
+              <h2 className="text-2xl font-semibold mb-4">Environmental Education Stories</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Ready to upload {environmentalEducationStories.length} stories to the "Environmental Education" category.
+              </p>
+              
+              <div className="space-y-2 mb-6">
+                {environmentalEducationStories.map((story, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                  >
+                    <span className="font-medium">{story.title}</span>
+                    {uploadedStories.includes(story.title) && (
+                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <Button
+                onClick={handleBatchUpload}
+                disabled={uploading || uploadedStories.length === environmentalEducationStories.length}
+                className="w-full gap-2"
+                size="lg"
+              >
+                <Upload className="h-5 w-5" />
+                {uploading
+                  ? `Uploading... (${uploadedStories.length}/${environmentalEducationStories.length})`
+                  : uploadedStories.length === environmentalEducationStories.length
+                  ? "All Stories Uploaded!"
+                  : "Start Batch Upload"}
+              </Button>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="Computer Science">
+            <Card className="p-6">
+              <h2 className="text-2xl font-semibold mb-4">Computer Science Stories</h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Ready to upload {computerScienceStories.length} stories to the "Computer Science" category.
+              </p>
+              
+              <div className="space-y-2 mb-6">
+                {computerScienceStories.map((story, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                  >
+                    <span className="font-medium">{story.title}</span>
+                    {uploadedStories.includes(story.title) && (
+                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <Button
+                onClick={handleBatchUpload}
+                disabled={uploading || uploadedStories.length === computerScienceStories.length}
+                className="w-full gap-2"
+                size="lg"
+              >
+                <Upload className="h-5 w-5" />
+                {uploading
+                  ? `Uploading... (${uploadedStories.length}/${computerScienceStories.length})`
+                  : uploadedStories.length === computerScienceStories.length
+                  ? "All Stories Uploaded!"
+                  : "Start Batch Upload"}
+              </Button>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         {uploadedStories.length > 0 && (
           <Card className="p-6">
