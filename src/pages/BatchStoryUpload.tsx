@@ -103,6 +103,96 @@ const BatchStoryUpload = () => {
         { pageNumber: 2, textContent: "Inky the Octopus drifted into view. 'I've seen troubling changes—warmer waters, pollution, plastic hurting our reef. Time to take action!' Inky shared ways to help: Use less plastic, recycle properly, save energy to slow ocean warming, and speak up about protecting oceans. Twirlina the Seahorse twirled between coral fans. 'We seahorses love coral! It gives us places to rest, hide, and raise babies. When the reef is healthy, all sea creatures thrive!' Queen Bubbla asked: 'What can YOU do from dry land to protect coral reefs?'", imagePath: "parsed-documents://20251007-144959-085572/Reef_Rangers_Unite_Guardians_of_the_Coral_Kingdom.docx/images/page_3.jpg" },
         { pageNumber: 3, textContent: "Answer: Even far from the ocean, you can help by saying no to plastic straws and bags, saving water and electricity, recycling and reducing waste, and teaching others about the ocean. Every action counts—the health of our oceans depends on heroes like YOU. Thanks for joining the Reef Rangers. Your next mission? Protect the planet, one ripple at a time!", imagePath: "parsed-documents://20251007-144959-085572/Reef_Rangers_Unite_Guardians_of_the_Coral_Kingdom.docx/images/page_5.jpg" }
       ]
+    },
+    {
+      title: "The Balance Keepers: A Climate Quest in Wondermere",
+      category: "Environmental Education",
+      description: "Join Breezy Belle, Sunny Sol, and Ripple Ray on a magical quest to understand climate change! Discover how small actions can restore balance to our world.",
+      coverImagePath: "parsed-documents://20251007-150046-144311/The_Balance_Keepers_A_Climate_Quest_in_Wondermere.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Wondermere lived the Balance Keepers. Breezy Belle noticed the breeze felt warmer. 'The flowers are drooping!' She found Sunny Sol and Ripple Ray. 'I've been feeling too strong lately,' said Sunny. 'And the coral in my reef is pale,' added Ripple. They traveled across Wondermere to uncover the mystery. Luna Lily's pond had shrunk. They visited Sage Willow who explained climate change: 'Too much pollution traps heat around the world like an invisible blanket.'", imagePath: "parsed-documents://20251007-150046-144311/The_Balance_Keepers_A_Climate_Quest_in_Wondermere.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "The Balance Keepers held a Grand Green Gathering, sharing tips: Plant trees, turn off lights, ride bikes, recycle and reuse. They started a Tree of Tomorrow grove. Soon Wondermere glowed with harmony. Mission: What can YOU do? Plant a flower, turn off lights, pick up litter, use less plastic? Every action helps keep our planet in balance!", imagePath: "parsed-documents://20251007-150046-144311/The_Balance_Keepers_A_Climate_Quest_in_Wondermere.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "The Deep Blue Detectives: Secrets from Below",
+      category: "Environmental Education",
+      description: "Dive deep with Captain Bubbles and Dr. Waverly to explore ocean mysteries! Discover bioluminescence, hydrothermal vents, and why protecting ocean life matters.",
+      coverImagePath: "parsed-documents://20251007-150107-131055/The_Deep_Blue_Detectives_Secrets_from_Below.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "'Welcome aboard Subbubble 9!' said Captain Bubbles. 'We're heading to the Shadow Shelf!' They discovered creatures with bioluminescence—glowing to stay safe and find food. An anglerfish used its light to trick dinner. At hydrothermal vents, they met giant red tube worms. 'These creatures get energy from chemicals, no sunlight needed!' They discovered Shiny the Spin-Snail, a brand-new species!", imagePath: "parsed-documents://20251007-150107-131055/The_Deep_Blue_Detectives_Secrets_from_Below.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "How do creatures survive with no light and heavy pressure? Glowing lights, giant eyes or no eyes, and special bacteria that turn chemicals into food! Captain Bubbles handed you your Deep Blue Badge. 'The ocean holds secrets worth protecting.' Challenge: What will YOU do? Skip plastic straws? Learn about coral? Share fun facts? The ocean needs curious minds like yours!", imagePath: "parsed-documents://20251007-150107-131055/The_Deep_Blue_Detectives_Secrets_from_Below.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "The Eco-Fun Fair: A Carnival for Planet Earth",
+      category: "Environmental Education",
+      description: "Step right up to the Eco-Fun Fair with Captain Greenbeard! Ride the Trash-to-Treasure Twister, Solar Sky Spinner, and Compost Coaster while learning to save the planet!",
+      coverImagePath: "parsed-documents://20251007-150128-246513/The_Eco-Fun_Fair_A_Carnival_for_Planet_Earth.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "Welcome to the Eco-Fun Fair! Captain Greenbeard is your guide. First stop: Trash-to-Treasure Twister with Remy the Recycling Fox! Learn Reduce, Reuse, Recycle while sorting trash on the ride. Next: Solar Sky Spinner with Solara the Sunny Cat! See how sunshine powers everything. Then the Splash 'n' Save Slide with Dewey the Droplet Dragon teaching water conservation!", imagePath: "parsed-documents://20251007-150128-246513/The_Eco-Fun_Fair_A_Carnival_for_Planet_Earth.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Ride the Eco-Energy Carousel with Nia the Night-Light Narwhal! Learn to save energy. Last stop: Compost Coaster with Milo the Mulch Mole! Turn food scraps into garden gold. Captain Greenbeard's riddle: What's one more way to care for our world? Answer: Planting trees and gardens gives animals homes and helps clean the air. Every eco-action counts!", imagePath: "parsed-documents://20251007-150128-246513/The_Eco-Fun_Fair_A_Carnival_for_Planet_Earth.docx/images/page_3.jpg" }
+      ]
+    },
+    {
+      title: "The Green Thread Tales: Fashion That Loves the Earth",
+      category: "Environmental Education",
+      description: "Walk the green runway with Nova, Zane, and Raya! Discover sustainable fashion through organic fabrics, upcycling, and fair trade practices.",
+      coverImagePath: "parsed-documents://20251007-150149-602583/The_Green_Thread_Tales_Fashion_That_Loves_the_Earth.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Threadtopia, Nova, Zane, and Raya noticed mountains of tossed-out clothes. 'Let's make fashion that loves Earth back!' They visited the EcoArmoire filled with organic cotton, bamboo, and recycled yarn. At Upcycle Alley, Raya showed how old jeans became pencil pouches and socks became puppets. Challenge: What could you upcycle?", imagePath: "parsed-documents://20251007-150149-602583/The_Green_Thread_Tales_Fashion_That_Loves_the_Earth.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "At Textile Terrace, they learned about fair fashion—fair pay and safe work. In the Seeds & Style Garden, plants like hemp and bamboo grew into future T-shirts! The Green Runway Show featured recycled water-bottle jackets, banana-fiber dresses, and upcycled newspaper pants. Question: How can your closet change the world? Answer: Choose secondhand, upcycle creatively, support fair fashion, and buy less but better quality!", imagePath: "parsed-documents://20251007-150149-602583/The_Green_Thread_Tales_Fashion_That_Loves_the_Earth.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "The Power Pals and the Great Energy Quest",
+      category: "Environmental Education",
+      description: "Join Pippa, Rocky, and Nia on a quest to discover renewable energy! Learn about solar panels, wind turbines, and hydroelectric power in Sunbeam Village.",
+      coverImagePath: "parsed-documents://20251007-150211-286823/The_Power_Pals_and_the_Great_Energy_Quest.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Sunbeam Village, the Power Pals got a glowing clue! At Sparkle Street, they found solar panels catching sunlight and turning it into electricity. At Breezy Bluffs, wind turbines spun like giant pinwheels. 'Wind makes these fans move, creating electricity!' At Ripple River, Tika the Turtle showed them hydroelectric power—water flows through dams to spin turbines!", imagePath: "parsed-documents://20251007-150211-286823/The_Power_Pals_and_the_Great_Energy_Quest.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Back in Sunbeam Village, they created the Power Pledge: 'I promise to use energy wisely, choose clean power when I can, and be a hero for my planet!' Turn off lights, unplug unused devices, open curtains instead of using lamps. You're a Power Pal too—every time you flip a switch or catch a breeze!", imagePath: "parsed-documents://20251007-150211-286823/The_Power_Pals_and_the_Great_Energy_Quest.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "The Smog Squad: Clearing the Sky One Step at a Time",
+      category: "Environmental Education",
+      description: "Fight air pollution with Breezy Bella, Wattson, and Reuse Rex! Launch the Clear the Sky Challenge and learn how to reduce your carbon footprint.",
+      coverImagePath: "parsed-documents://20251007-150232-145588/The_Smog_Squad_Clearing_the_Sky_One_Step_at_a_Time.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Brightville, thick gray smog covered the sky. The Smog Squad investigated! Car exhaust and factory smoke were polluting the air. Even home energy use mattered. But there are solutions: Recycle plastic bottles, plant trees to clean the air, use energy-saving lights, and turn things off when not needed!", imagePath: "parsed-documents://20251007-150232-145588/The_Smog_Squad_Clearing_the_Sky_One_Step_at_a_Time.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "The Clear the Sky Challenge launched! Kids sorted trash, recycled, and turned off lights. One tree can absorb 48 pounds of carbon dioxide yearly! Brightville's skies turned from gray to blue. Question: How can you reduce your carbon footprint? Turn off lights, recycle, use less water, ride bikes, choose reusable containers. You're a real-life hero!", imagePath: "parsed-documents://20251007-150232-145588/The_Smog_Squad_Clearing_the_Sky_One_Step_at_a_Time.docx/images/page_3.jpg" }
+      ]
+    },
+    {
+      title: "The Thirsty Land Quest: Solving the Water Puzzle",
+      category: "Environmental Education",
+      description: "Journey through the Dusty Dunes with Dusty the Desert Fox! Learn water conservation, recycling gray water, and smart technologies for a thirsty world.",
+      coverImagePath: "parsed-documents://20251007-150251-729498/The_Thirsty_Land_Quest_Solving_the_Water_Puzzle.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Dusty Dunes, water was scarce. At the Grove of Great Saving, Sprinkle the Sprite taught: 'Shorter showers, tighter taps—little things bring big change!' At the Water Wheel of Reuse, Ravi showed how gray water gets a second life in gardens. At the Fountain of Smart Choices, Willa said: 'Only take what you need. Turn off taps!' Underground, Aqua showed aquifers—water treasures we must protect!", imagePath: "parsed-documents://20251007-150251-729498/The_Thirsty_Land_Quest_Solving_the_Water_Puzzle.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "At the Circle of Helping Hands, neighbors built wells and planted trees together. Final Challenge: Name three ways to save water at home! Answers: Shorter showers, turn off taps while brushing, fix leaks, collect rainwater, water plants in the morning. Every drop counts—you're a water hero!", imagePath: "parsed-documents://20251007-150251-729498/The_Thirsty_Land_Quest_Solving_the_Water_Puzzle.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "Tales from Green Hollow: The Biodiversity Bandits",
+      category: "Environmental Education",
+      description: "Protect nature's treasures with Zippy, Flora, and Grum! Explore ecosystems, discover why every creature matters, and make the Green Hollow Promise.",
+      coverImagePath: "parsed-documents://20251007-150314-767400/🌱_Tales_from_Green_Hollow_The_Biodiversity_Bandits.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Green Hollow, the Biodiversity Bandits found a riddle about life vanishing. At Buzz Hollow, bees were pollinating. 'No bees, no berries!' At Ripple Pond, frogs croaked. 'We only live in clean water!' At Skybranch Tree, every creature coexisted. 'We all live here—every creature matters! Lose one, and the whole system wobbles!' Bandit Fact: Ecosystems are balanced!", imagePath: "parsed-documents://20251007-150314-767400/🌱_Tales_from_Green_Hollow_The_Biodiversity_Bandits.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Challenge: What can YOU do to protect plants and animals? Plant flowers, use less plastic, learn about bugs! They created the Green Hollow Promise: 'We will love the land, protect every paw and wing, save water, plant seeds, and keep nature flourishing!' Answer: Plant native wildflowers, build a bug hotel, skip pesticides, keep water clean, and learn more about biodiversity!", imagePath: "parsed-documents://20251007-150314-767400/🌱_Tales_from_Green_Hollow_The_Biodiversity_Bandits.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "Sprout Scouts: The Great Garden Quest",
+      category: "Environmental Education",
+      description: "Grow the greenest garden with Captain Carrot and the Sprout Scouts! Learn about photosynthesis, pollination, composting, and the magic of gardening together.",
+      coverImagePath: "parsed-documents://20251007-150342-347792/🌱_Sprout_Scouts_The_Great_Garden_Quest.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "Captain Carrot led the Sprout Scouts on a garden quest! Sunny the Light Sprite taught about photosynthesis—plants use sunlight to grow! Buzz and Bloom showed pollination—spreading golden dust to help plants make fruits. Grumble the Root Gnome taught proper spacing. Wiggly and Wiggles turned leftovers into rich soil through composting!", imagePath: "parsed-documents://20251007-150342-347792/🌱_Sprout_Scouts_The_Great_Garden_Quest.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Captain Carrot's final challenge: 'What else helps a garden grow?' The Scouts planted seeds. Days passed, shoots emerged, the garden bloomed. Answer: Love, teamwork, patience, and care! A garden isn't just soil and seeds—it's heart, hands, and hope working together. Now you're an official Sprout Scout!", imagePath: "parsed-documents://20251007-150342-347792/🌱_Sprout_Scouts_The_Great_Garden_Quest.docx/images/page_4.jpg" }
+      ]
     }
   ];
 
