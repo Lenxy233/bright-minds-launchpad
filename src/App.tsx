@@ -15,6 +15,7 @@ import ParentDashboard from "./pages/ParentDashboard";
 import StoryBooks from "./pages/StoryBooks";
 import StoryBookReader from "./pages/StoryBookReader";
 import StoryBookUpload from "./pages/StoryBookUpload";
+import BatchStoryUpload from "./pages/BatchStoryUpload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,11 @@ const App = () => (
             <Route path="/story-books/upload" element={
               <ProtectedRoute>
                 <StoryBookUpload />
+              </ProtectedRoute>
+            } />
+            <Route path="/story-books/batch-upload" element={
+              <ProtectedRoute>
+                <BatchStoryUpload />
               </ProtectedRoute>
             } />
             <Route path="/parent-dashboard" element={
