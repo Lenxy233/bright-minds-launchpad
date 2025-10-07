@@ -23,6 +23,87 @@ const BatchStoryUpload = () => {
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
   const [uploadedStories, setUploadedStories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<'Computer Science' | 'Environmental Education' | 'Critical Thinking'>('Environmental Education');
+
+  const environmentalEducationStories: StoryData[] = [
+    {
+      title: "Trash Trackers: The Great Sorting Showdown",
+      category: "Environmental Education",
+      description: "Join Captain Cora the Crow and the Trash Trackers team as they teach Tidyville how to sort waste properly! Learn about recycling, composting, and reducing waste through fun adventures with colorful bins.",
+      coverImagePath: "parsed-documents://20251007-144757-531665/♻️_Trash_Trackers_The_Great_Sorting_Showdown.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In the once-sparkly streets of Tidyville, a mysterious mess was on the move. Pizza crusts in flower beds. Crumpled flyers stuck to park swings. A juice box on the mayor's hat! 'What in the world?' squawked Captain Cora the Crow, diving from her lookout post atop the recycling tower. 'Someone call the Trash Trackers!' Meet the Trash Trackers! Fixit the Fox – Fast paws, faster thinking. Loves organizing messes. Milo the Mini Elephant – Small trunk, big memory. Knows every bin by heart. Hazel the Hedgehog – Quiet, clever, and compost-crazy.", imagePath: "parsed-documents://20251007-144757-531665/♻️_Trash_Trackers_The_Great_Sorting_Showdown.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "The trio screeched to a halt in front of three colorful bins: Blue for paper, Green for nature stuff, Yellow for the shiny recyclables. Tidyville's citizens stood around, confused. 'Where does this go?' one kid asked. Fixit twitched his whiskers. 'Time for the Sorting Showdown!' Milo raised his trunk: 'Blue is for paper! Green is for nature stuff like apple peels and leaves. Yellow is for plastic bottles, glass jars, metal tins!' As the citizens started sorting, a girl raised her hand. 'But... why bother?' Captain Cora swooped down. 'When you recycle right, you give trash a second life. Less waste, cleaner air, happier animals!'", imagePath: "parsed-documents://20251007-144757-531665/♻️_Trash_Trackers_The_Great_Sorting_Showdown.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "By sunset, the park was spotless. The bins were full—but the landfill was not. Mayor Marmot rolled up in his scooter. 'Bravo, Trash Trackers! You've made sorting fun—and saved Tidyville!' Now it's your turn! Can you name one thing for each bin? Blue bin – Something made of paper? Green bin – Something compostable? Yellow bin – Something plastic, metal, or glass? Answers: Blue: Newspaper, Green: Carrot peels, Yellow: Plastic juice bottle. Remember, you don't need a badge to be a hero. Just sort smart, toss kind!", imagePath: "parsed-documents://20251007-144757-531665/♻️_Trash_Trackers_The_Great_Sorting_Showdown.docx/images/page_5.jpg" }
+      ]
+    },
+    {
+      title: "Air Buddies: The Breath We All Share",
+      category: "Environmental Education",
+      description: "Float through the sky with Poppy the Petal as you discover how air keeps us alive! Learn about trees, pollution, clean energy, and simple ways to keep our atmosphere fresh and healthy.",
+      coverImagePath: "parsed-documents://20251007-144817-944835/Air_Buddies_The_Breath_We_All_Share.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "Hello there, Air Buddies! Grab your wind hats and take a big, deep breath—it's time to discover how to keep our skies fresh and clean! Our journey begins in Windy Whistle, where Poppy the Petal, a dancing daisy, floats on the breeze. 'Let's find out how air helps us live!' First stop: Leafy Lane, where mighty trees sway. 'These trees are like nature's breathers,' said Poppy. 'They drink carbon dioxide and breathe out oxygen!' Buzz the Bumblefly zipped by: 'When I flutter from flower to flower, I help plants grow stronger. More plants mean more oxygen!'", imagePath: "parsed-documents://20251007-144817-944835/Air_Buddies_The_Breath_We_All_Share.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "The group floated toward Skyline City, where the air wasn't as clear. Zeke the ZipKid appeared on a solar-powered skateboard. 'See these smog clouds? They're from too much smoke and exhaust. But clean tech like solar power and bikes can help!' The explorers learned how little changes—like using clean energy or walking—can help solve the puzzle. Poppy led them to The Rooftop Garden. 'Even in cities, plants help scrub the air clean. They're like nature's vacuum cleaners!' As breezes played, Poppy asked, 'What can YOU do to help the air stay fresh?'", imagePath: "parsed-documents://20251007-144817-944835/Air_Buddies_The_Breath_We_All_Share.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "Under twinkling stars, Poppy floated down. 'Ready for the answer, Air Buddies?' Answer: You can help keep our air clean by walking or biking, saving electricity, using less plastic, and planting more greenery! 'Each small act of kindness for the air helps everyone—from bees and trees to you and me!' said Poppy with a warm smile. Your job as an Air Buddy is just beginning! Take a deep breath, and remember: the air belongs to all of us—and you have the power to protect it!", imagePath: "parsed-documents://20251007-144817-944835/Air_Buddies_The_Breath_We_All_Share.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "Eco Rangers: The Great Earth Quest",
+      category: "Environmental Education",
+      description: "Join Poppy, Scout, and Dash on a mission to protect the planet! Meet Sir Cedar the tree, Splash the water spirit, and Sol the Sunbeam as you learn how to become an official Eco Ranger and care for Earth.",
+      coverImagePath: "parsed-documents://20251007-144837-761545/Eco_Rangers_The_Great_Earth_Quest.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Meadowville lived Poppy the parrot, Scout the snail, and Dash the duckling. One sunny morning, a shimmering leaf floated down: 'Eco Rangers Wanted! Join the quest to save our planet!' They journeyed to Whispering Woods where Sir Cedar, a towering tree, swayed in the breeze. 'Trees are nature's air-fixers,' he rumbled. 'We drink carbon dioxide and give out fresh oxygen!' 'Like leafy superheroes!' squeaked Scout. Sir Cedar gave them a sapling to plant, which they named 'Whiffy.'", imagePath: "parsed-documents://20251007-144837-761545/Eco_Rangers_The_Great_Earth_Quest.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Next stop: Twinkle Creek, where Splash the water spirit greeted them with a twirl. 'Water is precious! Don't let a drop go to waste!' She showed them tricks like turning off taps and using rain buckets. At Shiny Sun Hill, Sol the Sunbeam bounced over. 'Did you know I can power your homes with my solar strength? In just one hour, I give more energy than the whole world uses in a year!' The Eco Rangers imagined their town shining with solar panels, keeping Earth clean and cool.", imagePath: "parsed-documents://20251007-144837-761545/Eco_Rangers_The_Great_Earth_Quest.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "Back in Meadowville, they couldn't wait to share their knowledge! Now it's your turn! Question: What do trees breathe in, and what do they breathe out? Answer: Trees breathe in carbon dioxide and breathe out oxygen—just like nature's breathing buddies! Your quest isn't over—it's just beginning! Keep planting, saving, exploring, and sharing. The Earth is lucky to have a hero like you. Happy questing, Eco Ranger!", imagePath: "parsed-documents://20251007-144837-761545/Eco_Rangers_The_Great_Earth_Quest.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "Garden Goldmakers: The Trash-to-Treasure Team!",
+      category: "Environmental Education",
+      description: "Discover the magic of composting with Penny, Freddie, and Bella! Learn how to turn kitchen scraps and yard waste into 'garden gold' that helps plants grow strong and keeps trash out of landfills.",
+      coverImagePath: "parsed-documents://20251007-144858-685722/Garden_Goldmakers_The_Trash-to-Treasure_Team!.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Sproutville, Penny, Freddie, and Bella spotted a problem. 'Look at all this food and leaf litter getting tossed!' Doctor Mossbottom, a gentle old snail, slid into the scene. 'Composting is like nature's recycling trick. It turns scraps into rich soil that plants love!' The trio became the Trash-to-Treasure Team. 'Toss in veggie scraps, eggshells, and brown leaves into a bin. Mix it, and before you know it—garden gold!' They set up a compost bin named Wiggly Wanda, ready to transform waste into magic!", imagePath: "parsed-documents://20251007-144858-685722/Garden_Goldmakers_The_Trash-to-Treasure_Team!.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Days turned to weeks, and scraps inside Wanda started changing. 'Look! It's turning into dark, earthy mush!' Doctor Mossbottom nodded. 'That's compost—like vitamins for soil. Plants grow stronger with this!' They sprinkled their compost treasure in the garden. The results were amazing—sunflowers as tall as trees, bursting strawberries, and a pumpkin so big Bella could nap on it! The answer: Penny, Freddie, and Bella collect fruit and veggie scraps, eggshells, and dry leaves to make compost!", imagePath: "parsed-documents://20251007-144858-685722/Garden_Goldmakers_The_Trash-to-Treasure_Team!.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "The Trash-to-Treasure Team learned that composting wasn't just for plants—it was for the planet! By turning garbage into goodness, they were making Sproutville greener, cleaner, and happier. Your composting journey is just starting! Will you become a Garden Goldmaker too? The world needs more heroes like you. Grab a bin, save your scraps, and let the compost magic begin! Happy composting, little Earth champion!", imagePath: "parsed-documents://20251007-144858-685722/Garden_Goldmakers_The_Trash-to-Treasure_Team!.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "Ice Team Alpha: Secrets Beneath the Snow",
+      category: "Environmental Education",
+      description: "Travel to Antarctica with Zara, Leo, and Pip! Explore glaciers, meet penguins, learn about climate change, and discover why protecting Earth's frozen landscapes matters for everyone on the planet.",
+      coverImagePath: "parsed-documents://20251007-144922-154472/Ice_Team_Alpha_Secrets_Beneath_the_Snow.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "Bundle up, frosty adventurers! Join Ice Team Alpha—Zara, Leo, and Pip—with their guide Dr. Blizzard for a mission to Antarctica! At Penguin Parade Point, tuxedoed penguins wobble and belly-slide. 'Penguins are nature's comedians!' laughs Zara. 'There are Emperor Penguins and Chinstrap Penguins—each has its own way of surviving in the cold.' The PolarScopes transport them to Glacier Garden, where ice towers sparkle. Dr. Blizzard grows serious: 'These glaciers are melting faster because Earth is warming. That's climate change.'", imagePath: "parsed-documents://20251007-144922-154472/Ice_Team_Alpha_Secrets_Beneath_the_Snow.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "At the Climate Cabin, they learn that turning off unused lights or biking instead of driving helps Earth cool down. 'Even little penguins can make a big difference!' The Aurora Arcade shows them magical curtains of green, pink, and purple lights. At Ocean Overlook, Dr. Blizzard explains: 'Antarctica is like the planet's air conditioner. If ice melts too fast, seas rise, and animals lose homes.' In The Ice Core Cave, glowing tunnels hold frozen bubbles from thousands of years ago, teaching scientists about Earth's past climate.", imagePath: "parsed-documents://20251007-144922-154472/Ice_Team_Alpha_Secrets_Beneath_the_Snow.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "Question: Why is Antarctica important for the whole planet? Answer: Antarctica helps keep Earth cool, like a giant air conditioner! Its ice and cold waters help control the world's temperature. By learning about Antarctica and making Earth-friendly choices, YOU are heroes of the future! Your adventure with Ice Team Alpha is complete, but your mission to protect the planet continues!", imagePath: "parsed-documents://20251007-144922-154472/Ice_Team_Alpha_Secrets_Beneath_the_Snow.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "Ocean Heroes Unite: Restoring the Coral Kingdom",
+      category: "Environmental Education",
+      description: "Dive deep with Captain Marina and the Ocean Heroes crew! Meet Tiki the Twinklefish, Tomo the Turtle, and Queen Aquanora as you learn about coral reefs, ocean pollution, and how to protect underwater kingdoms.",
+      coverImagePath: "parsed-documents://20251007-144938-358069/Ocean_Heroes_Unite_Restoring_the_Coral_Kingdom.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "Get ready to make a splash with the Ocean Heroes! Captain Marina leads the quest to protect coral kingdoms. They dive into the Sparkle Reef, where Tiki the Twinklefish dances. 'Coral reefs are like underwater cities—homes for creatures big and small!' In Crystal Caves, Tomo the Talking Turtle warns: 'Plastic pollution hurts our home. Every bag or bottle can be dangerous. Let's promise to reduce, reuse, and recycle!' At Seagrass Gardens, Lulu the Seahorse curls her tail. 'This green meadow is where baby fish grow up safe!'", imagePath: "parsed-documents://20251007-144938-358069/Ocean_Heroes_Unite_Restoring_the_Coral_Kingdom.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Quiz time: Who taught us about seagrasses as nurseries for baby fish? At Sunken Treasure Ridge, Shadow the Shark circles calmly. 'Sharks help keep oceans balanced by keeping fish populations healthy. Don't believe scary stories—protecting sharks is protecting the whole reef!' At the Coral Crown Citadel, Queen Aquanora says: 'Our coral homes are in danger from warming waters and ocean acid. But together, we can restore them!' Answer: Lulu the Seahorse taught us about seagrasses!", imagePath: "parsed-documents://20251007-144938-358069/Ocean_Heroes_Unite_Restoring_the_Coral_Kingdom.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "Captain Marina gathered her team: 'Well done, Ocean Heroes! Keep these lessons close: Keep plastics out of the sea, respect seagrasses and creatures, speak up for sharks, support coral conservation, and share the ocean's magic! With every splash you make and every story you share, you help the coral kingdom thrive. Dive on, brave ocean protector—the waves are waiting for you!", imagePath: "parsed-documents://20251007-144938-358069/Ocean_Heroes_Unite_Restoring_the_Coral_Kingdom.docx/images/page_4.jpg" }
+      ]
+    },
+    {
+      title: "Reef Rangers Unite: Guardians of the Coral Kingdom",
+      category: "Environmental Education",
+      description: "Board the submarine SeaSprout and become a Reef Ranger! Join Queen Bubbla, Zippy the Clownfish, and Inky the Octopus to learn how coral reefs work and discover actions you can take to save them—even from dry land!",
+      coverImagePath: "parsed-documents://20251007-144959-085572/Reef_Rangers_Unite_Guardians_of_the_Coral_Kingdom.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "Ahoy, ocean adventurers! Join the Reef Rangers aboard submarine SeaSprout! Queen Bubbla, a glowing coral, greets them. 'We corals may be tiny, but together we build underwater cities! Learn to become Reef Rangers and protect our home.' Corals are living animals called polyps, building castles for fish, crabs, and seahorses. Zippy the Clownfish zipped by. 'I'll show you the reef's best hide-and-seek spots! We fish depend on coral for food, shelter, and safety—like living in a sea-treehouse!'", imagePath: "parsed-documents://20251007-144959-085572/Reef_Rangers_Unite_Guardians_of_the_Coral_Kingdom.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "Inky the Octopus drifted into view. 'I've seen troubling changes—warmer waters, pollution, plastic hurting our reef. Time to take action!' Inky shared ways to help: Use less plastic, recycle properly, save energy to slow ocean warming, and speak up about protecting oceans. Twirlina the Seahorse twirled between coral fans. 'We seahorses love coral! It gives us places to rest, hide, and raise babies. When the reef is healthy, all sea creatures thrive!' Queen Bubbla asked: 'What can YOU do from dry land to protect coral reefs?'", imagePath: "parsed-documents://20251007-144959-085572/Reef_Rangers_Unite_Guardians_of_the_Coral_Kingdom.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "Answer: Even far from the ocean, you can help by saying no to plastic straws and bags, saving water and electricity, recycling and reducing waste, and teaching others about the ocean. Every action counts—the health of our oceans depends on heroes like YOU. Thanks for joining the Reef Rangers. Your next mission? Protect the planet, one ripple at a time!", imagePath: "parsed-documents://20251007-144959-085572/Reef_Rangers_Unite_Guardians_of_the_Coral_Kingdom.docx/images/page_5.jpg" }
+      ]
+    }
+  ];
 
   const computerScienceStories: StoryData[] = [
     {
@@ -291,7 +372,11 @@ const BatchStoryUpload = () => {
     setUploading(true);
     const uploaded: string[] = [];
 
-    for (const story of computerScienceStories) {
+    const storiesToUpload = selectedCategory === 'Environmental Education' 
+      ? environmentalEducationStories 
+      : computerScienceStories;
+
+    for (const story of storiesToUpload) {
       try {
         const title = await uploadStory(story);
         uploaded.push(title);
@@ -335,13 +420,13 @@ const BatchStoryUpload = () => {
         </div>
 
         <Card className="p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4">Computer Science Stories</h2>
+          <h2 className="text-2xl font-semibold mb-4">{selectedCategory} Stories</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Ready to upload {computerScienceStories.length} stories to the "Computer Science" category.
+            Ready to upload {selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length} stories to the "{selectedCategory}" category.
           </p>
           
           <div className="space-y-2 mb-6">
-            {computerScienceStories.map((story, idx) => (
+            {(selectedCategory === 'Environmental Education' ? environmentalEducationStories : computerScienceStories).map((story, idx) => (
               <div
                 key={idx}
                 className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
@@ -356,14 +441,14 @@ const BatchStoryUpload = () => {
 
           <Button
             onClick={handleBatchUpload}
-            disabled={uploading || uploadedStories.length === computerScienceStories.length}
+            disabled={uploading || uploadedStories.length === (selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length)}
             className="w-full gap-2"
             size="lg"
           >
             <Upload className="h-5 w-5" />
             {uploading
-              ? `Uploading... (${uploadedStories.length}/${computerScienceStories.length})`
-              : uploadedStories.length === computerScienceStories.length
+              ? `Uploading... (${uploadedStories.length}/${selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length})`
+              : uploadedStories.length === (selectedCategory === 'Environmental Education' ? environmentalEducationStories.length : computerScienceStories.length)
               ? "All Stories Uploaded!"
               : "Start Batch Upload"}
           </Button>
