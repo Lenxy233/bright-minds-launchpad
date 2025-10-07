@@ -73,6 +73,7 @@ export type Database = {
       }
       story_books: {
         Row: {
+          category: string | null
           cover_image_url: string | null
           created_at: string
           created_by: string | null
@@ -82,6 +83,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          category?: string | null
           cover_image_url?: string | null
           created_at?: string
           created_by?: string | null
@@ -91,6 +93,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          category?: string | null
           cover_image_url?: string | null
           created_at?: string
           created_by?: string | null

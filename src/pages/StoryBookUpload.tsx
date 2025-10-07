@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Upload, Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -25,6 +26,7 @@ const StoryBookUpload = () => {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('Character Education & Social Skills');
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [pages, setPages] = useState<PageData[]>([
     { pageNumber: 1, text: '', imageFile: null, audioFile: null },
@@ -96,6 +98,7 @@ const StoryBookUpload = () => {
         .insert({
           title,
           description,
+          category,
           cover_image_url: coverImageUrl,
           created_by: user.id,
         })
@@ -193,6 +196,23 @@ const StoryBookUpload = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
                 />
+              </div>
+              <div>
+                <Label htmlFor="category">Category *</Label>
+                <Select value={category} onValueChange={setCategory}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Character Education & Social Skills">
+                      Character Education & Social Skills
+                    </SelectItem>
+                    <SelectItem value="STEM & Science">STEM & Science</SelectItem>
+                    <SelectItem value="Creativity & Arts">Creativity & Arts</SelectItem>
+                    <SelectItem value="Health & Wellness">Health & Wellness</SelectItem>
+                    <SelectItem value="Cultural Awareness">Cultural Awareness</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label htmlFor="cover">Cover Image</Label>

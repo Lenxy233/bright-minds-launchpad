@@ -11,6 +11,7 @@ interface StoryBook {
   title: string;
   description: string;
   cover_image_url: string;
+  category: string;
 }
 
 const StoryBooks = () => {
@@ -87,37 +88,53 @@ const StoryBooks = () => {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {storyBooks.map((book) => (
-              <Card
-                key={book.id}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => navigate(`/story-books/${book.id}`)}
-              >
-                {book.cover_image_url && (
-                  <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
-                    <img
-                      src={book.cover_image_url}
-                      alt={book.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="line-clamp-2">{book.title}</CardTitle>
-                  {book.description && (
-                    <CardDescription className="line-clamp-3">
-                      {book.description}
-                    </CardDescription>
-                  )}
-                </CardHeader>
-                <CardContent>
-                  <Button className="w-full" variant="outline">
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    Read Story
-                  </Button>
-                </CardContent>
-              </Card>
+          <div className="space-y-12">
+            {Object.entries(
+              storyBooks.reduce((acc, book) => {
+                const category = book.category || 'Uncategorized';
+                if (!acc[category]) acc[category] = [];
+                acc[category].push(book);
+                return acc;
+              }, {} as Record<string, StoryBook[]>)
+            ).map(([category, books]) => (
+              <div key={category}>
+                <h2 className="text-2xl font-semibold mb-6 text-foreground">
+                  {category}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {books.map((book) => (
+                    <Card
+                      key={book.id}
+                      className="cursor-pointer hover:shadow-lg transition-shadow"
+                      onClick={() => navigate(`/story-books/${book.id}`)}
+                    >
+                      {book.cover_image_url && (
+                        <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
+                          <img
+                            src={book.cover_image_url}
+                            alt={book.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <CardHeader>
+                        <CardTitle className="line-clamp-2">{book.title}</CardTitle>
+                        {book.description && (
+                          <CardDescription className="line-clamp-3">
+                            {book.description}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      <CardContent>
+                        <Button className="w-full" variant="outline">
+                          <BookOpen className="w-4 h-4 mr-2" />
+                          Read Story
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}
