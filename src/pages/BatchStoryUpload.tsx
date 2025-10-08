@@ -193,6 +193,28 @@ const BatchStoryUpload = () => {
         { pageNumber: 1, textContent: "Captain Carrot led the Sprout Scouts on a garden quest! Sunny the Light Sprite taught about photosynthesis—plants use sunlight to grow! Buzz and Bloom showed pollination—spreading golden dust to help plants make fruits. Grumble the Root Gnome taught proper spacing. Wiggly and Wiggles turned leftovers into rich soil through composting!", imagePath: "parsed-documents://20251007-150342-347792/🌱_Sprout_Scouts_The_Great_Garden_Quest.docx/images/page_2.jpg" },
         { pageNumber: 2, textContent: "Captain Carrot's final challenge: 'What else helps a garden grow?' The Scouts planted seeds. Days passed, shoots emerged, the garden bloomed. Answer: Love, teamwork, patience, and care! A garden isn't just soil and seeds—it's heart, hands, and hope working together. Now you're an official Sprout Scout!", imagePath: "parsed-documents://20251007-150342-347792/🌱_Sprout_Scouts_The_Great_Garden_Quest.docx/images/page_4.jpg" }
       ]
+    },
+    {
+      title: "Team Terra: Cracking the Case of the Warming World",
+      category: "Environmental Education",
+      description: "Join Detective Dot and Team Terra on a planet-sized mystery! Learn about climate change through investigating the sky shield, sunshine, oceans, and forests with quirky characters.",
+      coverImagePath: "parsed-documents://20251008-082945-535549/🌍_Team_Terra_Cracking_the_Case_of_the_Warming_World.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "Today, you're joining Team Terra, a squad of clever creatures and brave kids on a mission to crack the case of global warming. Led by Detective Dot, a clever notebook with glasses. Whiff the Wind Whiz explained: 'Too many smoke puffs and gas clouds from cars and factories make the sky's shield too chunky! That's when Earth starts to overheat.' Think fast! What could YOU do to make fewer smoke puffs? Bike instead of ride? Turn off lights?", imagePath: "parsed-documents://20251008-082945-535549/🌍_Team_Terra_Cracking_the_Case_of_the_Warming_World.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "In Sparkle Valley, Rayna the Radiant said: 'I love shining on plants and people, but lately, too much heat is being trapped by that thick sky shield!' In the Coral Caves, Bubble the sea dragon sighed: 'The ocean is Earth's giant sponge. It soaks up extra heat, but now I'm getting tired—I'm absorbing more heat than ever!' In the Forest of Fizzles, Sprig the spunky vine said: 'We plants gobble up carbon dioxide! But when forests disappear, so does our help.'", imagePath: "parsed-documents://20251008-082945-535549/🌍_Team_Terra_Cracking_the_Case_of_the_Warming_World.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "Detective Dot clicked her pen: 'Now you've got all the clues. Global warming is caused by a sky shield that's too thick, sunshine that overstays its welcome, oceans that are overheating, and plants that need our help. But here's the GOOD news—YOU can help solve it.' The Hero's Homework: Turn off electronics when not in use, use reusable bottles not plastic, plant a seed or even a sunflower, learn share and inspire others! Big change begins with small smart choices!", imagePath: "parsed-documents://20251008-082945-535549/🌍_Team_Terra_Cracking_the_Case_of_the_Warming_World.docx/images/page_5.jpg" }
+      ]
+    },
+    {
+      title: "Galactic Guardians: A Mission Among the Stars",
+      category: "Environmental Education",
+      description: "Fight light pollution with Nova and Comet! Discover how to protect the night sky so everyone can see the stars through the Galactic Guardians mission.",
+      coverImagePath: "parsed-documents://20251008-082959-919122/🌠_Galactic_Guardians_A_Mission_Among_the_Stars.docx/images/img_p0_1.jpg",
+      pages: [
+        { pageNumber: 1, textContent: "In Twinkle Town lived Nova, a curious girl with constellation boots, and Comet, a clever talking fox with shimmering fur. They noticed stars looked dimmer. 'Something's making it harder to see our stellar friends.' They became the Galactic Guardians! They discovered Stella Lynx, their favorite constellation, was barely visible. 'Too many bright streetlights and glowing signs make it hard to see the stars. It's called light pollution.'", imagePath: "parsed-documents://20251008-082959-919122/🌠_Galactic_Guardians_A_Mission_Among_the_Stars.docx/images/page_2.jpg" },
+        { pageNumber: 2, textContent: "At Glare Square, Nova said: 'What if lights had hoods, like our jackets? That way, they shine down where needed—not up into the sky!' They crafted Starlight Savers—hoods for outdoor lights. They suggested a weekly Lights Out Launch—one hour where everyone turned off unnecessary lights to let the stars take the stage. The mayor offered moon-shaped cookies to every house that joined. Soon, Twinkle Town glowed less and sparkled more!", imagePath: "parsed-documents://20251008-082959-919122/🌠_Galactic_Guardians_A_Mission_Among_the_Stars.docx/images/page_3.jpg" },
+        { pageNumber: 3, textContent: "Nova and Comet returned to Lookout Hill. There—leaping between stars—was Stella Lynx, glowing proudly once again! 'The sky feels alive again,' whispered Nova. 'Because people cared,' Comet said. Now it's YOUR turn! Raise your hand and say: 'I promise to protect the night, to turn off lights and shine less bright. I'll guard the stars with care and cheer—so galaxies stay bold and clear!' Congratulations! You're now an official Galactic Guardian!", imagePath: "parsed-documents://20251008-082959-919122/🌠_Galactic_Guardians_A_Mission_Among_the_Stars.docx/images/page_5.jpg" }
+      ]
     }
   ];
 
