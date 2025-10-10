@@ -25,15 +25,11 @@ import { BookOpen, Plus, ArrowLeft, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
-const CATEGORIES = [
-  'All',
-  'Character Education & Social Skills',
-  'STEM & Science',
-  'Creativity & Arts',
-  'Health & Wellness',
-  'Cultural Awareness',
-  'Uncategorized',
-];
+const getUniqueCategories = (books: StoryBook[]) => {
+  const categories = books.map(book => book.category || 'Uncategorized');
+  const uniqueCategories = ['All', ...Array.from(new Set(categories)).sort()];
+  return uniqueCategories;
+};
 
 interface StoryBook {
   id: string;
@@ -79,6 +75,8 @@ const StoryBooks = () => {
     }
   };
 
+  const categories = getUniqueCategories(storyBooks);
+  
   const filteredBooks = selectedCategory === 'All' 
     ? storyBooks 
     : storyBooks.filter(book => (book.category || 'Uncategorized') === selectedCategory);
@@ -186,9 +184,9 @@ const StoryBooks = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {CATEGORIES.map((category) => {
+                    {categories.map((category) => {
                       const count = getCategoryCount(category);
-                      return count > 0 ? (
+                      return (
                         <SelectItem key={category} value={category}>
                           <div className="flex items-center gap-2">
                             {category}
@@ -197,7 +195,7 @@ const StoryBooks = () => {
                             </Badge>
                           </div>
                         </SelectItem>
-                      ) : null;
+                      );
                     })}
                   </SelectContent>
                 </Select>
