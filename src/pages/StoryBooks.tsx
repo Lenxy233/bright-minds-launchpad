@@ -5,8 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, Plus, ArrowLeft } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { BookOpen, Plus, ArrowLeft, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const CATEGORIES = [
   'All',
@@ -24,14 +35,18 @@ interface StoryBook {
   description: string;
   cover_image_url: string;
   category: string;
+  created_by: string | null;
 }
 
 const StoryBooks = () => {
   const [storyBooks, setStoryBooks] = useState<StoryBook[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [bookToDelete, setBookToDelete] = useState<StoryBook | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchStoryBooks();
@@ -65,6 +80,52 @@ const StoryBooks = () => {
   const getCategoryCount = (category: string) => {
     if (category === 'All') return storyBooks.length;
     return storyBooks.filter(book => (book.category || 'Uncategorized') === category).length;
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent, book: StoryBook) => {
+    e.stopPropagation();
+    setBookToDelete(book);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!bookToDelete) return;
+
+    try {
+      // Delete all pages first
+      const { error: pagesError } = await supabase
+        .from('story_pages')
+        .delete()
+        .eq('story_book_id', bookToDelete.id);
+
+      if (pagesError) throw pagesError;
+
+      // Delete the story book
+      const { error: bookError } = await supabase
+        .from('story_books')
+        .delete()
+        .eq('id', bookToDelete.id);
+
+      if (bookError) throw bookError;
+
+      toast({
+        title: 'Success',
+        description: 'Story book deleted successfully',
+      });
+
+      // Refresh the list
+      fetchStoryBooks();
+    } catch (error) {
+      console.error('Error deleting story book:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete story book',
+        variant: 'destructive',
+      });
+    } finally {
+      setDeleteDialogOpen(false);
+      setBookToDelete(null);
+    }
   };
 
   return (
@@ -138,44 +199,57 @@ const StoryBooks = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredBooks.map((book) => (
-                      <Card
-                        key={book.id}
-                        className="cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1"
-                        onClick={() => navigate(`/story-books/${book.id}`)}
-                      >
-                        {book.cover_image_url && (
-                          <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
-                            <img
-                              src={book.cover_image_url}
-                              alt={book.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-                        <CardHeader>
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <CardTitle className="line-clamp-2 flex-1">{book.title}</CardTitle>
-                            {selectedCategory === 'All' && (
-                              <Badge variant="outline" className="shrink-0 text-xs">
-                                {book.category || 'Uncategorized'}
-                              </Badge>
-                            )}
-                          </div>
-                          {book.description && (
-                            <CardDescription className="line-clamp-3">
-                              {book.description}
-                            </CardDescription>
+                    {filteredBooks.map((book) => {
+                      const isCreator = user && book.created_by === user.id;
+                      return (
+                        <Card
+                          key={book.id}
+                          className="cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1 relative"
+                          onClick={() => navigate(`/story-books/${book.id}`)}
+                        >
+                          {isCreator && (
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              className="absolute top-2 right-2 z-10 h-8 w-8"
+                              onClick={(e) => handleDeleteClick(e, book)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           )}
-                        </CardHeader>
-                        <CardContent>
-                          <Button className="w-full" variant="outline">
-                            <BookOpen className="w-4 h-4 mr-2" />
-                            Read Story
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
+                          {book.cover_image_url && (
+                            <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
+                              <img
+                                src={book.cover_image_url}
+                                alt={book.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+                          <CardHeader>
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <CardTitle className="line-clamp-2 flex-1">{book.title}</CardTitle>
+                              {selectedCategory === 'All' && (
+                                <Badge variant="outline" className="shrink-0 text-xs">
+                                  {book.category || 'Uncategorized'}
+                                </Badge>
+                              )}
+                            </div>
+                            {book.description && (
+                              <CardDescription className="line-clamp-3">
+                                {book.description}
+                              </CardDescription>
+                            )}
+                          </CardHeader>
+                          <CardContent>
+                            <Button className="w-full" variant="outline">
+                              <BookOpen className="w-4 h-4 mr-2" />
+                              Read Story
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
                 )}
               </TabsContent>
@@ -183,6 +257,23 @@ const StoryBooks = () => {
           </Tabs>
         )}
       </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Story Book</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{bookToDelete?.title}"? This action cannot be undone and will delete all pages in this story book.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
