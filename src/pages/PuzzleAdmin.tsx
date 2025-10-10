@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, Save, Trash2 } from "lucide-react";
@@ -29,6 +30,9 @@ export default function PuzzleAdmin() {
   const [answerZones, setAnswerZones] = useState<AnswerZone[]>([]);
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const { toast } = useToast();
+  const [storageFiles, setStorageFiles] = useState<string[]>([]);
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [loadingFiles, setLoadingFiles] = useState(false);
 
   useEffect(() => {
     if (!canvasRef.current || fabricCanvas) return;
@@ -69,6 +73,48 @@ export default function PuzzleAdmin() {
     reader.readAsDataURL(file);
   };
 
+  const loadStorageFiles = async () => {
+    setLoadingFiles(true);
+    try {
+      const { data, error } = await supabase.storage
+        .from("puzzle-images")
+        .list("", { limit: 100, sortBy: { column: "name", order: "asc" } });
+      if (error) throw error;
+      setStorageFiles((data || []).map((f) => f.name));
+    } catch (err) {
+      console.error("Error loading storage files:", err);
+      toast({ title: "Error", description: "Failed to load storage images", variant: "destructive" });
+    } finally {
+      setLoadingFiles(false);
+    }
+  };
+
+  const setBackgroundFromUrl = async (url: string) => {
+    if (!fabricCanvas) return;
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = async () => {
+      fabricCanvas.clear();
+      fabricCanvas.setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+      const { FabricImage } = await import("fabric");
+      const fabricImg = await FabricImage.fromURL(url);
+      fabricCanvas.backgroundImage = fabricImg;
+      fabricCanvas.renderAll();
+      setPuzzleImage(url);
+    };
+    img.src = url;
+  };
+
+  useEffect(() => {
+    loadStorageFiles();
+  }, []);
+
+  const handleSelectStorageImage = async (fileName: string) => {
+    setSelectedFile(fileName);
+    const { data } = supabase.storage.from("puzzle-images").getPublicUrl(fileName);
+    const url = data.publicUrl;
+    await setBackgroundFromUrl(url);
+  };
   const addAnswerBox = () => {
     if (!fabricCanvas) return;
 
@@ -155,21 +201,26 @@ export default function PuzzleAdmin() {
     }
 
     try {
-      // Upload image to storage
+      let finalImageUrl: string | null = null;
+
+      // Use uploaded file if provided, otherwise use selected storage image URL
       const file = imageInputRef.current?.files?.[0];
-      if (!file) return;
-
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-        .from("puzzle-images")
-        .upload(fileName, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from("puzzle-images")
-        .getPublicUrl(fileName);
+      if (file) {
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from("puzzle-images")
+          .upload(fileName, file);
+        if (uploadError) throw uploadError;
+        const { data: { publicUrl } } = supabase.storage
+          .from("puzzle-images")
+          .getPublicUrl(fileName);
+        finalImageUrl = publicUrl;
+      } else if (puzzleImage) {
+        finalImageUrl = puzzleImage; // Expecting a public URL when selected from storage
+      } else {
+        throw new Error("No image selected");
+      }
 
       // Create puzzle
       const { data: puzzle, error: puzzleError } = await supabase
@@ -177,7 +228,7 @@ export default function PuzzleAdmin() {
         .insert({
           title: puzzleTitle,
           description: puzzleDescription,
-          image_url: publicUrl,
+          image_url: finalImageUrl,
           created_by: user.id,
         })
         .select()
@@ -230,18 +281,34 @@ export default function PuzzleAdmin() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Card className="p-4">
-            <div className="mb-4">
-              <input
-                ref={imageInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-              <Button onClick={() => imageInputRef.current?.click()}>
-                <Upload className="mr-2 h-4 w-4" />
-                Upload Puzzle Image
-              </Button>
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+              <div>
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <Button onClick={() => imageInputRef.current?.click()}>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Upload Puzzle Image
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Label className="text-sm">Or choose from Storage:</Label>
+                <Select onValueChange={handleSelectStorageImage}>
+                  <SelectTrigger className="w-[260px]">
+                    <SelectValue placeholder={loadingFiles ? "Loading..." : "Select image"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {storageFiles.map((name) => (
+                      <SelectItem key={name} value={name}>{name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             <div className="border rounded-lg overflow-auto">
