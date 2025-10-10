@@ -3,8 +3,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -171,90 +177,94 @@ const StoryBooks = () => {
             </Button>
           </div>
         ) : (
-          <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
-            <TabsList className="w-full flex flex-wrap h-auto justify-start gap-2 bg-muted/50 p-2 mb-8">
-              {CATEGORIES.map((category) => {
-                const count = getCategoryCount(category);
-                return count > 0 ? (
-                  <TabsTrigger 
-                    key={category} 
-                    value={category}
-                    className="flex items-center gap-2"
-                  >
-                    {category}
-                    <Badge variant="secondary" className="ml-1">
-                      {count}
-                    </Badge>
-                  </TabsTrigger>
-                ) : null;
-              })}
-            </TabsList>
-
-            {CATEGORIES.map((category) => (
-              <TabsContent key={category} value={category} className="mt-0">
-                {filteredBooks.length === 0 ? (
-                  <div className="text-center py-12">
-                    <BookOpen className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                    <p className="text-muted-foreground">No story books in this category</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredBooks.map((book) => {
-                      const isCreator = user && book.created_by === user.id;
-                      return (
-                        <Card
-                          key={book.id}
-                          className="cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1 relative"
-                          onClick={() => navigate(`/story-books/${book.id}`)}
-                        >
-                          {isCreator && (
-                            <Button
-                              variant="destructive"
-                              size="icon"
-                              className="absolute top-2 right-2 z-10 h-8 w-8"
-                              onClick={(e) => handleDeleteClick(e, book)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          )}
-                          {book.cover_image_url && (
-                            <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
-                              <img
-                                src={book.cover_image_url}
-                                alt={book.title}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          )}
-                          <CardHeader>
-                            <div className="flex items-start justify-between gap-2 mb-2">
-                              <CardTitle className="line-clamp-2 flex-1">{book.title}</CardTitle>
-                              {selectedCategory === 'All' && (
-                                <Badge variant="outline" className="shrink-0 text-xs">
-                                  {book.category || 'Uncategorized'}
-                                </Badge>
-                              )}
-                            </div>
-                            {book.description && (
-                              <CardDescription className="line-clamp-3">
-                                {book.description}
-                              </CardDescription>
-                            )}
-                          </CardHeader>
-                          <CardContent>
-                            <Button className="w-full" variant="outline">
-                              <BookOpen className="w-4 h-4 mr-2" />
-                              Read Story
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      );
+          <>
+            <div className="mb-8 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Filter by category:</span>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="w-[280px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CATEGORIES.map((category) => {
+                      const count = getCategoryCount(category);
+                      return count > 0 ? (
+                        <SelectItem key={category} value={category}>
+                          <div className="flex items-center gap-2">
+                            {category}
+                            <Badge variant="secondary" className="ml-1">
+                              {count}
+                            </Badge>
+                          </div>
+                        </SelectItem>
+                      ) : null;
                     })}
-                  </div>
-                )}
-              </TabsContent>
-            ))}
-          </Tabs>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {filteredBooks.length === 0 ? (
+              <div className="text-center py-12">
+                <BookOpen className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">No story books in this category</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredBooks.map((book) => {
+                  const isCreator = user && book.created_by === user.id;
+                  return (
+                    <Card
+                      key={book.id}
+                      className="cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1 relative"
+                      onClick={() => navigate(`/story-books/${book.id}`)}
+                    >
+                      {isCreator && (
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-2 right-2 z-10 h-8 w-8"
+                          onClick={(e) => handleDeleteClick(e, book)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {book.cover_image_url && (
+                        <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
+                          <img
+                            src={book.cover_image_url}
+                            alt={book.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <CardHeader>
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <CardTitle className="line-clamp-2 flex-1">{book.title}</CardTitle>
+                          {selectedCategory === 'All' && (
+                            <Badge variant="outline" className="shrink-0 text-xs">
+                              {book.category || 'Uncategorized'}
+                            </Badge>
+                          )}
+                        </div>
+                        {book.description && (
+                          <CardDescription className="line-clamp-3">
+                            {book.description}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      <CardContent>
+                        <Button className="w-full" variant="outline">
+                          <BookOpen className="w-4 h-4 mr-2" />
+                          Read Story
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
 
