@@ -518,18 +518,28 @@ const BatchStoryUpload = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/story-books')}
+              className="gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </Button>
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+              Batch Story Upload
+            </h1>
+          </div>
           <Button
-            variant="ghost"
-            onClick={() => navigate('/story-books')}
+            variant="outline"
+            onClick={() => navigate('/story-books/upload')}
             className="gap-2"
           >
-            <ArrowLeft className="h-4 w-4" />
-            Back
+            <Upload className="h-4 w-4" />
+            Manual Upload
           </Button>
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
-            Batch Story Upload
-          </h1>
         </div>
 
         <Tabs 
