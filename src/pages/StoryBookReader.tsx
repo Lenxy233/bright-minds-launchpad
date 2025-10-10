@@ -2,9 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, ArrowRight, Play, Pause, Edit2, Save, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Play, Pause, Edit2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -35,10 +33,6 @@ const StoryBookReader = () => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [highlightedText, setHighlightedText] = useState<string>('');
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [editedTitle, setEditedTitle] = useState('');
-  const [editedDescription, setEditedDescription] = useState('');
-  const [editedPageText, setEditedPageText] = useState('');
 
   useEffect(() => {
     if (id) {
@@ -70,8 +64,6 @@ const StoryBookReader = () => {
 
       if (error) throw error;
       setBook(data);
-      setEditedTitle(data.title);
-      setEditedDescription(data.description || '');
     } catch (error) {
       console.error('Error fetching story book:', error);
       toast({
@@ -147,7 +139,6 @@ const StoryBookReader = () => {
       setCurrentPageIndex(currentPageIndex - 1);
       setIsPlaying(false);
       setHighlightedText('');
-      setEditedPageText(pages[currentPageIndex - 1]?.text_content || '');
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
@@ -155,61 +146,8 @@ const StoryBookReader = () => {
     }
   };
 
-  useEffect(() => {
-    if (pages[currentPageIndex]) {
-      setEditedPageText(pages[currentPageIndex].text_content);
-    }
-  }, [currentPageIndex, pages]);
-
-  const toggleEditMode = () => {
-    setIsEditMode(!isEditMode);
-    if (!isEditMode) {
-      setEditedTitle(book?.title || '');
-      setEditedDescription(book?.description || '');
-      setEditedPageText(currentPage?.text_content || '');
-    }
-  };
-
-  const handleSave = async () => {
-    try {
-      // Update book details
-      const { error: bookError } = await supabase
-        .from('story_books')
-        .update({
-          title: editedTitle,
-          description: editedDescription,
-        })
-        .eq('id', id);
-
-      if (bookError) throw bookError;
-
-      // Update current page text
-      const { error: pageError } = await supabase
-        .from('story_pages')
-        .update({
-          text_content: editedPageText,
-        })
-        .eq('id', currentPage.id);
-
-      if (pageError) throw pageError;
-
-      // Refresh data
-      await fetchStoryBook();
-      await fetchPages();
-      
-      setIsEditMode(false);
-      toast({
-        title: 'Success',
-        description: 'Story updated successfully',
-      });
-    } catch (error) {
-      console.error('Error saving changes:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to save changes',
-        variant: 'destructive',
-      });
-    }
+  const handleEditClick = () => {
+    navigate(`/story-books/upload?id=${id}`);
   };
 
   const currentPage = pages[currentPageIndex];
@@ -236,49 +174,17 @@ const StoryBookReader = () => {
         </Button>
 
         <div className="text-center mb-8">
-          {isEditMode ? (
-            <div className="space-y-4 max-w-2xl mx-auto">
-              <Input
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-                className="text-3xl font-bold text-center"
-                placeholder="Story title"
-              />
-              <Textarea
-                value={editedDescription}
-                onChange={(e) => setEditedDescription(e.target.value)}
-                className="text-center"
-                placeholder="Story description"
-              />
-            </div>
-          ) : (
-            <>
-              <h1 className="text-3xl font-bold mb-2">{book.title}</h1>
-              <p className="text-muted-foreground mb-2">{book.description}</p>
-            </>
-          )}
+          <h1 className="text-3xl font-bold mb-2">{book.title}</h1>
+          <p className="text-muted-foreground mb-2">{book.description}</p>
           <p className="text-muted-foreground">
             Page {currentPageIndex + 1} of {pages.length}
           </p>
           {isCreator && (
             <div className="flex justify-center gap-2 mt-4">
-              {isEditMode ? (
-                <>
-                  <Button onClick={handleSave} size="sm" className="gap-2">
-                    <Save className="w-4 h-4" />
-                    Save Changes
-                  </Button>
-                  <Button onClick={toggleEditMode} variant="outline" size="sm" className="gap-2">
-                    <X className="w-4 h-4" />
-                    Cancel
-                  </Button>
-                </>
-              ) : (
-                <Button onClick={toggleEditMode} variant="outline" size="sm" className="gap-2">
-                  <Edit2 className="w-4 h-4" />
-                  Edit Story
-                </Button>
-              )}
+              <Button onClick={handleEditClick} variant="outline" size="sm" className="gap-2">
+                <Edit2 className="w-4 h-4" />
+                Edit Story
+              </Button>
             </div>
           )}
         </div>
@@ -294,30 +200,21 @@ const StoryBookReader = () => {
             </div>
           )}
 
-          {isEditMode ? (
-            <Textarea
-              value={editedPageText}
-              onChange={(e) => setEditedPageText(e.target.value)}
-              className="text-lg leading-relaxed mb-6 min-h-[200px]"
-              placeholder="Page text content"
-            />
-          ) : (
-            <div className="text-lg leading-relaxed mb-6">
-              {currentPage?.text_content.split(' ').map((word, index) => {
-                const isHighlighted = highlightedText.split(' ').includes(word);
-                return (
-                  <span
-                    key={index}
-                    className={`transition-colors duration-200 ${
-                      isHighlighted ? 'bg-primary/20 text-primary font-semibold' : ''
-                    }`}
-                  >
-                    {word}{' '}
-                  </span>
-                );
-              })}
-            </div>
-          )}
+          <div className="text-lg leading-relaxed mb-6">
+            {currentPage?.text_content.split(' ').map((word, index) => {
+              const isHighlighted = highlightedText.split(' ').includes(word);
+              return (
+                <span
+                  key={index}
+                  className={`transition-colors duration-200 ${
+                    isHighlighted ? 'bg-primary/20 text-primary font-semibold' : ''
+                  }`}
+                >
+                  {word}{' '}
+                </span>
+              );
+            })}
+          </div>
 
           {currentPage?.audio_url && (
             <div className="flex justify-center gap-4 mb-6">

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,25 +12,89 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface PageData {
+  id?: string;
   pageNumber: number;
   text: string;
   imageFile: File | null;
   audioFile: File | null;
+  existingImageUrl?: string | null;
+  existingAudioUrl?: string | null;
 }
 
 const StoryBookUpload = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const editId = searchParams.get('id');
   const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Character Education & Social Skills');
   const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [existingCoverUrl, setExistingCoverUrl] = useState<string | null>(null);
   const [pages, setPages] = useState<PageData[]>([
     { pageNumber: 1, text: '', imageFile: null, audioFile: null },
   ]);
+
+  useEffect(() => {
+    if (editId) {
+      loadExistingStory();
+    }
+  }, [editId]);
+
+  const loadExistingStory = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch story book
+      const { data: bookData, error: bookError } = await supabase
+        .from('story_books')
+        .select('*')
+        .eq('id', editId)
+        .single();
+
+      if (bookError) throw bookError;
+
+      setTitle(bookData.title);
+      setDescription(bookData.description || '');
+      setCategory(bookData.category || 'Character Education & Social Skills');
+      setExistingCoverUrl(bookData.cover_image_url);
+
+      // Fetch pages
+      const { data: pagesData, error: pagesError } = await supabase
+        .from('story_pages')
+        .select('*')
+        .eq('story_book_id', editId)
+        .order('page_number', { ascending: true });
+
+      if (pagesError) throw pagesError;
+
+      if (pagesData && pagesData.length > 0) {
+        setPages(
+          pagesData.map((page) => ({
+            id: page.id,
+            pageNumber: page.page_number,
+            text: page.text_content,
+            imageFile: null,
+            audioFile: null,
+            existingImageUrl: page.image_url,
+            existingAudioUrl: page.audio_url,
+          }))
+        );
+      }
+    } catch (error) {
+      console.error('Error loading story:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load story for editing',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addPage = () => {
     setPages([
@@ -81,77 +145,162 @@ const StoryBookUpload = () => {
     setLoading(true);
 
     try {
-      // Upload cover image
-      let coverImageUrl = '';
-      if (coverImage) {
-        const timestamp = Date.now();
-        coverImageUrl = await uploadFile(
-          coverImage,
-          'story-books',
-          `covers/${timestamp}_${coverImage.name}`
-        );
-      }
-
-      // Create story book
-      const { data: bookData, error: bookError } = await supabase
-        .from('story_books')
-        .insert({
-          title,
-          description,
-          category,
-          cover_image_url: coverImageUrl,
-          created_by: user.id,
-        })
-        .select()
-        .single();
-
-      if (bookError) throw bookError;
-
-      // Upload pages
-      for (const page of pages) {
-        let imageUrl = null;
-        let audioUrl = null;
-
-        if (page.imageFile) {
+      if (editId) {
+        // UPDATE MODE
+        // Upload new cover image if provided
+        let coverImageUrl = existingCoverUrl;
+        if (coverImage) {
           const timestamp = Date.now();
-          imageUrl = await uploadFile(
-            page.imageFile,
+          coverImageUrl = await uploadFile(
+            coverImage,
             'story-books',
-            `pages/${bookData.id}/${timestamp}_${page.imageFile.name}`
+            `covers/${timestamp}_${coverImage.name}`
           );
         }
 
-        if (page.audioFile) {
-          const timestamp = Date.now();
-          audioUrl = await uploadFile(
-            page.audioFile,
-            'story-books',
-            `audio/${bookData.id}/${timestamp}_${page.audioFile.name}`
-          );
+        // Update story book
+        const { error: bookError } = await supabase
+          .from('story_books')
+          .update({
+            title,
+            description,
+            category,
+            cover_image_url: coverImageUrl,
+          })
+          .eq('id', editId);
+
+        if (bookError) throw bookError;
+
+        // Update or insert pages
+        for (const page of pages) {
+          let imageUrl = page.existingImageUrl;
+          let audioUrl = page.existingAudioUrl;
+
+          if (page.imageFile) {
+            const timestamp = Date.now();
+            imageUrl = await uploadFile(
+              page.imageFile,
+              'story-books',
+              `pages/${editId}/${timestamp}_${page.imageFile.name}`
+            );
+          }
+
+          if (page.audioFile) {
+            const timestamp = Date.now();
+            audioUrl = await uploadFile(
+              page.audioFile,
+              'story-books',
+              `audio/${editId}/${timestamp}_${page.audioFile.name}`
+            );
+          }
+
+          if (page.id) {
+            // Update existing page
+            const { error: pageError } = await supabase
+              .from('story_pages')
+              .update({
+                page_number: page.pageNumber,
+                text_content: page.text,
+                image_url: imageUrl,
+                audio_url: audioUrl,
+              })
+              .eq('id', page.id);
+
+            if (pageError) throw pageError;
+          } else {
+            // Insert new page
+            const { error: pageError } = await supabase
+              .from('story_pages')
+              .insert({
+                story_book_id: editId,
+                page_number: page.pageNumber,
+                text_content: page.text,
+                image_url: imageUrl,
+                audio_url: audioUrl,
+              });
+
+            if (pageError) throw pageError;
+          }
         }
 
-        const { error: pageError } = await supabase.from('story_pages').insert({
-          story_book_id: bookData.id,
-          page_number: page.pageNumber,
-          text_content: page.text,
-          image_url: imageUrl,
-          audio_url: audioUrl,
+        toast({
+          title: 'Success!',
+          description: 'Story book updated successfully',
         });
+      } else {
+        // CREATE MODE
+        // Upload cover image
+        let coverImageUrl = '';
+        if (coverImage) {
+          const timestamp = Date.now();
+          coverImageUrl = await uploadFile(
+            coverImage,
+            'story-books',
+            `covers/${timestamp}_${coverImage.name}`
+          );
+        }
 
-        if (pageError) throw pageError;
+        // Create story book
+        const { data: bookData, error: bookError } = await supabase
+          .from('story_books')
+          .insert({
+            title,
+            description,
+            category,
+            cover_image_url: coverImageUrl,
+            created_by: user.id,
+          })
+          .select()
+          .single();
+
+        if (bookError) throw bookError;
+
+        // Upload pages
+        for (const page of pages) {
+          let imageUrl = null;
+          let audioUrl = null;
+
+          if (page.imageFile) {
+            const timestamp = Date.now();
+            imageUrl = await uploadFile(
+              page.imageFile,
+              'story-books',
+              `pages/${bookData.id}/${timestamp}_${page.imageFile.name}`
+            );
+          }
+
+          if (page.audioFile) {
+            const timestamp = Date.now();
+            audioUrl = await uploadFile(
+              page.audioFile,
+              'story-books',
+              `audio/${bookData.id}/${timestamp}_${page.audioFile.name}`
+            );
+          }
+
+          const { error: pageError } = await supabase.from('story_pages').insert({
+            story_book_id: bookData.id,
+            page_number: page.pageNumber,
+            text_content: page.text,
+            image_url: imageUrl,
+            audio_url: audioUrl,
+          });
+
+          if (pageError) throw pageError;
+        }
+
+        toast({
+          title: 'Success!',
+          description: 'Story book uploaded successfully',
+        });
       }
-
-      toast({
-        title: 'Success!',
-        description: 'Story book uploaded successfully',
-      });
 
       navigate('/story-books');
     } catch (error) {
       console.error('Error uploading story book:', error);
       toast({
         title: 'Error',
-        description: 'Failed to upload story book',
+        description: editId ? 'Failed to update story book' : 'Failed to upload story book',
         variant: 'destructive',
       });
     } finally {
@@ -171,7 +320,9 @@ const StoryBookUpload = () => {
           Back
         </Button>
 
-        <h1 className="text-3xl font-bold mb-8 text-center">Upload Story Book</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">
+          {editId ? 'Edit Story Book' : 'Upload Story Book'}
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <Card>
@@ -216,6 +367,12 @@ const StoryBookUpload = () => {
               </div>
               <div>
                 <Label htmlFor="cover">Cover Image</Label>
+                {existingCoverUrl && !coverImage && (
+                  <div className="mb-2">
+                    <img src={existingCoverUrl} alt="Current cover" className="w-32 h-32 object-cover rounded" />
+                    <p className="text-sm text-muted-foreground mt-1">Current cover image</p>
+                  </div>
+                )}
                 <Input
                   id="cover"
                   type="file"
@@ -254,6 +411,12 @@ const StoryBookUpload = () => {
                 </div>
                 <div>
                   <Label htmlFor={`image-${index}`}>Page Image</Label>
+                  {page.existingImageUrl && !page.imageFile && (
+                    <div className="mb-2">
+                      <img src={page.existingImageUrl} alt={`Page ${page.pageNumber}`} className="w-32 h-32 object-cover rounded" />
+                      <p className="text-sm text-muted-foreground mt-1">Current image</p>
+                    </div>
+                  )}
                   <Input
                     id={`image-${index}`}
                     type="file"
@@ -265,6 +428,12 @@ const StoryBookUpload = () => {
                 </div>
                 <div>
                   <Label htmlFor={`audio-${index}`}>Audio File</Label>
+                  {page.existingAudioUrl && !page.audioFile && (
+                    <div className="mb-2">
+                      <audio controls src={page.existingAudioUrl} className="w-full" />
+                      <p className="text-sm text-muted-foreground mt-1">Current audio</p>
+                    </div>
+                  )}
                   <Input
                     id={`audio-${index}`}
                     type="file"
@@ -290,11 +459,11 @@ const StoryBookUpload = () => {
 
           <Button type="submit" className="w-full" size="lg" disabled={loading}>
             {loading ? (
-              'Uploading...'
+              editId ? 'Updating...' : 'Uploading...'
             ) : (
               <>
                 <Upload className="w-5 h-5 mr-2" />
-                Upload Story Book
+                {editId ? 'Update Story Book' : 'Upload Story Book'}
               </>
             )}
           </Button>
