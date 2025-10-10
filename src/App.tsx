@@ -16,6 +16,7 @@ import StoryBooks from "./pages/StoryBooks";
 import StoryBookReader from "./pages/StoryBookReader";
 import StoryBookUpload from "./pages/StoryBookUpload";
 import BatchStoryUpload from "./pages/BatchStoryUpload";
+import Puzzle from "./pages/Puzzle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
                 <ParentDashboard />
               </ProtectedRoute>
             } />
+            <Route path="/puzzle" element={<Puzzle />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
