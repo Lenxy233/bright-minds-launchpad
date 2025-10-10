@@ -188,12 +188,7 @@ const StoryBooks = () => {
                       const count = getCategoryCount(category);
                       return (
                         <SelectItem key={category} value={category}>
-                          <div className="flex items-center gap-2">
-                            {category}
-                            <Badge variant="secondary" className="ml-1">
-                              {count}
-                            </Badge>
-                          </div>
+                          {category} ({count})
                         </SelectItem>
                       );
                     })}
