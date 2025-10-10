@@ -3,8 +3,20 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { BookOpen, Plus, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+
+const CATEGORIES = [
+  'All',
+  'Character Education & Social Skills',
+  'STEM & Science',
+  'Creativity & Arts',
+  'Health & Wellness',
+  'Cultural Awareness',
+  'Uncategorized',
+];
 
 interface StoryBook {
   id: string;
@@ -17,6 +29,7 @@ interface StoryBook {
 const StoryBooks = () => {
   const [storyBooks, setStoryBooks] = useState<StoryBook[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -43,6 +56,15 @@ const StoryBooks = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const filteredBooks = selectedCategory === 'All' 
+    ? storyBooks 
+    : storyBooks.filter(book => (book.category || 'Uncategorized') === selectedCategory);
+
+  const getCategoryCount = (category: string) => {
+    if (category === 'All') return storyBooks.length;
+    return storyBooks.filter(book => (book.category || 'Uncategorized') === category).length;
   };
 
   return (
@@ -88,55 +110,77 @@ const StoryBooks = () => {
             </Button>
           </div>
         ) : (
-          <div className="space-y-12">
-            {Object.entries(
-              storyBooks.reduce((acc, book) => {
-                const category = book.category || 'Uncategorized';
-                if (!acc[category]) acc[category] = [];
-                acc[category].push(book);
-                return acc;
-              }, {} as Record<string, StoryBook[]>)
-            ).map(([category, books]) => (
-              <div key={category}>
-                <h2 className="text-2xl font-semibold mb-6 text-foreground">
-                  {category}
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {books.map((book) => (
-                    <Card
-                      key={book.id}
-                      className="cursor-pointer hover:shadow-lg transition-shadow"
-                      onClick={() => navigate(`/story-books/${book.id}`)}
-                    >
-                      {book.cover_image_url && (
-                        <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
-                          <img
-                            src={book.cover_image_url}
-                            alt={book.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      )}
-                      <CardHeader>
-                        <CardTitle className="line-clamp-2">{book.title}</CardTitle>
-                        {book.description && (
-                          <CardDescription className="line-clamp-3">
-                            {book.description}
-                          </CardDescription>
+          <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
+            <TabsList className="w-full flex flex-wrap h-auto justify-start gap-2 bg-muted/50 p-2 mb-8">
+              {CATEGORIES.map((category) => {
+                const count = getCategoryCount(category);
+                return count > 0 ? (
+                  <TabsTrigger 
+                    key={category} 
+                    value={category}
+                    className="flex items-center gap-2"
+                  >
+                    {category}
+                    <Badge variant="secondary" className="ml-1">
+                      {count}
+                    </Badge>
+                  </TabsTrigger>
+                ) : null;
+              })}
+            </TabsList>
+
+            {CATEGORIES.map((category) => (
+              <TabsContent key={category} value={category} className="mt-0">
+                {filteredBooks.length === 0 ? (
+                  <div className="text-center py-12">
+                    <BookOpen className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                    <p className="text-muted-foreground">No story books in this category</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredBooks.map((book) => (
+                      <Card
+                        key={book.id}
+                        className="cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1"
+                        onClick={() => navigate(`/story-books/${book.id}`)}
+                      >
+                        {book.cover_image_url && (
+                          <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
+                            <img
+                              src={book.cover_image_url}
+                              alt={book.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         )}
-                      </CardHeader>
-                      <CardContent>
-                        <Button className="w-full" variant="outline">
-                          <BookOpen className="w-4 h-4 mr-2" />
-                          Read Story
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
+                        <CardHeader>
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <CardTitle className="line-clamp-2 flex-1">{book.title}</CardTitle>
+                            {selectedCategory === 'All' && (
+                              <Badge variant="outline" className="shrink-0 text-xs">
+                                {book.category || 'Uncategorized'}
+                              </Badge>
+                            )}
+                          </div>
+                          {book.description && (
+                            <CardDescription className="line-clamp-3">
+                              {book.description}
+                            </CardDescription>
+                          )}
+                        </CardHeader>
+                        <CardContent>
+                          <Button className="w-full" variant="outline">
+                            <BookOpen className="w-4 h-4 mr-2" />
+                            Read Story
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
             ))}
-          </div>
+          </Tabs>
         )}
       </div>
     </div>
