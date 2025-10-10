@@ -32,6 +32,8 @@ const StoryBookUpload = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Character Education & Social Skills');
+  const [customCategory, setCustomCategory] = useState('');
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [existingCoverUrl, setExistingCoverUrl] = useState<string | null>(null);
   const [pages, setPages] = useState<PageData[]>([
@@ -59,7 +61,23 @@ const StoryBookUpload = () => {
 
       setTitle(bookData.title);
       setDescription(bookData.description || '');
-      setCategory(bookData.category || 'Character Education & Social Skills');
+      const bookCategory = bookData.category || 'Character Education & Social Skills';
+      const predefinedCategories = [
+        'Character Education & Social Skills',
+        'STEM & Science',
+        'Creativity & Arts',
+        'Health & Wellness',
+        'Cultural Awareness',
+      ];
+      
+      if (predefinedCategories.includes(bookCategory)) {
+        setCategory(bookCategory);
+        setIsCustomCategory(false);
+      } else {
+        setCategory('custom');
+        setCustomCategory(bookCategory);
+        setIsCustomCategory(true);
+      }
       setExistingCoverUrl(bookData.cover_image_url);
 
       // Fetch pages
@@ -158,13 +176,15 @@ const StoryBookUpload = () => {
           );
         }
 
+        const finalCategory = isCustomCategory ? customCategory.trim() : category;
+
         // Update story book
         const { error: bookError } = await supabase
           .from('story_books')
           .update({
             title,
             description,
-            category,
+            category: finalCategory,
             cover_image_url: coverImageUrl,
           })
           .eq('id', editId);
@@ -240,13 +260,15 @@ const StoryBookUpload = () => {
           );
         }
 
+        const finalCategory = isCustomCategory ? customCategory.trim() : category;
+
         // Create story book
         const { data: bookData, error: bookError } = await supabase
           .from('story_books')
           .insert({
             title,
             description,
-            category,
+            category: finalCategory,
             cover_image_url: coverImageUrl,
             created_by: user.id,
           })
@@ -350,7 +372,13 @@ const StoryBookUpload = () => {
               </div>
               <div>
                 <Label htmlFor="category">Category *</Label>
-                <Select value={category} onValueChange={setCategory}>
+                <Select 
+                  value={category} 
+                  onValueChange={(value) => {
+                    setCategory(value);
+                    setIsCustomCategory(value === 'custom');
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
@@ -362,8 +390,18 @@ const StoryBookUpload = () => {
                     <SelectItem value="Creativity & Arts">Creativity & Arts</SelectItem>
                     <SelectItem value="Health & Wellness">Health & Wellness</SelectItem>
                     <SelectItem value="Cultural Awareness">Cultural Awareness</SelectItem>
+                    <SelectItem value="custom">➕ Create Custom Category</SelectItem>
                   </SelectContent>
                 </Select>
+                {isCustomCategory && (
+                  <Input
+                    className="mt-2"
+                    placeholder="Enter custom category name"
+                    value={customCategory}
+                    onChange={(e) => setCustomCategory(e.target.value)}
+                    required={isCustomCategory}
+                  />
+                )}
               </div>
               <div>
                 <Label htmlFor="cover">Cover Image</Label>
