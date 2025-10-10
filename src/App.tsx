@@ -17,6 +17,7 @@ import StoryBookReader from "./pages/StoryBookReader";
 import StoryBookUpload from "./pages/StoryBookUpload";
 import BatchStoryUpload from "./pages/BatchStoryUpload";
 import Puzzle from "./pages/Puzzle";
+import PuzzleAdmin from "./pages/PuzzleAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +57,11 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/puzzle" element={<Puzzle />} />
+            <Route path="/puzzle-admin" element={
+              <ProtectedRoute>
+                <PuzzleAdmin />
+              </ProtectedRoute>
+            } />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />

@@ -71,6 +71,83 @@ export type Database = {
         }
         Relationships: []
       }
+      puzzle_answer_zones: {
+        Row: {
+          correct_answer: string
+          created_at: string
+          height: number
+          id: string
+          order_index: number
+          puzzle_id: string
+          updated_at: string
+          width: number
+          x_position: number
+          y_position: number
+        }
+        Insert: {
+          correct_answer: string
+          created_at?: string
+          height: number
+          id?: string
+          order_index: number
+          puzzle_id: string
+          updated_at?: string
+          width: number
+          x_position: number
+          y_position: number
+        }
+        Update: {
+          correct_answer?: string
+          created_at?: string
+          height?: number
+          id?: string
+          order_index?: number
+          puzzle_id?: string
+          updated_at?: string
+          width?: number
+          x_position?: number
+          y_position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "puzzle_answer_zones_puzzle_id_fkey"
+            columns: ["puzzle_id"]
+            isOneToOne: false
+            referencedRelation: "puzzles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      puzzles: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          image_url: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          image_url: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       story_books: {
         Row: {
           category: string | null
