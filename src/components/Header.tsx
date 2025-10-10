@@ -42,12 +42,6 @@ const Header = ({ onPurchase }: HeaderProps) => {
               Kids Learning
             </Link>
           </Button>
-          <Button asChild variant="outline" className="flex items-center gap-2">
-            <Link to="/puzzle">
-              <Sparkles className="w-4 h-4" />
-              Puzzles
-            </Link>
-          </Button>
           {user && (
             <Button asChild variant="outline" className="flex items-center gap-2">
               <Link to="/dashboard">

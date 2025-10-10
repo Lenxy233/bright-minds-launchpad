@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft } from "lucide-react";
+import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -117,7 +117,7 @@ const LearningApp = () => {
             </section>
 
             {/* Features Grid */}
-            <section className="grid md:grid-cols-3 gap-8 mb-16">
+            <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
               <Card 
                 className="border-2 border-purple-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
                 onClick={() => navigate('/story-books')}
@@ -127,6 +127,19 @@ const LearningApp = () => {
                   <CardTitle>Story Books</CardTitle>
                   <CardDescription>
                     Read along with audio narration. Interactive stories that come alive!
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card 
+                className="border-2 border-green-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => navigate('/puzzle')}
+              >
+                <CardHeader>
+                  <Puzzle className="w-12 h-12 text-green-600 mb-4" />
+                  <CardTitle>Puzzles</CardTitle>
+                  <CardDescription>
+                    Count, match, and solve fun puzzles. Learn while playing!
                   </CardDescription>
                 </CardHeader>
               </Card>
