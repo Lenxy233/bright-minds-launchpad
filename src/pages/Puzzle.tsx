@@ -4,32 +4,107 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
-import { Home, RefreshCw } from "lucide-react";
+import { Home, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
+
+// Import puzzle images
+import puzzle1 from "@/assets/puzzles/puzzle-1-counting.png";
+import puzzle2 from "@/assets/puzzles/puzzle-2-crossword-animals.png";
+import puzzle3 from "@/assets/puzzles/puzzle-3-crossword-kids.png";
+import puzzle4 from "@/assets/puzzles/puzzle-4-crossword-animals-2.png";
+import puzzle5 from "@/assets/puzzles/puzzle-5-crossword-farm.png";
+
+const puzzles = [
+  {
+    id: 1,
+    title: "How Many Sea Creatures?",
+    image: puzzle1,
+    questions: [
+      { id: "octopus", label: "Octopus", answer: "2" },
+      { id: "fish", label: "Fish", answer: "8" },
+      { id: "turtle", label: "Turtle", answer: "2" },
+      { id: "seahorse", label: "Seahorse", answer: "4" },
+      { id: "whale", label: "Whale", answer: "1" },
+      { id: "shark", label: "Shark", answer: "3" },
+    ],
+  },
+  {
+    id: 2,
+    title: "Crossword - Animals",
+    image: puzzle2,
+    questions: [
+      { id: "1across", label: "1. Across - Polar bear", answer: "POLARBEAR" },
+      { id: "4across", label: "4. Across - Snake", answer: "SNAKE" },
+      { id: "1down", label: "1. Down - Pig", answer: "PIG" },
+      { id: "2down", label: "2. Down - Cat", answer: "CAT" },
+      { id: "3down", label: "3. Down - Rat", answer: "RAT" },
+      { id: "4down", label: "4. Down - Sheep", answer: "SHEEP" },
+      { id: "5down", label: "5. Down - Bee", answer: "BEE" },
+    ],
+  },
+  {
+    id: 3,
+    title: "Crossword Puzzle for Kids",
+    image: puzzle3,
+    questions: [
+      { id: "c", label: "C - Cat", answer: "CAT" },
+      { id: "n", label: "N - Narwhal", answer: "NARWHAL" },
+      { id: "k", label: "K - Krab", answer: "KRAB" },
+      { id: "b", label: "B - Bird", answer: "BIRD" },
+      { id: "o", label: "O - Ostrich", answer: "OSTRICH" },
+      { id: "p", label: "P - Penguin", answer: "PENGUIN" },
+      { id: "s", label: "S - Snake", answer: "SNAKE" },
+      { id: "n2", label: "N (bottom) - Newt", answer: "NEWT" },
+    ],
+  },
+  {
+    id: 4,
+    title: "Crossword for Kids - Animals",
+    image: puzzle4,
+    questions: [
+      { id: "1across", label: "1. Across - Elephant", answer: "ELEPHANT" },
+      { id: "2across", label: "2. Across - Lion", answer: "LION" },
+      { id: "1down", label: "1. Down - Cheetah", answer: "CHEETAH" },
+      { id: "3down", label: "3. Down - Crocodile", answer: "CROCODILE" },
+      { id: "4down", label: "4. Down - Zebra", answer: "ZEBRA" },
+      { id: "5down", label: "5. Down - Giraffe", answer: "GIRAFFE" },
+    ],
+  },
+  {
+    id: 5,
+    title: "Crossword - Farm Animals",
+    image: puzzle5,
+    questions: [
+      { id: "1down", label: "1. Duck", answer: "DUCK" },
+      { id: "2across", label: "2. Bull", answer: "BULL" },
+      { id: "3down", label: "3. Cow", answer: "COW" },
+      { id: "4across", label: "4. Horse", answer: "HORSE" },
+      { id: "5across", label: "5. Goat", answer: "GOAT" },
+      { id: "6across", label: "6. Pig", answer: "PIG" },
+      { id: "7across", label: "7. Rooster", answer: "ROOSTER" },
+    ],
+  },
+];
 
 const Puzzle = () => {
-  const seaCreatures = [
-    { name: "Octopus", emoji: "🐙", count: 2 },
-    { name: "Fish", emoji: "🐠", count: 8 },
-    { name: "Turtle", emoji: "🐢", count: 2 },
-    { name: "Seahorse", emoji: "🦭", count: 4 },
-    { name: "Whale", emoji: "🐋", count: 1 },
-    { name: "Shark", emoji: "🦈", count: 3 },
-  ];
-
+  const [currentPuzzle, setCurrentPuzzle] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [showResults, setShowResults] = useState(false);
 
-  const handleAnswerChange = (creature: string, value: string) => {
-    setAnswers({ ...answers, [creature]: value });
+  const puzzle = puzzles[currentPuzzle];
+
+  const handleAnswerChange = (questionId: string, value: string) => {
+    setAnswers({ ...answers, [questionId]: value.toUpperCase() });
   };
 
   const checkAnswers = () => {
     let correct = 0;
     let incorrect = 0;
 
-    seaCreatures.forEach((creature) => {
-      const userAnswer = parseInt(answers[creature.name] || "0");
-      if (userAnswer === creature.count) {
+    puzzle.questions.forEach((question) => {
+      const userAnswer = (answers[question.id] || "").toUpperCase().trim();
+      const correctAnswer = question.answer.toUpperCase().trim();
+      
+      if (userAnswer === correctAnswer) {
         correct++;
       } else {
         incorrect++;
@@ -51,104 +126,123 @@ const Puzzle = () => {
     toast.info("Puzzle reset! Try again.");
   };
 
-  const renderCreatures = (creature: typeof seaCreatures[0]) => {
-    return Array(creature.count)
-      .fill(0)
-      .map((_, index) => (
-        <span
-          key={index}
-          className="text-4xl md:text-5xl inline-block m-2 animate-bounce"
-          style={{ animationDelay: `${index * 0.1}s` }}
-        >
-          {creature.emoji}
-        </span>
-      ));
+  const nextPuzzle = () => {
+    if (currentPuzzle < puzzles.length - 1) {
+      setCurrentPuzzle(currentPuzzle + 1);
+      setAnswers({});
+      setShowResults(false);
+    }
   };
 
-  const isCorrect = (creature: string, correctCount: number) => {
-    return parseInt(answers[creature] || "0") === correctCount;
+  const previousPuzzle = () => {
+    if (currentPuzzle > 0) {
+      setCurrentPuzzle(currentPuzzle - 1);
+      setAnswers({});
+      setShowResults(false);
+    }
+  };
+
+  const isCorrect = (questionId: string, correctAnswer: string) => {
+    const userAnswer = (answers[questionId] || "").toUpperCase().trim();
+    return userAnswer === correctAnswer.toUpperCase().trim();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-200 via-blue-300 to-cyan-200 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-b from-purple-100 via-pink-100 to-blue-100 p-4 md:p-8">
       <div className="container mx-auto max-w-6xl">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl md:text-6xl font-bold text-blue-600 drop-shadow-lg">
-            How Many? 🌊
+          <h1 className="text-3xl md:text-5xl font-bold text-purple-700 drop-shadow-lg">
+            Puzzle {currentPuzzle + 1} of {puzzles.length}
           </h1>
           <Button asChild variant="outline">
-            <Link to="/">
+            <Link to="/learning-app">
               <Home className="w-4 h-4 mr-2" />
-              Home
+              Back
             </Link>
           </Button>
         </div>
 
-        {/* Main Puzzle Area */}
-        <Card className="bg-blue-100/80 backdrop-blur-sm shadow-2xl border-4 border-blue-300 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl md:text-3xl text-center text-blue-700">
-              Count the sea creatures!
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-gradient-to-br from-blue-400 to-cyan-400 rounded-3xl p-6 md:p-12 border-4 border-blue-500 shadow-inner min-h-[400px] flex flex-wrap justify-center items-center gap-4">
-              {seaCreatures.map((creature) =>
-                renderCreatures(creature)
-              )}
+        {/* Puzzle Navigation */}
+        <div className="flex justify-between items-center mb-6">
+          <Button
+            onClick={previousPuzzle}
+            disabled={currentPuzzle === 0}
+            variant="outline"
+            size="lg"
+          >
+            <ChevronLeft className="w-5 h-5 mr-2" />
+            Previous
+          </Button>
+          <h2 className="text-2xl font-bold text-purple-600">{puzzle.title}</h2>
+          <Button
+            onClick={nextPuzzle}
+            disabled={currentPuzzle === puzzles.length - 1}
+            variant="outline"
+            size="lg"
+          >
+            Next
+            <ChevronRight className="w-5 h-5 ml-2" />
+          </Button>
+        </div>
+
+        {/* Puzzle Image */}
+        <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-purple-300 mb-8">
+          <CardContent className="p-6">
+            <div className="bg-gradient-to-br from-white to-purple-50 rounded-xl p-4 border-2 border-purple-200">
+              <img
+                src={puzzle.image}
+                alt={puzzle.title}
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
             </div>
           </CardContent>
         </Card>
 
         {/* Answer Section */}
-        <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-blue-300">
+        <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-purple-300">
           <CardHeader>
-            <CardTitle className="text-2xl md:text-3xl text-center text-blue-700">
-              Enter your answers
+            <CardTitle className="text-2xl md:text-3xl text-center text-purple-700">
+              Fill in your answers
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {seaCreatures.map((creature) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {puzzle.questions.map((question) => (
                 <div
-                  key={creature.name}
-                  className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
+                  key={question.id}
+                  className={`p-4 rounded-xl border-2 transition-all ${
                     showResults
-                      ? isCorrect(creature.name, creature.count)
+                      ? isCorrect(question.id, question.answer)
                         ? "bg-green-100 border-green-400"
                         : "bg-red-100 border-red-400"
-                      : "bg-blue-50 border-blue-300"
+                      : "bg-purple-50 border-purple-300"
                   }`}
                 >
-                  <span className="text-4xl">{creature.emoji}</span>
-                  <div className="flex-1">
-                    <label className="block text-sm font-semibold text-blue-700 mb-2">
-                      {creature.name}
-                    </label>
-                    <Input
-                      type="number"
-                      min="0"
-                      placeholder="?"
-                      value={answers[creature.name] || ""}
-                      onChange={(e) =>
-                        handleAnswerChange(creature.name, e.target.value)
-                      }
-                      className="text-center text-xl font-bold"
-                      disabled={showResults}
-                    />
-                    {showResults && (
-                      <p className="text-sm mt-2 font-semibold">
-                        {isCorrect(creature.name, creature.count) ? (
-                          <span className="text-green-600">✓ Correct!</span>
-                        ) : (
-                          <span className="text-red-600">
-                            ✗ Answer: {creature.count}
-                          </span>
-                        )}
-                      </p>
-                    )}
-                  </div>
+                  <label className="block text-sm font-semibold text-purple-700 mb-2">
+                    {question.label}
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Type answer..."
+                    value={answers[question.id] || ""}
+                    onChange={(e) =>
+                      handleAnswerChange(question.id, e.target.value)
+                    }
+                    className="text-lg font-semibold uppercase"
+                    disabled={showResults}
+                  />
+                  {showResults && (
+                    <p className="text-sm mt-2 font-semibold">
+                      {isCorrect(question.id, question.answer) ? (
+                        <span className="text-green-600">✓ Correct!</span>
+                      ) : (
+                        <span className="text-red-600">
+                          ✗ Answer: {question.answer}
+                        </span>
+                      )}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
