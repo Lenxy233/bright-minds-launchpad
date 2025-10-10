@@ -57,11 +57,7 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/puzzle" element={<Puzzle />} />
-            <Route path="/puzzle-admin" element={
-              <ProtectedRoute>
-                <PuzzleAdmin />
-              </ProtectedRoute>
-            } />
+            <Route path="/puzzle-admin" element={<PuzzleAdmin />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
