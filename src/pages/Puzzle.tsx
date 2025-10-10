@@ -38,11 +38,15 @@ export default function Puzzle() {
   }, []);
 
   const loadPuzzles = async () => {
+    console.log("Starting to load puzzles...");
     try {
       const { data: puzzlesData, error: puzzlesError } = await supabase
         .from("puzzles")
         .select("*")
         .order("created_at", { ascending: true });
+
+      console.log("Puzzles data:", puzzlesData);
+      console.log("Puzzles error:", puzzlesError);
 
       if (puzzlesError) throw puzzlesError;
 
@@ -63,11 +67,13 @@ export default function Puzzle() {
         })
       );
 
+      console.log("Puzzles with zones:", puzzlesWithZones);
       setPuzzles(puzzlesWithZones);
     } catch (error) {
       console.error("Error loading puzzles:", error);
       toast.error("Failed to load puzzles");
     } finally {
+      console.log("Loading complete, puzzles count:", puzzles.length);
       setLoading(false);
     }
   };
