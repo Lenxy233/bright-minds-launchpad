@@ -25,6 +25,8 @@ const BatchStoryUpload = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadedStories, setUploadedStories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<'Computer Science' | 'Environmental Education' | 'Critical Thinking'>('Environmental Education');
+  const [jsonFile, setJsonFile] = useState<File | null>(null);
+  const [jsonStories, setJsonStories] = useState<StoryData[]>([]);
 
   const environmentalEducationStories: StoryData[] = [
     {
@@ -481,6 +483,77 @@ const BatchStoryUpload = () => {
     return story.title;
   };
 
+  const handleJsonUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setJsonFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const parsedStories = JSON.parse(content) as StoryData[];
+        
+        // Validate structure
+        if (!Array.isArray(parsedStories)) {
+          throw new Error('JSON must be an array of stories');
+        }
+        
+        setJsonStories(parsedStories);
+        toast({
+          title: 'JSON Loaded',
+          description: `${parsedStories.length} stories found in the file.`,
+        });
+      } catch (error) {
+        toast({
+          title: 'Invalid JSON',
+          description: 'Please upload a valid JSON file with story data.',
+          variant: 'destructive',
+        });
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const handleJsonBatchUpload = async () => {
+    if (jsonStories.length === 0) {
+      toast({
+        title: 'No Stories',
+        description: 'Please upload a JSON file first.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setUploading(true);
+    const uploaded: string[] = [];
+
+    for (const story of jsonStories) {
+      try {
+        const storyId = await uploadStory(story);
+        uploaded.push(story.title);
+        toast({
+          title: 'Uploaded',
+          description: `${story.title} uploaded successfully!`,
+        });
+      } catch (error) {
+        toast({
+          title: 'Upload Failed',
+          description: `Failed to upload ${story.title}`,
+          variant: 'destructive',
+        });
+      }
+    }
+
+    setUploadedStories(uploaded);
+    setUploading(false);
+    
+    toast({
+      title: 'Batch Upload Complete',
+      description: `${uploaded.length} out of ${jsonStories.length} stories uploaded successfully.`,
+    });
+  };
+
   const handleBatchUpload = async () => {
     setUploading(true);
     const uploaded: string[] = [];
@@ -542,18 +615,81 @@ const BatchStoryUpload = () => {
           </Button>
         </div>
 
-        <Tabs 
-          value={selectedCategory} 
-          onValueChange={(value) => {
-            setSelectedCategory(value as 'Computer Science' | 'Environmental Education' | 'Critical Thinking');
-            setUploadedStories([]);
-          }}
-          className="mb-6"
-        >
+        <Tabs defaultValue="preloaded" className="mb-6">
           <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="Environmental Education">Environmental Education</TabsTrigger>
-            <TabsTrigger value="Computer Science">Computer Science</TabsTrigger>
+            <TabsTrigger value="preloaded">Pre-loaded Stories</TabsTrigger>
+            <TabsTrigger value="json">Upload JSON File</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="json">
+            <Card className="p-6">
+              <div className="border-2 border-dashed rounded-lg p-8 text-center mb-6">
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={handleJsonUpload}
+                  className="hidden"
+                  id="json-upload"
+                />
+                <label htmlFor="json-upload" className="cursor-pointer">
+                  <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                  <p className="text-lg font-medium mb-2">Upload JSON File</p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Click to select a JSON file containing story data
+                  </p>
+                  {jsonFile && (
+                    <p className="text-sm text-green-600 font-medium">
+                      Selected: {jsonFile.name}
+                    </p>
+                  )}
+                </label>
+              </div>
+
+              {jsonStories.length > 0 && (
+                <>
+                  <div className="space-y-2 mb-6">
+                    <h3 className="text-xl font-semibold mb-3">Stories in JSON ({jsonStories.length})</h3>
+                    <div className="max-h-96 overflow-y-auto space-y-2">
+                      {jsonStories.map((story, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <div className="flex-1">
+                            <p className="font-medium">{story.title}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">{story.category}</p>
+                          </div>
+                          {uploadedStories.includes(story.title) && (
+                            <CheckCircle2 className="w-5 h-5 text-green-600" />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={handleJsonBatchUpload}
+                    disabled={uploading}
+                    className="w-full gap-2"
+                    size="lg"
+                  >
+                    <Upload className="h-5 w-5" />
+                    {uploading ? 'Uploading...' : 'Upload All Stories from JSON'}
+                  </Button>
+                </>
+              )}
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="preloaded">
+            <Tabs 
+              value={selectedCategory} 
+              onValueChange={(value) => {
+                setSelectedCategory(value as 'Computer Science' | 'Environmental Education' | 'Critical Thinking');
+                setUploadedStories([]);
+              }}
+            >
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="Environmental Education">Environmental Education</TabsTrigger>
+                <TabsTrigger value="Computer Science">Computer Science</TabsTrigger>
+              </TabsList>
 
           <TabsContent value="Environmental Education">
             <Card className="p-6">
@@ -627,6 +763,8 @@ const BatchStoryUpload = () => {
                   : "Start Batch Upload"}
               </Button>
             </Card>
+          </TabsContent>
+            </Tabs>
           </TabsContent>
         </Tabs>
 
