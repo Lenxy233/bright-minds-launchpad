@@ -15,7 +15,7 @@ const worksheets = [
   { id: 1, image: worksheet1, title: "Straight Lines", rotation: 0 },
   { id: 2, image: worksheet2, title: "Zigzag Patterns", rotation: 180 },
   { id: 3, image: worksheet3, title: "Curved Lines", rotation: 180 },
-  { id: 4, image: worksheet4, title: "Complex Shapes", rotation: 0 }
+  { id: 4, image: worksheet4, title: "Complex Shapes", rotation: 180 }
 ];
 
 const ScissorsCutting = () => {
