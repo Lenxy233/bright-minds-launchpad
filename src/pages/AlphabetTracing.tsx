@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Canvas as FabricCanvas, PencilBrush, Image as FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Eraser, Palette, RotateCcw, Download, Paintbrush, Pencil } from "lucide-react";
+import { ArrowLeft, Eraser, Palette, RotateCcw, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import confetti from "canvas-confetti";
-import { Slider } from "@/components/ui/slider";
 
 import pageA from "@/assets/alphabet/page-a.jpg";
 import pageB from "@/assets/alphabet/page-b.jpg";
@@ -25,16 +24,11 @@ const worksheets = [
 const AlphabetTracing = () => {
   const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const coloringCanvasRef = useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [currentWorksheet, setCurrentWorksheet] = useState(0);
   const [brushColor, setBrushColor] = useState("#FF1493");
   const [isErasing, setIsErasing] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
-  const [mode, setMode] = useState<"coloring" | "tracing">("coloring");
-  const [brushSize, setBrushSize] = useState(5);
-  const coloringCtxRef = useRef<CanvasRenderingContext2D | null>(null);
-  const backgroundImageRef = useRef<HTMLImageElement | null>(null);
 
   const colors = [
     { name: "Pink", value: "#FF1493" },
@@ -48,37 +42,21 @@ const AlphabetTracing = () => {
   ];
 
   useEffect(() => {
-    if (!canvasRef.current || !coloringCanvasRef.current) return;
+    if (!canvasRef.current) return;
 
-    const width = Math.min(800, window.innerWidth - 40);
-    const height = 600;
-
-    // Setup tracing canvas
     const canvas = new FabricCanvas(canvasRef.current, {
-      width,
-      height,
-      backgroundColor: "transparent",
+      width: Math.min(800, window.innerWidth - 40),
+      height: 600,
+      backgroundColor: "#ffffff",
       isDrawingMode: true,
-      selection: false,
     });
 
     const brush = new PencilBrush(canvas);
     brush.color = brushColor;
-    brush.width = brushSize;
+    brush.width = 8;
     canvas.freeDrawingBrush = brush;
 
     setFabricCanvas(canvas);
-
-    // Setup coloring canvas
-    const coloringCanvas = coloringCanvasRef.current;
-    coloringCanvas.width = width;
-    coloringCanvas.height = height;
-    const ctx = coloringCanvas.getContext("2d", { willReadFrequently: true });
-    if (ctx) {
-      ctx.imageSmoothingEnabled = false;
-    }
-    coloringCtxRef.current = ctx;
-
     loadWorksheet(canvas, 0);
 
     return () => {
@@ -88,130 +66,47 @@ const AlphabetTracing = () => {
 
   const loadWorksheet = (canvas: FabricCanvas, index: number) => {
     canvas.clear();
-    canvas.backgroundColor = "transparent";
+    canvas.backgroundColor = "#ffffff";
 
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = worksheets[index].image;
-    
-    img.onload = () => {
-      backgroundImageRef.current = img;
-      
+    FabricImage.fromURL(worksheets[index].image, {
+      crossOrigin: "anonymous",
+    }).then((img) => {
       const canvasWidth = canvas.width || 800;
       const canvasHeight = canvas.height || 600;
       
       const scale = Math.min(
-        canvasWidth / img.width,
-        canvasHeight / img.height
+        canvasWidth / (img.width || 1),
+        canvasHeight / (img.height || 1)
       ) * 0.95;
 
-      // Draw on coloring canvas
-      if (coloringCtxRef.current && coloringCanvasRef.current) {
-        coloringCtxRef.current.clearRect(0, 0, coloringCanvasRef.current.width, coloringCanvasRef.current.height);
-        coloringCtxRef.current.fillStyle = "#ffffff";
-        coloringCtxRef.current.fillRect(0, 0, coloringCanvasRef.current.width, coloringCanvasRef.current.height);
-        
-        const left = (canvasWidth - img.width * scale) / 2;
-        const top = (canvasHeight - img.height * scale) / 2;
-        
-        coloringCtxRef.current.drawImage(
-          img,
-          left,
-          top,
-          img.width * scale,
-          img.height * scale
-        );
-      }
-    };
+      img.scale(scale);
+      img.set({
+        left: (canvasWidth - (img.width || 0) * scale) / 2,
+        top: (canvasHeight - (img.height || 0) * scale) / 2,
+        selectable: false,
+        evented: false,
+      });
+
+      canvas.add(img);
+      canvas.sendObjectToBack(img);
+      canvas.renderAll();
+    });
   };
 
   useEffect(() => {
     if (!fabricCanvas) return;
 
-    fabricCanvas.isDrawingMode = mode === "tracing";
-
     const brush = fabricCanvas.freeDrawingBrush;
     if (brush instanceof PencilBrush) {
       if (isErasing) {
         brush.color = "#ffffff";
-        brush.width = brushSize * 2;
+        brush.width = 20;
       } else {
         brush.color = brushColor;
-        brush.width = brushSize;
+        brush.width = 8;
       }
     }
-  }, [brushColor, isErasing, fabricCanvas, mode, brushSize]);
-
-  const floodFill = (x: number, y: number, fillColor: string) => {
-    if (!coloringCtxRef.current || !coloringCanvasRef.current) return;
-
-    const ctx = coloringCtxRef.current;
-    const canvas = coloringCanvasRef.current;
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const pixels = imageData.data;
-
-    const targetColor = getPixelColor(pixels, x, y, canvas.width);
-    const fillRgb = hexToRgb(fillColor);
-
-    if (colorsMatch(targetColor, fillRgb)) return;
-
-    const stack: [number, number][] = [[x, y]];
-    const visited = new Set<string>();
-
-    while (stack.length > 0) {
-      const [px, py] = stack.pop()!;
-      const key = `${px},${py}`;
-
-      if (visited.has(key)) continue;
-      if (px < 0 || px >= canvas.width || py < 0 || py >= canvas.height) continue;
-
-      const currentColor = getPixelColor(pixels, px, py, canvas.width);
-      if (!colorsMatch(currentColor, targetColor)) continue;
-
-      visited.add(key);
-      setPixelColor(pixels, px, py, canvas.width, fillRgb);
-
-      stack.push([px + 1, py], [px - 1, py], [px, py + 1], [px, py - 1]);
-    }
-
-    ctx.putImageData(imageData, 0, 0);
-  };
-
-  const getPixelColor = (pixels: Uint8ClampedArray, x: number, y: number, width: number) => {
-    const index = (y * width + x) * 4;
-    return [pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3]];
-  };
-
-  const setPixelColor = (pixels: Uint8ClampedArray, x: number, y: number, width: number, color: number[]) => {
-    const index = (y * width + x) * 4;
-    pixels[index] = color[0];
-    pixels[index + 1] = color[1];
-    pixels[index + 2] = color[2];
-    pixels[index + 3] = 255;
-  };
-
-  const colorsMatch = (c1: number[], c2: number[]) => {
-    return c1[0] === c2[0] && c1[1] === c2[1] && c1[2] === c2[2] && c1[3] === c2[3];
-  };
-
-  const hexToRgb = (hex: string): number[] => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-      parseInt(result[1], 16),
-      parseInt(result[2], 16),
-      parseInt(result[3], 16)
-    ] : [0, 0, 0];
-  };
-
-  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (mode !== "coloring" || !coloringCanvasRef.current) return;
-
-    const rect = coloringCanvasRef.current.getBoundingClientRect();
-    const x = Math.floor(e.clientX - rect.left);
-    const y = Math.floor(e.clientY - rect.top);
-
-    floodFill(x, y, brushColor);
-  };
+  }, [brushColor, isErasing, fabricCanvas]);
 
   const handleClear = () => {
     if (!fabricCanvas) return;
@@ -257,102 +152,60 @@ const AlphabetTracing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 p-2">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-2">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 p-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
           <Button
             onClick={() => navigate("/learning-app")}
             variant="outline"
-            size="sm"
-            className="gap-1 text-xs"
+            className="gap-2"
           >
-            <ArrowLeft className="w-3 h-3" />
+            <ArrowLeft className="w-4 h-4" />
             Back
           </Button>
-          <h1 className="text-lg md:text-2xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            🎨 Alphabet Tracing
+          <h1 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            🎨 Alphabet Tracing & Coloring
           </h1>
-          <div className="w-16" />
+          <div className="w-20" />
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-2 mb-2">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-base md:text-lg font-bold text-gray-800">
+        <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">
               {worksheets[currentWorksheet].title}
             </h2>
-            <div className="flex gap-1">
+            <div className="flex gap-2">
               <Button
                 onClick={handlePrevWorksheet}
                 variant="outline"
                 size="sm"
-                className="text-xs"
               >
-                ← Prev
+                ← Previous
               </Button>
               <Button
                 onClick={handleNextWorksheet}
                 variant="outline"
                 size="sm"
-                className="text-xs"
               >
                 Next →
               </Button>
             </div>
           </div>
 
-          <div className="relative border border-purple-200 rounded overflow-hidden mb-2 inline-block">
-            <canvas 
-              ref={coloringCanvasRef} 
-              className="block max-w-full"
-              onClick={handleCanvasClick}
-              style={{ 
-                cursor: mode === "coloring" ? "crosshair" : "default",
-                display: "block",
-                pointerEvents: mode === "coloring" ? "auto" : "none"
-              }}
-            />
-            <canvas 
-              ref={canvasRef} 
-              className="absolute top-0 left-0 max-w-full"
-              style={{ 
-                pointerEvents: mode === "tracing" ? "auto" : "none",
-                display: "block",
-                cursor: mode === "tracing" ? "crosshair" : "default"
-              }}
-            />
+          <div className="relative border-4 border-purple-200 rounded-xl overflow-hidden mb-4">
+            <canvas ref={canvasRef} className="max-w-full" />
             {feedbackMessage && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm pointer-events-none">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-base font-bold shadow-xl">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm pointer-events-none animate-fade-in animate-scale-in">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-2xl text-2xl font-bold shadow-2xl">
                   {feedbackMessage}
                 </div>
               </div>
             )}
           </div>
 
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap gap-1.5 items-center">
-              <Button
-                onClick={() => setMode("coloring")}
-                variant={mode === "coloring" ? "default" : "outline"}
-                size="sm"
-                className="gap-1.5 text-xs"
-              >
-                <Palette className="w-3 h-3" />
-                Color
-              </Button>
-              <Button
-                onClick={() => setMode("tracing")}
-                variant={mode === "tracing" ? "default" : "outline"}
-                size="sm"
-                className="gap-1.5 text-xs"
-              >
-                <Pencil className="w-3 h-3" />
-                Trace
-              </Button>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 items-center">
-              <span className="text-xs font-semibold text-gray-700">Colors:</span>
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="text-sm font-semibold text-gray-700">Colors:</span>
               {colors.map((color) => (
                 <button
                   key={color.value}
@@ -360,7 +213,7 @@ const AlphabetTracing = () => {
                     setBrushColor(color.value);
                     setIsErasing(false);
                   }}
-                  className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-110 ${
+                  className={`w-10 h-10 rounded-full border-4 transition-all hover:scale-110 ${
                     brushColor === color.value && !isErasing
                       ? "border-gray-800 scale-110"
                       : "border-gray-300"
@@ -371,69 +224,45 @@ const AlphabetTracing = () => {
               ))}
             </div>
 
-            {mode === "tracing" && (
-              <div className="flex items-center gap-2 p-1.5 bg-purple-50 rounded">
-                <Paintbrush className="w-3 h-3 text-purple-600" />
-                <span className="text-xs font-semibold text-gray-700">Size:</span>
-                <Slider
-                  value={[brushSize]}
-                  onValueChange={(value) => setBrushSize(value[0])}
-                  min={2}
-                  max={20}
-                  step={1}
-                  className="flex-1 max-w-[120px]"
-                />
-                <span className="text-xs font-semibold text-gray-700 min-w-[30px]">{brushSize}px</span>
-              </div>
-            )}
-
-            <div className="flex flex-wrap gap-1">
-              {mode === "tracing" && (
-                <Button
-                  onClick={() => setIsErasing(!isErasing)}
-                  variant={isErasing ? "default" : "outline"}
-                  size="sm"
-                  className="gap-1.5 text-xs"
-                >
-                  <Eraser className="w-3 h-3" />
-                  Eraser
-                </Button>
-              )}
+            <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={() => setIsErasing(!isErasing)}
+                variant={isErasing ? "default" : "outline"}
+                className="gap-2"
+              >
+                <Eraser className="w-4 h-4" />
+                Eraser
+              </Button>
               <Button
                 onClick={handleClear}
                 variant="outline"
-                size="sm"
-                className="gap-1.5 text-xs"
+                className="gap-2"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-4 h-4" />
                 Clear
               </Button>
               <Button
                 onClick={handleCelebrate}
-                size="sm"
-                className="gap-1.5 text-xs bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                className="gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
               >
-                <Palette className="w-3 h-3" />
-                Done!
+                <Palette className="w-4 h-4" />
+                I'm Done!
               </Button>
               <Button
                 onClick={handleDownload}
                 variant="outline"
-                size="sm"
-                className="gap-1.5 text-xs"
+                className="gap-2"
               >
-                <Download className="w-3 h-3" />
-                Save
+                <Download className="w-4 h-4" />
+                Download
               </Button>
             </div>
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded p-2 text-center">
-          <p className="text-xs text-gray-700">
-            {mode === "coloring" 
-              ? "🎨 Click to fill sections with color!" 
-              : "✏️ Draw on the worksheet to trace letters!"}
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center">
+          <p className="text-lg text-gray-700">
+            ✏️ Trace the letters and color the pictures! Practice makes perfect! 🌈
           </p>
         </div>
       </div>
