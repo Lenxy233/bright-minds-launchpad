@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Canvas as FabricCanvas, Line, Image as FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Scissors, Eraser, RotateCcw, Download, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { Scissors, Eraser, RotateCcw, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import worksheet1 from "@/assets/scissors/worksheet-1.jpg";
@@ -22,7 +22,6 @@ const ScissorsCutting = () => {
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [isCutting, setIsCutting] = useState(false);
   const [currentWorksheet, setCurrentWorksheet] = useState(0);
-  const [isPoppedOut, setIsPoppedOut] = useState(false);
   const { toast } = useToast();
   const isDrawingRef = useRef(false);
   const lastPosRef = useRef<{ x: number; y: number } | null>(null);
@@ -157,65 +156,9 @@ const ScissorsCutting = () => {
     if (!fabricCanvas) return;
     loadWorksheet(fabricCanvas, currentWorksheet);
     setIsCutting(false);
-    setIsPoppedOut(false);
     toast({
       title: "Reset!",
       description: "Worksheet has been reset.",
-    });
-  };
-
-  const handlePopOut = () => {
-    if (!fabricCanvas) return;
-
-    const objects = fabricCanvas.getObjects();
-    const lines = objects.filter((obj) => obj.type === "line");
-
-    if (lines.length === 0) {
-      toast({
-        title: "No cuts yet!",
-        description: "Make some cuts first, then pop them out!",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Toggle pop-out effect
-    const newState = !isPoppedOut;
-    setIsPoppedOut(newState);
-
-    lines.forEach((line, index) => {
-      if (newState) {
-        // Apply pop-out effect with staggered animation
-        setTimeout(() => {
-          line.set({
-            shadow: {
-              color: "rgba(0, 0, 0, 0.5)",
-              blur: 20,
-              offsetX: 5,
-              offsetY: 5
-            } as any,
-            strokeWidth: 12,
-            stroke: "rgba(255, 255, 255, 0.95)"
-          });
-          fabricCanvas.renderAll();
-        }, index * 50);
-      } else {
-        // Remove pop-out effect
-        line.set({
-          shadow: null,
-          strokeWidth: 8,
-          stroke: "rgba(255, 255, 255, 0.9)"
-        });
-      }
-    });
-
-    fabricCanvas.renderAll();
-
-    toast({
-      title: newState ? "✨ Popped Out!" : "Flattened!",
-      description: newState 
-        ? "Your cuts are now popping out!" 
-        : "Cuts are back to normal.",
     });
   };
 
@@ -245,7 +188,6 @@ const ScissorsCutting = () => {
     if (fabricCanvas) {
       loadWorksheet(fabricCanvas, newIndex);
       setIsCutting(false);
-      setIsPoppedOut(false);
     }
   };
 
@@ -255,7 +197,6 @@ const ScissorsCutting = () => {
     if (fabricCanvas) {
       loadWorksheet(fabricCanvas, newIndex);
       setIsCutting(false);
-      setIsPoppedOut(false);
     }
   };
 
@@ -310,14 +251,6 @@ const ScissorsCutting = () => {
               <Scissors className="w-4 h-4 mr-2" />
               {isCutting ? "Stop Cutting" : "Start Cutting"}
             </Button>
-            <Button 
-              onClick={handlePopOut}
-              variant={isPoppedOut ? "default" : "outline"}
-              className={isPoppedOut ? "bg-purple-600 hover:bg-purple-700" : ""}
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              {isPoppedOut ? "Flatten" : "Pop Out!"}
-            </Button>
             <Button onClick={handleClear} variant="outline">
               <Eraser className="w-4 h-4 mr-2" />
               Clear Cuts
@@ -343,7 +276,6 @@ const ScissorsCutting = () => {
             <ol className="list-decimal list-inside space-y-1 text-blue-700">
               <li>Click "Start Cutting" to activate the scissors</li>
               <li>Click and drag along the dotted lines to cut</li>
-              <li>Click "Pop Out!" to see your cuts come to life with 3D effects! ✨</li>
               <li>Use "Clear Cuts" to erase your cuts and try again</li>
               <li>Click "Save" to download your completed worksheet</li>
               <li>Navigate between different worksheets using the arrows</li>
