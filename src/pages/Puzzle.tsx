@@ -34,6 +34,7 @@ export default function Puzzle() {
   const [loading, setLoading] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+  const [shakeCard, setShakeCard] = useState(false);
 
   useEffect(() => {
     loadPuzzles();
@@ -84,6 +85,7 @@ export default function Puzzle() {
     setAnswers({});
     setShowResults(false);
     setImageLoaded(false);
+    setShakeCard(false);
   }, [currentPuzzleIndex]);
 
   if (loading) {
@@ -156,6 +158,10 @@ export default function Puzzle() {
         duration: 3000,
       });
     } else {
+      // Trigger shake animation
+      setShakeCard(true);
+      setTimeout(() => setShakeCard(false), 500);
+      
       toast.error(
         `${correctCount} out of ${puzzle.answer_zones.length} correct. Try again!`,
         {
@@ -168,6 +174,7 @@ export default function Puzzle() {
   const resetPuzzle = () => {
     setAnswers({});
     setShowResults(false);
+    setShakeCard(false);
   };
 
   const nextPuzzle = () => {
@@ -202,7 +209,7 @@ export default function Puzzle() {
           Interactive Puzzles
         </h1>
 
-        <Card className="p-6 mb-6">
+        <Card className={`p-6 mb-6 relative ${shakeCard ? 'animate-shake' : ''}`}>
           <div className="flex items-center justify-between mb-6">
             <Button
               onClick={previousPuzzle}
@@ -270,6 +277,14 @@ export default function Puzzle() {
                 );
               })}
           </div>
+
+          {showResults && puzzle.answer_zones.some(zone => !isCorrect(zone.id)) && (
+            <div className="mt-4 p-4 bg-red-50 border-2 border-red-500 rounded-lg text-center animate-fade-in">
+              <p className="text-red-700 font-semibold text-lg">
+                ❌ Some answers are incorrect. Please try again!
+              </p>
+            </div>
+          )}
 
           <div className="mt-6 text-center">
             {!showResults ? (
