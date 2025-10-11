@@ -23,6 +23,7 @@ const ScissorsCutting = () => {
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [isCutting, setIsCutting] = useState(false);
   const [currentWorksheet, setCurrentWorksheet] = useState(0);
+  const [feedbackMessage, setFeedbackMessage] = useState<string>("");
   const { toast } = useToast();
   const isDrawingRef = useRef(false);
   const lastPosRef = useRef<{ x: number; y: number } | null>(null);
@@ -170,10 +171,8 @@ const ScissorsCutting = () => {
     const lines = objects.filter((obj) => obj.type === "line");
 
     if (lines.length === 0) {
-      toast({
-        title: "Start cutting first!",
-        description: "Make some cuts along the lines before celebrating.",
-      });
+      setFeedbackMessage("Start cutting first! ✂️");
+      setTimeout(() => setFeedbackMessage(""), 3000);
       return;
     }
 
@@ -192,10 +191,8 @@ const ScissorsCutting = () => {
     const minLength = 800; // pixels
     
     if (totalLength < minLength) {
-      toast({
-        title: "Keep going!",
-        description: "Try to cut more along the dotted lines.",
-      });
+      setFeedbackMessage("Keep going! Cut more along the lines! 🌟");
+      setTimeout(() => setFeedbackMessage(""), 3000);
       return;
     }
 
@@ -212,10 +209,8 @@ const ScissorsCutting = () => {
     
     // Require cuts to be spread across at least 200px in both directions
     if (xSpread < 200 || ySpread < 200) {
-      toast({
-        title: "Spread out your cuts!",
-        description: "Try cutting in different areas of the worksheet.",
-      });
+      setFeedbackMessage("Spread out your cuts! Try different areas! ✨");
+      setTimeout(() => setFeedbackMessage(""), 3000);
       return;
     }
 
@@ -366,8 +361,15 @@ const ScissorsCutting = () => {
           </div>
 
           {/* Canvas */}
-          <div className="border-4 border-purple-200 rounded-lg shadow-lg overflow-hidden bg-white">
+          <div className="border-4 border-purple-200 rounded-lg shadow-lg overflow-hidden bg-white relative">
             <canvas ref={canvasRef} className="max-w-full" />
+            {feedbackMessage && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none animate-fade-in">
+                <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-6 rounded-2xl shadow-2xl text-3xl font-bold animate-scale-in">
+                  {feedbackMessage}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Instructions */}
