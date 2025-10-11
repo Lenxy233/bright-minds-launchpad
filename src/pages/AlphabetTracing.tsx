@@ -85,7 +85,7 @@ const AlphabetTracing = () => {
     }
 
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    
     img.src = worksheets[index].image;
     img.onload = () => {
       const canvasWidth = canvas.width || 800;
@@ -291,7 +291,7 @@ const AlphabetTracing = () => {
               ref={coloringCanvasRef} 
               className="absolute inset-0" 
               onClick={handleCanvasClick}
-              style={{ cursor: toolMode === "fill" ? "crosshair" : "default" }}
+              style={{ cursor: toolMode === "fill" ? "crosshair" : "default", pointerEvents: toolMode === "fill" ? "auto" : "none" }}
             />
             <canvas 
               ref={canvasRef} 
