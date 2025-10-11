@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { Upload, Save, Trash2 } from "lucide-react";
+import { Upload, Save, Trash2, Copy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -182,6 +182,64 @@ export default function PuzzleAdmin() {
     }
     setAnswerZones((zones) => zones.filter((z) => z.id !== zoneId));
     setSelectedZone(null);
+  };
+
+  const duplicateZone = (zoneId: string) => {
+    if (!fabricCanvas) return;
+    
+    const zone = answerZones.find((z) => z.id === zoneId);
+    if (!zone) return;
+
+    const rect = new Rect({
+      left: (zone.x + 20), // Offset slightly so it's visible
+      top: (zone.y + 20),
+      fill: "rgba(255, 0, 0, 0.3)",
+      stroke: "red",
+      strokeWidth: 2,
+      width: zone.width,
+      height: zone.height,
+    });
+
+    const newZoneId = `zone-${Date.now()}`;
+    const newZone: AnswerZone = {
+      id: newZoneId,
+      x: rect.left!,
+      y: rect.top!,
+      width: rect.width!,
+      height: rect.height!,
+      correctAnswer: zone.correctAnswer, // Copy the answer too
+      orderIndex: answerZones.length,
+      rect,
+    };
+
+    rect.on("modified", () => {
+      setAnswerZones((zones) =>
+        zones.map((z) =>
+          z.id === newZoneId
+            ? {
+                ...z,
+                x: rect.left!,
+                y: rect.top!,
+                width: rect.width! * (rect.scaleX || 1),
+                height: rect.height! * (rect.scaleY || 1),
+              }
+            : z
+        )
+      );
+    });
+
+    rect.on("selected", () => {
+      setSelectedZone(newZoneId);
+    });
+
+    fabricCanvas.add(rect);
+    setAnswerZones([...answerZones, newZone]);
+    setSelectedZone(newZoneId);
+    
+    toast({
+      title: "Box duplicated",
+      description: "Answer box has been duplicated",
+    });
   };
 
   const savePuzzle = async () => {
@@ -379,13 +437,23 @@ export default function PuzzleAdmin() {
                     <span className="text-sm font-medium">
                       Box {zone.orderIndex + 1}
                     </span>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => deleteZone(zone.id)}
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => duplicateZone(zone.id)}
+                        title="Duplicate this box"
+                      >
+                        <Copy className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => deleteZone(zone.id)}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
                   </div>
                   <Input
                     placeholder="Correct answer"
