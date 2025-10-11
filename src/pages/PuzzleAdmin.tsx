@@ -320,6 +320,14 @@ export default function PuzzleAdmin() {
         description: "Puzzle created successfully",
       });
 
+      // Make answer boxes invisible after saving
+      fabricCanvas?.getObjects().forEach((obj) => {
+        if (obj.type === 'rect') {
+          obj.set({ opacity: 0 });
+        }
+      });
+      fabricCanvas?.renderAll();
+
       // Reset form
       setPuzzleTitle("");
       setPuzzleDescription("");
