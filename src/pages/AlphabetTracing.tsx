@@ -257,27 +257,27 @@ const AlphabetTracing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 p-2 md:p-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex items-center justify-between mb-3">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 p-2">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-2">
           <Button
             onClick={() => navigate("/learning-app")}
             variant="outline"
             size="sm"
-            className="gap-2"
+            className="gap-1 text-xs"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3 h-3" />
             Back
           </Button>
-          <h1 className="text-xl md:text-3xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            🎨 Alphabet Tracing & Coloring
+          <h1 className="text-lg md:text-2xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            🎨 Alphabet Tracing
           </h1>
-          <div className="w-16 md:w-20" />
+          <div className="w-16" />
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-3 md:p-4 mb-3">
+        <div className="bg-white rounded-lg shadow-lg p-2 mb-2">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-lg md:text-xl font-bold text-gray-800">
+            <h2 className="text-base md:text-lg font-bold text-gray-800">
               {worksheets[currentWorksheet].title}
             </h2>
             <div className="flex gap-1">
@@ -285,27 +285,30 @@ const AlphabetTracing = () => {
                 onClick={handlePrevWorksheet}
                 variant="outline"
                 size="sm"
+                className="text-xs"
               >
-                ← Previous
+                ← Prev
               </Button>
               <Button
                 onClick={handleNextWorksheet}
                 variant="outline"
                 size="sm"
+                className="text-xs"
               >
                 Next →
               </Button>
             </div>
           </div>
 
-          <div className="relative border-2 border-purple-200 rounded-lg overflow-hidden mb-3 inline-block">
+          <div className="relative border border-purple-200 rounded overflow-hidden mb-2 inline-block">
             <canvas 
               ref={coloringCanvasRef} 
               className="block max-w-full"
               onClick={handleCanvasClick}
               style={{ 
                 cursor: mode === "coloring" ? "crosshair" : "default",
-                display: "block"
+                display: "block",
+                pointerEvents: mode === "coloring" ? "auto" : "none"
               }}
             />
             <canvas 
@@ -313,40 +316,43 @@ const AlphabetTracing = () => {
               className="absolute top-0 left-0 max-w-full"
               style={{ 
                 pointerEvents: mode === "tracing" ? "auto" : "none",
-                display: "block"
+                display: "block",
+                cursor: mode === "tracing" ? "crosshair" : "default"
               }}
             />
             {feedbackMessage && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm pointer-events-none animate-fade-in animate-scale-in">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl text-xl font-bold shadow-xl">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm pointer-events-none">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-base font-bold shadow-xl">
                   {feedbackMessage}
                 </div>
               </div>
             )}
           </div>
 
-          <div className="space-y-2">
-            <div className="flex flex-wrap gap-2 items-center">
+          <div className="space-y-1.5">
+            <div className="flex flex-wrap gap-1.5 items-center">
               <Button
                 onClick={() => setMode("coloring")}
                 variant={mode === "coloring" ? "default" : "outline"}
-                className="gap-2"
+                size="sm"
+                className="gap-1.5 text-xs"
               >
-                <Palette className="w-4 h-4" />
-                Coloring Mode
+                <Palette className="w-3 h-3" />
+                Color
               </Button>
               <Button
                 onClick={() => setMode("tracing")}
                 variant={mode === "tracing" ? "default" : "outline"}
-                className="gap-2"
+                size="sm"
+                className="gap-1.5 text-xs"
               >
-                <Pencil className="w-4 h-4" />
-                Tracing Mode
+                <Pencil className="w-3 h-3" />
+                Trace
               </Button>
             </div>
 
-            <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-sm font-semibold text-gray-700">Colors:</span>
+            <div className="flex flex-wrap gap-1.5 items-center">
+              <span className="text-xs font-semibold text-gray-700">Colors:</span>
               {colors.map((color) => (
                 <button
                   key={color.value}
@@ -354,7 +360,7 @@ const AlphabetTracing = () => {
                     setBrushColor(color.value);
                     setIsErasing(false);
                   }}
-                  className={`w-10 h-10 rounded-full border-4 transition-all hover:scale-110 ${
+                  className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-110 ${
                     brushColor === color.value && !isErasing
                       ? "border-gray-800 scale-110"
                       : "border-gray-300"
@@ -366,8 +372,8 @@ const AlphabetTracing = () => {
             </div>
 
             {mode === "tracing" && (
-              <div className="flex items-center gap-2 p-2 bg-purple-50 rounded-lg">
-                <Paintbrush className="w-4 h-4 text-purple-600" />
+              <div className="flex items-center gap-2 p-1.5 bg-purple-50 rounded">
+                <Paintbrush className="w-3 h-3 text-purple-600" />
                 <span className="text-xs font-semibold text-gray-700">Size:</span>
                 <Slider
                   value={[brushSize]}
@@ -375,55 +381,59 @@ const AlphabetTracing = () => {
                   min={2}
                   max={20}
                   step={1}
-                  className="flex-1 max-w-[150px]"
+                  className="flex-1 max-w-[120px]"
                 />
-                <span className="text-xs font-semibold text-gray-700 min-w-[35px]">{brushSize}px</span>
+                <span className="text-xs font-semibold text-gray-700 min-w-[30px]">{brushSize}px</span>
               </div>
             )}
 
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1">
               {mode === "tracing" && (
                 <Button
                   onClick={() => setIsErasing(!isErasing)}
                   variant={isErasing ? "default" : "outline"}
-                  className="gap-2"
+                  size="sm"
+                  className="gap-1.5 text-xs"
                 >
-                  <Eraser className="w-4 h-4" />
+                  <Eraser className="w-3 h-3" />
                   Eraser
                 </Button>
               )}
               <Button
                 onClick={handleClear}
                 variant="outline"
-                className="gap-2"
+                size="sm"
+                className="gap-1.5 text-xs"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="w-3 h-3" />
                 Clear
               </Button>
               <Button
                 onClick={handleCelebrate}
-                className="gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                size="sm"
+                className="gap-1.5 text-xs bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
               >
-                <Palette className="w-4 h-4" />
-                I'm Done!
+                <Palette className="w-3 h-3" />
+                Done!
               </Button>
               <Button
                 onClick={handleDownload}
                 variant="outline"
-                className="gap-2"
+                size="sm"
+                className="gap-1.5 text-xs"
               >
-                <Download className="w-4 h-4" />
-                Download
+                <Download className="w-3 h-3" />
+                Save
               </Button>
             </div>
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 text-center">
-          <p className="text-sm md:text-base text-gray-700">
+        <div className="bg-white/80 backdrop-blur-sm rounded p-2 text-center">
+          <p className="text-xs text-gray-700">
             {mode === "coloring" 
-              ? "🎨 Click on any section to fill it with color! Switch to Tracing Mode to practice writing." 
-              : "✏️ Trace the letters with your brush! Adjust the brush size for better control."}
+              ? "🎨 Click to fill sections with color!" 
+              : "✏️ Draw on the worksheet to trace letters!"}
           </p>
         </div>
       </div>
