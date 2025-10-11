@@ -170,11 +170,6 @@ const ScissorsCutting = () => {
     const lines = objects.filter((obj) => obj.type === "line");
 
     if (lines.length === 0) {
-      toast({
-        title: "Start cutting first!",
-        description: "Make some cuts to celebrate your work!",
-        variant: "destructive"
-      });
       return;
     }
 
@@ -207,11 +202,6 @@ const ScissorsCutting = () => {
         origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
       });
     }, 250);
-
-    toast({
-      title: "🎉 Amazing Work!",
-      description: "You did a great job cutting! Keep practicing!",
-    });
   };
 
   const handleDownload = () => {
