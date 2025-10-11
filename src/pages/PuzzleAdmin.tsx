@@ -7,7 +7,10 @@ import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import { Upload, Save, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface AnswerZone {
   id: string;
@@ -30,6 +33,7 @@ export default function PuzzleAdmin() {
   const [answerZones, setAnswerZones] = useState<AnswerZone[]>([]);
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
   const [storageFiles, setStorageFiles] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [loadingFiles, setLoadingFiles] = useState(false);
@@ -277,6 +281,17 @@ export default function PuzzleAdmin() {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Puzzle Admin</h1>
+
+      {!user && (
+        <Alert className="mb-6 bg-yellow-50 border-yellow-200">
+          <AlertDescription>
+            You must be signed in to save puzzles.{" "}
+            <Link to="/auth" className="font-medium underline">
+              Sign in here
+            </Link>
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
