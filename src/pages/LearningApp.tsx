@@ -7,6 +7,7 @@ import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle } from 
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import KindergartenCurriculumSection from "@/components/KindergartenCurriculumSection";
 
 const LearningApp = () => {
   const [isKidLogin, setIsKidLogin] = useState(false);
@@ -165,8 +166,11 @@ const LearningApp = () => {
               </Card>
             </section>
 
+            {/* Kindergarten Curriculum Section */}
+            <KindergartenCurriculumSection />
+
             {/* CTA Section */}
-            <section className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-12 text-white text-center">
+            <section className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-12 text-white text-center mt-16">
               <h3 className="text-4xl font-bold mb-4">Ready to Start Learning?</h3>
               <p className="text-xl mb-8 opacity-90">
                 Join thousands of kids on their learning journey!

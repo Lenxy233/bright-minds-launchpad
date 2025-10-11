@@ -5,7 +5,6 @@ import ProductsSection from "@/components/ProductsSection";
 import AmazonKDPSection from "@/components/AmazonKDPSection";
 import VideoSection from "@/components/VideoSection";
 import ScienceActivitiesSection from "@/components/ScienceActivitiesSection";
-import KindergartenCurriculumSection from "@/components/KindergartenCurriculumSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import FAQSection from "@/components/FAQSection";
@@ -37,7 +36,6 @@ const Index = () => {
       <AmazonKDPSection />
       <VideoSection />
       <ScienceActivitiesSection />
-      <KindergartenCurriculumSection />
       <BenefitsSection />
       <ReviewsSection />
       <FAQSection />
