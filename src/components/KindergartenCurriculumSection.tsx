@@ -1,6 +1,9 @@
 import { BookOpen, Palette, Music, Calculator, Globe, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const KindergartenCurriculumSection = () => {
+  const navigate = useNavigate();
+  
   const curriculumAreas = [
     {
       icon: BookOpen,
@@ -18,7 +21,8 @@ const KindergartenCurriculumSection = () => {
       icon: Palette,
       title: "Arts & Crafts",
       description: "Creative expression through drawing, painting, and crafts",
-      color: "from-purple-400 to-purple-600"
+      color: "from-purple-400 to-purple-600",
+      link: "/scissors-cutting"
     },
     {
       icon: Music,
@@ -58,7 +62,8 @@ const KindergartenCurriculumSection = () => {
             return (
               <div
                 key={index}
-                className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-4 border-transparent hover:border-primary/20"
+                onClick={() => area.link && navigate(area.link)}
+                className={`group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-4 border-transparent hover:border-primary/20 ${area.link ? 'cursor-pointer' : ''}`}
               >
                 <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${area.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <Icon className="w-8 h-8 text-white" />
