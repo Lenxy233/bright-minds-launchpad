@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 interface AnswerZone {
@@ -95,11 +96,14 @@ export default function Puzzle() {
   if (puzzles.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Card className="p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">No Puzzles Available</h2>
+        <Card className="p-8 text-center space-y-4">
+          <h2 className="text-2xl font-bold">No Puzzles Available</h2>
           <p className="text-muted-foreground">
             Please create some puzzles in the admin panel first.
           </p>
+          <Button asChild>
+            <Link to="/puzzle-admin">Go to Puzzle Admin</Link>
+          </Button>
         </Card>
       </div>
     );
