@@ -19,6 +19,7 @@ import BatchStoryUpload from "./pages/BatchStoryUpload";
 import Puzzle from "./pages/Puzzle";
 import PuzzleAdmin from "./pages/PuzzleAdmin";
 import ScissorsCutting from "./pages/ScissorsCutting";
+import AlphabetTracing from "./pages/AlphabetTracing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
             <Route path="/puzzle" element={<Puzzle />} />
             <Route path="/puzzle-admin" element={<PuzzleAdmin />} />
             <Route path="/scissors-cutting" element={<ScissorsCutting />} />
+            <Route path="/alphabet-tracing" element={<AlphabetTracing />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />

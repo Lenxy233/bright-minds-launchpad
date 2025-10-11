@@ -8,8 +8,9 @@ const KindergartenCurriculumSection = () => {
     {
       icon: BookOpen,
       title: "Language & Literacy",
-      description: "Phonics, reading readiness, and storytelling activities",
-      color: "from-blue-400 to-blue-600"
+      description: "Alphabet tracing, numbers practice, and coloring activities",
+      color: "from-blue-400 to-blue-600",
+      link: "/alphabet-tracing"
     },
     {
       icon: Calculator,
