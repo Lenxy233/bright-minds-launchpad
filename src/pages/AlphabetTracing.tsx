@@ -59,6 +59,7 @@ const AlphabetTracing = () => {
       height,
       backgroundColor: "transparent",
       isDrawingMode: true,
+      selection: false,
     });
 
     const brush = new PencilBrush(canvas);
@@ -73,6 +74,9 @@ const AlphabetTracing = () => {
     coloringCanvas.width = width;
     coloringCanvas.height = height;
     const ctx = coloringCanvas.getContext("2d", { willReadFrequently: true });
+    if (ctx) {
+      ctx.imageSmoothingEnabled = false;
+    }
     coloringCtxRef.current = ctx;
 
     loadWorksheet(canvas, 0);
@@ -293,17 +297,23 @@ const AlphabetTracing = () => {
             </div>
           </div>
 
-          <div className="relative border-4 border-purple-200 rounded-xl overflow-hidden mb-4">
+          <div className="relative border-4 border-purple-200 rounded-xl overflow-hidden mb-4 inline-block">
             <canvas 
               ref={coloringCanvasRef} 
-              className="absolute top-0 left-0 max-w-full"
+              className="block max-w-full"
               onClick={handleCanvasClick}
-              style={{ cursor: mode === "coloring" ? "crosshair" : "default" }}
+              style={{ 
+                cursor: mode === "coloring" ? "crosshair" : "default",
+                display: "block"
+              }}
             />
             <canvas 
               ref={canvasRef} 
-              className="relative max-w-full"
-              style={{ pointerEvents: mode === "tracing" ? "auto" : "none" }}
+              className="absolute top-0 left-0 max-w-full"
+              style={{ 
+                pointerEvents: mode === "tracing" ? "auto" : "none",
+                display: "block"
+              }}
             />
             {feedbackMessage && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm pointer-events-none animate-fade-in animate-scale-in">
