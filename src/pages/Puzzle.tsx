@@ -258,12 +258,12 @@ export default function Puzzle() {
                     value={answers[zone.id] || ""}
                     onChange={(e) => handleAnswerChange(zone.id, e.target.value)}
                     disabled={showResults}
-                    className={`absolute ${
+                    className={`absolute text-center font-semibold ${
                       showResults
                         ? correct
                           ? "border-green-500 bg-green-50"
                           : "border-red-500 bg-red-50"
-                        : "bg-white/90 border-2 border-primary"
+                        : "bg-transparent border-0 focus:bg-white/20 focus:border focus:border-primary/50"
                     }`}
                     style={{
                       left: `${zone.x_position * scale}px`,
