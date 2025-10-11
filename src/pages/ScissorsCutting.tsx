@@ -12,10 +12,10 @@ import worksheet3 from "@/assets/scissors/worksheet-3.jpg";
 import worksheet4 from "@/assets/scissors/worksheet-4.jpg";
 
 const worksheets = [
-  { id: 1, image: worksheet1, title: "Straight Lines" },
-  { id: 2, image: worksheet2, title: "Zigzag Patterns" },
-  { id: 3, image: worksheet3, title: "Curved Lines" },
-  { id: 4, image: worksheet4, title: "Complex Shapes" }
+  { id: 1, image: worksheet1, title: "Straight Lines", rotation: 0 },
+  { id: 2, image: worksheet2, title: "Zigzag Patterns", rotation: 180 },
+  { id: 3, image: worksheet3, title: "Curved Lines", rotation: 180 },
+  { id: 4, image: worksheet4, title: "Complex Shapes", rotation: 0 }
 ];
 
 const ScissorsCutting = () => {
@@ -60,9 +60,17 @@ const ScissorsCutting = () => {
       );
       
       fabricImg.scale(scale);
+      
+      const rotation = worksheets[index].rotation;
+      const centerX = canvas.width! / 2;
+      const centerY = canvas.height! / 2;
+      
       fabricImg.set({
-        left: (canvas.width! - img.width * scale) / 2,
-        top: (canvas.height! - img.height * scale) / 2,
+        left: centerX,
+        top: centerY,
+        originX: 'center',
+        originY: 'center',
+        angle: rotation,
         selectable: false,
         evented: false
       });
