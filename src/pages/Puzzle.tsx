@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import confetti from "canvas-confetti";
 
 interface AnswerZone {
   id: string;
@@ -128,6 +129,29 @@ export default function Puzzle() {
     setShowResults(true);
 
     if (correctCount === puzzle.answer_zones.length) {
+      // Celebration confetti!
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      
+      // Additional confetti burst after a short delay
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+      }, 250);
+
       toast.success("Perfect! All answers are correct! 🎉", {
         duration: 3000,
       });
