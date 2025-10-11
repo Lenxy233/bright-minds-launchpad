@@ -390,6 +390,18 @@ export default function PuzzleAdmin() {
 
             <div className="mt-4 flex gap-2">
               <Button onClick={addAnswerBox}>Add Answer Box</Button>
+              <Button 
+                onClick={() => {
+                  const zone = answerZones.find(z => z.id === selectedZone);
+                  if (zone) duplicateZone(zone.id);
+                  else toast({ title: "No box selected", description: "Please select a box to duplicate", variant: "destructive" });
+                }}
+                variant="outline"
+                disabled={!selectedZone}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Duplicate Selected
+              </Button>
               <Button onClick={savePuzzle} variant="default">
                 <Save className="mr-2 h-4 w-4" />
                 Save Puzzle
