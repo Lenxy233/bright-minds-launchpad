@@ -170,8 +170,59 @@ const ScissorsCutting = () => {
     const lines = objects.filter((obj) => obj.type === "line");
 
     if (lines.length === 0) {
+      toast({
+        title: "Start cutting first!",
+        description: "Make some cuts along the lines before celebrating.",
+      });
       return;
     }
+
+    // Calculate total cutting length
+    let totalLength = 0;
+    lines.forEach((line: any) => {
+      const x1 = line.x1 || 0;
+      const y1 = line.y1 || 0;
+      const x2 = line.x2 || 0;
+      const y2 = line.y2 || 0;
+      const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+      totalLength += length;
+    });
+
+    // Minimum cutting length required (adjust based on canvas size)
+    const minLength = 800; // pixels
+    
+    if (totalLength < minLength) {
+      toast({
+        title: "Keep going!",
+        description: "Try to cut more along the dotted lines.",
+      });
+      return;
+    }
+
+    // Check if cuts are distributed (not all in one tiny area)
+    const positions = lines.map((line: any) => ({
+      x: (line.left || 0),
+      y: (line.top || 0)
+    }));
+    
+    const xPositions = positions.map(p => p.x);
+    const yPositions = positions.map(p => p.y);
+    const xSpread = Math.max(...xPositions) - Math.min(...xPositions);
+    const ySpread = Math.max(...yPositions) - Math.min(...yPositions);
+    
+    // Require cuts to be spread across at least 200px in both directions
+    if (xSpread < 200 || ySpread < 200) {
+      toast({
+        title: "Spread out your cuts!",
+        description: "Try cutting in different areas of the worksheet.",
+      });
+      return;
+    }
+
+    toast({
+      title: "🎉 Amazing Work!",
+      description: "You did a great job cutting!",
+    });
 
     // Trigger confetti celebration
     const duration = 3000;
