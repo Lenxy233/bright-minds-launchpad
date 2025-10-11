@@ -13,6 +13,7 @@ const KindergartenCurriculumSection = () => {
       description: "Alphabet tracing, numbers practice, and coloring activities",
       color: "from-blue-400 to-blue-600",
       subtopics: [
+        { name: "A - Z Tracing & Coloring", link: "/alphabet-az-tracing" },
         { name: "Alphabet Tracing & Coloring", link: "/alphabet-tracing" },
         { name: "Letter Recognition", link: "#" },
         { name: "Phonics Practice", link: "#" }

@@ -20,6 +20,7 @@ import Puzzle from "./pages/Puzzle";
 import PuzzleAdmin from "./pages/PuzzleAdmin";
 import ScissorsCutting from "./pages/ScissorsCutting";
 import AlphabetTracing from "./pages/AlphabetTracing";
+import AlphabetAZTracing from "./pages/AlphabetAZTracing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/puzzle-admin" element={<PuzzleAdmin />} />
             <Route path="/scissors-cutting" element={<ScissorsCutting />} />
             <Route path="/alphabet-tracing" element={<AlphabetTracing />} />
+            <Route path="/alphabet-az-tracing" element={<AlphabetAZTracing />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
