@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { Canvas as FabricCanvas, Line, Image as FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Scissors, Eraser, RotateCcw, Download, ChevronLeft, ChevronRight } from "lucide-react";
+import { Scissors, Eraser, RotateCcw, Download, ChevronLeft, ChevronRight, PartyPopper } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import confetti from "canvas-confetti";
 import worksheet1 from "@/assets/scissors/worksheet-1.jpg";
 import worksheet2 from "@/assets/scissors/worksheet-2.jpg";
 import worksheet3 from "@/assets/scissors/worksheet-3.jpg";
@@ -162,6 +163,57 @@ const ScissorsCutting = () => {
     });
   };
 
+  const handleCelebrate = () => {
+    if (!fabricCanvas) return;
+
+    const objects = fabricCanvas.getObjects();
+    const lines = objects.filter((obj) => obj.type === "line");
+
+    if (lines.length === 0) {
+      toast({
+        title: "Start cutting first!",
+        description: "Make some cuts to celebrate your work!",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Trigger confetti celebration
+    const duration = 3000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min: number, max: number) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval: any = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+      });
+    }, 250);
+
+    toast({
+      title: "🎉 Amazing Work!",
+      description: "You did a great job cutting! Keep practicing!",
+    });
+  };
+
   const handleDownload = () => {
     if (!fabricCanvas) return;
     
@@ -251,6 +303,13 @@ const ScissorsCutting = () => {
               <Scissors className="w-4 h-4 mr-2" />
               {isCutting ? "Stop Cutting" : "Start Cutting"}
             </Button>
+            <Button 
+              onClick={handleCelebrate}
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white"
+            >
+              <PartyPopper className="w-4 h-4 mr-2" />
+              I'm Done! 🎉
+            </Button>
             <Button onClick={handleClear} variant="outline">
               <Eraser className="w-4 h-4 mr-2" />
               Clear Cuts
@@ -276,6 +335,7 @@ const ScissorsCutting = () => {
             <ol className="list-decimal list-inside space-y-1 text-blue-700">
               <li>Click "Start Cutting" to activate the scissors</li>
               <li>Click and drag along the dotted lines to cut</li>
+              <li>When you're done, click "I'm Done!" to celebrate! 🎉</li>
               <li>Use "Clear Cuts" to erase your cuts and try again</li>
               <li>Click "Save" to download your completed worksheet</li>
               <li>Navigate between different worksheets using the arrows</li>
