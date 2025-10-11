@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Canvas as FabricCanvas, PencilBrush, Image as FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Eraser, Palette, RotateCcw, Download } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { ArrowLeft, Eraser, Palette, RotateCcw, Download, Paintbrush, Droplet } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import confetti from "canvas-confetti";
 
@@ -29,6 +30,10 @@ const AlphabetTracing = () => {
   const [brushColor, setBrushColor] = useState("#FF1493");
   const [isErasing, setIsErasing] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [toolMode, setToolMode] = useState<"draw" | "fill">("draw");
+  const [brushSize, setBrushSize] = useState(8);
+  const coloringCanvasRef = useRef<HTMLCanvasElement>(null);
+  const [coloringContext, setColoringContext] = useState<CanvasRenderingContext2D | null>(null);
 
   const colors = [
     { name: "Pink", value: "#FF1493" },
@@ -42,55 +47,64 @@ const AlphabetTracing = () => {
   ];
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || !coloringCanvasRef.current) return;
 
     const canvas = new FabricCanvas(canvasRef.current, {
       width: Math.min(800, window.innerWidth - 40),
       height: 600,
-      backgroundColor: "#ffffff",
+      backgroundColor: "transparent",
       isDrawingMode: true,
     });
 
     const brush = new PencilBrush(canvas);
     brush.color = brushColor;
-    brush.width = 8;
+    brush.width = brushSize;
     canvas.freeDrawingBrush = brush;
 
     setFabricCanvas(canvas);
-    loadWorksheet(canvas, 0);
+
+    const colorCanvas = coloringCanvasRef.current;
+    colorCanvas.width = canvas.width || 800;
+    colorCanvas.height = canvas.height || 600;
+    const ctx = colorCanvas.getContext("2d", { willReadFrequently: true });
+    setColoringContext(ctx);
+
+    loadWorksheet(canvas, colorCanvas, 0);
 
     return () => {
       canvas.dispose();
     };
   }, []);
 
-  const loadWorksheet = (canvas: FabricCanvas, index: number) => {
+  const loadWorksheet = (canvas: FabricCanvas, colorCanvas: HTMLCanvasElement, index: number) => {
     canvas.clear();
-    canvas.backgroundColor = "#ffffff";
+    
+    const ctx = colorCanvas.getContext("2d");
+    if (ctx) {
+      ctx.clearRect(0, 0, colorCanvas.width, colorCanvas.height);
+    }
 
-    FabricImage.fromURL(worksheets[index].image, {
-      crossOrigin: "anonymous",
-    }).then((img) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = worksheets[index].image;
+    img.onload = () => {
       const canvasWidth = canvas.width || 800;
       const canvasHeight = canvas.height || 600;
       
       const scale = Math.min(
-        canvasWidth / (img.width || 1),
-        canvasHeight / (img.height || 1)
+        canvasWidth / img.width,
+        canvasHeight / img.height
       ) * 0.95;
 
-      img.scale(scale);
-      img.set({
-        left: (canvasWidth - (img.width || 0) * scale) / 2,
-        top: (canvasHeight - (img.height || 0) * scale) / 2,
-        selectable: false,
-        evented: false,
-      });
+      const scaledWidth = img.width * scale;
+      const scaledHeight = img.height * scale;
+      const left = (canvasWidth - scaledWidth) / 2;
+      const top = (canvasHeight - scaledHeight) / 2;
 
-      canvas.add(img);
-      canvas.sendObjectToBack(img);
-      canvas.renderAll();
-    });
+      if (ctx) {
+        ctx.drawImage(img, left, top, scaledWidth, scaledHeight);
+      }
+    };
   };
 
   useEffect(() => {
@@ -99,32 +113,105 @@ const AlphabetTracing = () => {
     const brush = fabricCanvas.freeDrawingBrush;
     if (brush instanceof PencilBrush) {
       if (isErasing) {
-        brush.color = "#ffffff";
+        brush.color = "rgba(0,0,0,0)";
         brush.width = 20;
       } else {
         brush.color = brushColor;
-        brush.width = 8;
+        brush.width = brushSize;
       }
     }
-  }, [brushColor, isErasing, fabricCanvas]);
+  }, [brushColor, isErasing, fabricCanvas, brushSize]);
+
+  const floodFill = (x: number, y: number, fillColor: string) => {
+    if (!coloringContext || !coloringCanvasRef.current) return;
+
+    const canvas = coloringCanvasRef.current;
+    const ctx = coloringContext;
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+
+    const startPos = (Math.floor(y) * canvas.width + Math.floor(x)) * 4;
+    const startR = pixels[startPos];
+    const startG = pixels[startPos + 1];
+    const startB = pixels[startPos + 2];
+    const startA = pixels[startPos + 3];
+
+    const fillRGB = hexToRgb(fillColor);
+    if (!fillRGB) return;
+
+    if (startR === fillRGB.r && startG === fillRGB.g && startB === fillRGB.b) return;
+
+    const stack: [number, number][] = [[Math.floor(x), Math.floor(y)]];
+    const visited = new Set<string>();
+
+    while (stack.length > 0) {
+      const [cx, cy] = stack.pop()!;
+      const key = `${cx},${cy}`;
+      
+      if (visited.has(key) || cx < 0 || cx >= canvas.width || cy < 0 || cy >= canvas.height) {
+        continue;
+      }
+
+      visited.add(key);
+      const pos = (cy * canvas.width + cx) * 4;
+
+      if (
+        pixels[pos] === startR &&
+        pixels[pos + 1] === startG &&
+        pixels[pos + 2] === startB &&
+        pixels[pos + 3] === startA
+      ) {
+        pixels[pos] = fillRGB.r;
+        pixels[pos + 1] = fillRGB.g;
+        pixels[pos + 2] = fillRGB.b;
+        pixels[pos + 3] = 255;
+
+        stack.push([cx + 1, cy]);
+        stack.push([cx - 1, cy]);
+        stack.push([cx, cy + 1]);
+        stack.push([cx, cy - 1]);
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+  };
+
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  };
+
+  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (toolMode !== "fill" || !coloringCanvasRef.current) return;
+
+    const rect = coloringCanvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    floodFill(x, y, brushColor);
+  };
 
   const handleClear = () => {
-    if (!fabricCanvas) return;
-    loadWorksheet(fabricCanvas, currentWorksheet);
+    if (!fabricCanvas || !coloringCanvasRef.current) return;
+    loadWorksheet(fabricCanvas, coloringCanvasRef.current, currentWorksheet);
   };
 
   const handleNextWorksheet = () => {
-    if (!fabricCanvas) return;
+    if (!fabricCanvas || !coloringCanvasRef.current) return;
     const nextIndex = (currentWorksheet + 1) % worksheets.length;
     setCurrentWorksheet(nextIndex);
-    loadWorksheet(fabricCanvas, nextIndex);
+    loadWorksheet(fabricCanvas, coloringCanvasRef.current, nextIndex);
   };
 
   const handlePrevWorksheet = () => {
-    if (!fabricCanvas) return;
+    if (!fabricCanvas || !coloringCanvasRef.current) return;
     const prevIndex = (currentWorksheet - 1 + worksheets.length) % worksheets.length;
     setCurrentWorksheet(prevIndex);
-    loadWorksheet(fabricCanvas, prevIndex);
+    loadWorksheet(fabricCanvas, coloringCanvasRef.current, prevIndex);
   };
 
   const handleCelebrate = () => {
@@ -139,12 +226,19 @@ const AlphabetTracing = () => {
   };
 
   const handleDownload = () => {
-    if (!fabricCanvas) return;
-    const dataURL = fabricCanvas.toDataURL({
-      format: 'png',
-      quality: 1,
-      multiplier: 2
-    });
+    if (!fabricCanvas || !coloringCanvasRef.current) return;
+    
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = coloringCanvasRef.current.width;
+    tempCanvas.height = coloringCanvasRef.current.height;
+    const tempCtx = tempCanvas.getContext('2d');
+    
+    if (tempCtx) {
+      tempCtx.drawImage(coloringCanvasRef.current, 0, 0);
+      tempCtx.drawImage(fabricCanvas.getElement(), 0, 0);
+    }
+    
+    const dataURL = tempCanvas.toDataURL('png', 1);
     const link = document.createElement('a');
     link.download = `alphabet-${worksheets[currentWorksheet].letter}.png`;
     link.href = dataURL;
@@ -193,7 +287,17 @@ const AlphabetTracing = () => {
           </div>
 
           <div className="relative border-4 border-purple-200 rounded-xl overflow-hidden mb-4">
-            <canvas ref={canvasRef} className="max-w-full" />
+            <canvas 
+              ref={coloringCanvasRef} 
+              className="absolute inset-0" 
+              onClick={handleCanvasClick}
+              style={{ cursor: toolMode === "fill" ? "crosshair" : "default" }}
+            />
+            <canvas 
+              ref={canvasRef} 
+              className="relative pointer-events-none" 
+              style={{ pointerEvents: toolMode === "draw" ? "auto" : "none" }}
+            />
             {feedbackMessage && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm pointer-events-none animate-fade-in animate-scale-in">
                 <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-2xl text-2xl font-bold shadow-2xl">
@@ -204,6 +308,43 @@ const AlphabetTracing = () => {
           </div>
 
           <div className="space-y-4">
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="text-sm font-semibold text-gray-700">Tool:</span>
+              <Button
+                onClick={() => setToolMode("draw")}
+                variant={toolMode === "draw" ? "default" : "outline"}
+                size="sm"
+                className="gap-2"
+              >
+                <Paintbrush className="w-4 h-4" />
+                Draw
+              </Button>
+              <Button
+                onClick={() => setToolMode("fill")}
+                variant={toolMode === "fill" ? "default" : "outline"}
+                size="sm"
+                className="gap-2"
+              >
+                <Droplet className="w-4 h-4" />
+                Fill
+              </Button>
+            </div>
+
+            {toolMode === "draw" && (
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-semibold text-gray-700">Brush Size:</span>
+                <Slider
+                  value={[brushSize]}
+                  onValueChange={(value) => setBrushSize(value[0])}
+                  min={2}
+                  max={30}
+                  step={2}
+                  className="w-48"
+                />
+                <span className="text-sm text-gray-600">{brushSize}px</span>
+              </div>
+            )}
+
             <div className="flex flex-wrap gap-2 items-center">
               <span className="text-sm font-semibold text-gray-700">Colors:</span>
               {colors.map((color) => (
