@@ -257,29 +257,30 @@ const AlphabetTracing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 p-2 md:p-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center justify-between mb-3">
           <Button
             onClick={() => navigate("/learning-app")}
             variant="outline"
+            size="sm"
             className="gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
           </Button>
-          <h1 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-xl md:text-3xl font-bold text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
             🎨 Alphabet Tracing & Coloring
           </h1>
-          <div className="w-20" />
+          <div className="w-16 md:w-20" />
         </div>
 
-        <div className="bg-white rounded-2xl shadow-2xl p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-gray-800">
+        <div className="bg-white rounded-xl shadow-lg p-3 md:p-4 mb-3">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg md:text-xl font-bold text-gray-800">
               {worksheets[currentWorksheet].title}
             </h2>
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               <Button
                 onClick={handlePrevWorksheet}
                 variant="outline"
@@ -297,7 +298,7 @@ const AlphabetTracing = () => {
             </div>
           </div>
 
-          <div className="relative border-4 border-purple-200 rounded-xl overflow-hidden mb-4 inline-block">
+          <div className="relative border-2 border-purple-200 rounded-lg overflow-hidden mb-3 inline-block">
             <canvas 
               ref={coloringCanvasRef} 
               className="block max-w-full"
@@ -317,15 +318,15 @@ const AlphabetTracing = () => {
             />
             {feedbackMessage && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm pointer-events-none animate-fade-in animate-scale-in">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-2xl text-2xl font-bold shadow-2xl">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl text-xl font-bold shadow-xl">
                   {feedbackMessage}
                 </div>
               </div>
             )}
           </div>
 
-          <div className="space-y-4">
-            <div className="flex flex-wrap gap-2 items-center mb-4">
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2 items-center">
               <Button
                 onClick={() => setMode("coloring")}
                 variant={mode === "coloring" ? "default" : "outline"}
@@ -365,22 +366,22 @@ const AlphabetTracing = () => {
             </div>
 
             {mode === "tracing" && (
-              <div className="flex items-center gap-4 p-4 bg-purple-50 rounded-lg">
-                <Paintbrush className="w-5 h-5 text-purple-600" />
-                <span className="text-sm font-semibold text-gray-700 min-w-[80px]">Brush Size:</span>
+              <div className="flex items-center gap-2 p-2 bg-purple-50 rounded-lg">
+                <Paintbrush className="w-4 h-4 text-purple-600" />
+                <span className="text-xs font-semibold text-gray-700">Size:</span>
                 <Slider
                   value={[brushSize]}
                   onValueChange={(value) => setBrushSize(value[0])}
                   min={2}
                   max={20}
                   step={1}
-                  className="flex-1"
+                  className="flex-1 max-w-[150px]"
                 />
-                <span className="text-sm font-semibold text-gray-700 min-w-[40px]">{brushSize}px</span>
+                <span className="text-xs font-semibold text-gray-700 min-w-[35px]">{brushSize}px</span>
               </div>
             )}
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {mode === "tracing" && (
                 <Button
                   onClick={() => setIsErasing(!isErasing)}
@@ -418,8 +419,8 @@ const AlphabetTracing = () => {
           </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center">
-          <p className="text-lg text-gray-700">
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 text-center">
+          <p className="text-sm md:text-base text-gray-700">
             {mode === "coloring" 
               ? "🎨 Click on any section to fill it with color! Switch to Tracing Mode to practice writing." 
               : "✏️ Trace the letters with your brush! Adjust the brush size for better control."}
