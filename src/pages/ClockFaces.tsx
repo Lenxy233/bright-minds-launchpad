@@ -241,7 +241,9 @@ const ClockFaces = () => {
 
   // Load answers when page changes
   useEffect(() => {
-    loadAnswers();
+    if (user) {
+      loadAnswers();
+    }
   }, [currentPage, user]);
 
   return (
