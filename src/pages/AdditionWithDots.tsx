@@ -588,7 +588,7 @@ const AdditionWithDots = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-3">
                 {worksheets[currentIndex].problems.map((problem, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <span className="text-sm font-medium min-w-[60px]">{problem.q} =</span>
