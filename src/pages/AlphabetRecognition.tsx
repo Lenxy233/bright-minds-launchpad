@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas as FabricCanvas, Rect, FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle, Eye, EyeOff } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle, Eye, EyeOff, MousePointer2, Hand } from "lucide-react";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 
@@ -553,8 +553,11 @@ const AlphabetRecognition = () => {
   };
 
   const checkIfCorrect = (x: number, y: number): { isCorrect: boolean; regionIndex: number } => {
-    for (let i = 0; i < currentWorksheet.correctRegions.length; i++) {
-      const region = currentWorksheet.correctRegions[i];
+    // Use manual regions if available, otherwise fallback to predefined regions
+    const regionsToCheck = manualRegions.length > 0 ? manualRegions : currentWorksheet.correctRegions;
+    
+    for (let i = 0; i < regionsToCheck.length; i++) {
+      const region = regionsToCheck[i];
       if (
         x >= region.x &&
         x <= region.x + region.width &&
@@ -567,52 +570,144 @@ const AlphabetRecognition = () => {
     return { isCorrect: false, regionIndex: -1 };
   };
 
+  const saveManualRegions = () => {
+    try {
+      const storageKey = `alphabet-recognition-regions-${currentWorksheet.letter}`;
+      localStorage.setItem(storageKey, JSON.stringify(manualRegions));
+      toast.success(`Saved ${manualRegions.length} answer regions for letter ${currentWorksheet.letter}!`);
+    } catch (err) {
+      console.error('Failed to save manual regions', err);
+      toast.error('Failed to save regions');
+    }
+  };
+
+  const clearManualRegions = () => {
+    setManualRegions([]);
+    try {
+      const storageKey = `alphabet-recognition-regions-${currentWorksheet.letter}`;
+      localStorage.removeItem(storageKey);
+      toast.success('Cleared all manual regions!');
+    } catch (err) {
+      console.error('Failed to clear manual regions', err);
+    }
+  };
+
   useEffect(() => {
     if (!fabricCanvas) return;
 
     const handleMouseDown = (e: any) => {
       const pointer = fabricCanvas.getPointer(e.e);
-      const { isCorrect, regionIndex } = checkIfCorrect(pointer.x, pointer.y);
-      
-      let fillColor = activeColor;
-      let feedbackMessage = "";
-      
-      if (isCorrect && !coloredRegions.has(regionIndex)) {
-        // Correct answer - first time coloring this region
-        fillColor = "#22c55e"; // green
-        setCorrectCount(prev => prev + 1);
-        setColoredRegions(prev => new Set(prev).add(regionIndex));
-        feedbackMessage = "✓ Correct! That has letter " + currentWorksheet.letter;
-        toast.success(feedbackMessage);
-      } else if (isCorrect && coloredRegions.has(regionIndex)) {
-        // Already colored this correct region
-        fillColor = "#22c55e"; // green
-        feedbackMessage = "Already colored!";
-        toast.info(feedbackMessage);
-      } else {
-        // Incorrect answer
-        fillColor = "#ef4444"; // red
-        setIncorrectCount(prev => prev + 1);
-        feedbackMessage = "✗ Wrong! That doesn't have letter " + currentWorksheet.letter;
-        toast.error(feedbackMessage);
-      }
-      
-      floodFill(pointer.x, pointer.y, fillColor);
 
-      // Check if all correct regions are colored
-      if (coloredRegions.size + 1 === currentWorksheet.correctRegions.length && isCorrect && !coloredRegions.has(regionIndex)) {
-        setTimeout(() => {
-          toast.success("🎉 Excellent! You found all the correct " + currentWorksheet.theme + "s!");
-        }, 500);
+      if (manualMode) {
+        // Manual mode: start drawing a rectangle
+        drawStartRef.current = { x: pointer.x, y: pointer.y };
+        const rect = new Rect({
+          left: pointer.x,
+          top: pointer.y,
+          width: 0,
+          height: 0,
+          fill: 'rgba(34, 197, 94, 0.3)',
+          stroke: '#22c55e',
+          strokeWidth: 2,
+          selectable: false,
+          evented: false,
+        });
+        tempRectRef.current = rect;
+        fabricCanvas.add(rect);
+        fabricCanvas.renderAll();
+      } else {
+        // Play mode: check answer
+        const { isCorrect, regionIndex } = checkIfCorrect(pointer.x, pointer.y);
+        
+        let fillColor = activeColor;
+        let feedbackMessage = "";
+        
+        const regionsToCheck = manualRegions.length > 0 ? manualRegions : currentWorksheet.correctRegions;
+        
+        if (isCorrect && !coloredRegions.has(regionIndex)) {
+          fillColor = "#22c55e";
+          setCorrectCount(prev => prev + 1);
+          setColoredRegions(prev => new Set(prev).add(regionIndex));
+          feedbackMessage = "✓ Correct! That has letter " + currentWorksheet.letter;
+          toast.success(feedbackMessage);
+        } else if (isCorrect && coloredRegions.has(regionIndex)) {
+          fillColor = "#22c55e";
+          feedbackMessage = "Already colored!";
+          toast.info(feedbackMessage);
+        } else {
+          fillColor = "#ef4444";
+          setIncorrectCount(prev => prev + 1);
+          feedbackMessage = "✗ Wrong! That doesn't have letter " + currentWorksheet.letter;
+          toast.error(feedbackMessage);
+        }
+        
+        floodFill(pointer.x, pointer.y, fillColor);
+
+        if (coloredRegions.size + 1 === regionsToCheck.length && isCorrect && !coloredRegions.has(regionIndex)) {
+          setTimeout(() => {
+            toast.success("🎉 Excellent! You found all the correct " + currentWorksheet.theme + "s!");
+          }, 500);
+        }
       }
+    };
+
+    const handleMouseMove = (e: any) => {
+      if (!manualMode || !drawStartRef.current || !tempRectRef.current) return;
+      
+      const pointer = fabricCanvas.getPointer(e.e);
+      const startX = drawStartRef.current.x;
+      const startY = drawStartRef.current.y;
+      
+      const width = pointer.x - startX;
+      const height = pointer.y - startY;
+      
+      tempRectRef.current.set({
+        left: width > 0 ? startX : pointer.x,
+        top: height > 0 ? startY : pointer.y,
+        width: Math.abs(width),
+        height: Math.abs(height),
+      });
+      fabricCanvas.renderAll();
+    };
+
+    const handleMouseUp = (e: any) => {
+      if (!manualMode || !drawStartRef.current || !tempRectRef.current) return;
+      
+      const pointer = fabricCanvas.getPointer(e.e);
+      const startX = drawStartRef.current.x;
+      const startY = drawStartRef.current.y;
+      
+      const width = Math.abs(pointer.x - startX);
+      const height = Math.abs(pointer.y - startY);
+      
+      if (width > 10 && height > 10) {
+        const newRegion = {
+          x: Math.min(startX, pointer.x),
+          y: Math.min(startY, pointer.y),
+          width,
+          height,
+        };
+        setManualRegions(prev => [...prev, newRegion]);
+        toast.success('Answer region added!');
+      } else {
+        fabricCanvas.remove(tempRectRef.current);
+      }
+      
+      drawStartRef.current = null;
+      tempRectRef.current = null;
+      fabricCanvas.renderAll();
     };
 
     fabricCanvas.on("mouse:down", handleMouseDown);
+    fabricCanvas.on("mouse:move", handleMouseMove);
+    fabricCanvas.on("mouse:up", handleMouseUp);
 
     return () => {
       fabricCanvas.off("mouse:down", handleMouseDown);
+      fabricCanvas.off("mouse:move", handleMouseMove);
+      fabricCanvas.off("mouse:up", handleMouseUp);
     };
-  }, [fabricCanvas, activeColor, coloredRegions, correctCount]);
+  }, [fabricCanvas, activeColor, coloredRegions, correctCount, manualMode, manualRegions]);
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
@@ -766,17 +861,42 @@ const AlphabetRecognition = () => {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Button onClick={handleClear} variant="outline" size="sm">
-                <Eraser className="w-4 h-4 mr-2" />
-                Clear
-              </Button>
-              <Button onClick={toggleCorrectRegions} variant="outline" size="sm">
-                {showCorrectRegions ? (
-                  <><EyeOff className="w-4 h-4 mr-2" />Hide Hints</>
+              <Button 
+                onClick={() => setManualMode(!manualMode)} 
+                variant={manualMode ? "default" : "outline"} 
+                size="sm"
+              >
+                {manualMode ? (
+                  <><MousePointer2 className="w-4 h-4 mr-2" />Manual Mode (Click & Drag)</>
                 ) : (
-                  <><Eye className="w-4 h-4 mr-2" />Show Hints</>
+                  <><Hand className="w-4 h-4 mr-2" />Play Mode</>
                 )}
               </Button>
+              {manualMode && (
+                <>
+                  <Button onClick={saveManualRegions} variant="default" size="sm">
+                    Save Regions ({manualRegions.length})
+                  </Button>
+                  <Button onClick={clearManualRegions} variant="destructive" size="sm">
+                    Clear Regions
+                  </Button>
+                </>
+              )}
+              {!manualMode && (
+                <>
+                  <Button onClick={handleClear} variant="outline" size="sm">
+                    <Eraser className="w-4 h-4 mr-2" />
+                    Clear
+                  </Button>
+                  <Button onClick={toggleCorrectRegions} variant="outline" size="sm">
+                    {showCorrectRegions ? (
+                      <><EyeOff className="w-4 h-4 mr-2" />Hide Hints</>
+                    ) : (
+                      <><Eye className="w-4 h-4 mr-2" />Show Hints</>
+                    )}
+                  </Button>
+                </>
+              )}
               <Button onClick={handleDownload} variant="default" size="sm">
                 <Download className="w-4 h-4 mr-2" />
                 Download
