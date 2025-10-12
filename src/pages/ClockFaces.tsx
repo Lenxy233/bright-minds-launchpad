@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Canvas as FabricCanvas, PencilBrush } from "fabric";
-import { Eraser, Pencil, Undo, Redo, Trash2, Download, ChevronLeft, ChevronRight, Check, X } from "lucide-react";
+import { Eraser, Pencil, Undo, Redo, Trash2, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 
 // Import clock worksheet images
@@ -13,79 +13,8 @@ import page5 from "@/assets/clocks/page-5.jpg";
 
 const worksheets = [page1, page2, page3, page4, page5];
 
-// Predefined problems for each worksheet (times shown on clocks)
-const problems = [
-  // Page 1 - 9 clocks
-  [
-    { question: "Clock 1", answer: "3:00" },
-    { question: "Clock 2", answer: "6:00" },
-    { question: "Clock 3", answer: "9:00" },
-    { question: "Clock 4", answer: "12:00" },
-    { question: "Clock 5", answer: "1:00" },
-    { question: "Clock 6", answer: "2:00" },
-    { question: "Clock 7", answer: "4:00" },
-    { question: "Clock 8", answer: "5:00" },
-    { question: "Clock 9", answer: "7:00" },
-  ],
-  // Page 2 - 12 clocks
-  [
-    { question: "Clock 1", answer: "8:00" },
-    { question: "Clock 2", answer: "10:00" },
-    { question: "Clock 3", answer: "11:00" },
-    { question: "Clock 4", answer: "12:00" },
-    { question: "Clock 5", answer: "1:30" },
-    { question: "Clock 6", answer: "2:30" },
-    { question: "Clock 7", answer: "3:30" },
-    { question: "Clock 8", answer: "4:30" },
-    { question: "Clock 9", answer: "5:30" },
-    { question: "Clock 10", answer: "6:30" },
-    { question: "Clock 11", answer: "7:30" },
-    { question: "Clock 12", answer: "8:30" },
-  ],
-  // Page 3 - 12 clocks
-  [
-    { question: "Clock 1", answer: "9:30" },
-    { question: "Clock 2", answer: "10:30" },
-    { question: "Clock 3", answer: "11:30" },
-    { question: "Clock 4", answer: "12:30" },
-    { question: "Clock 5", answer: "1:15" },
-    { question: "Clock 6", answer: "2:15" },
-    { question: "Clock 7", answer: "3:15" },
-    { question: "Clock 8", answer: "4:15" },
-    { question: "Clock 9", answer: "5:15" },
-    { question: "Clock 10", answer: "6:15" },
-    { question: "Clock 11", answer: "7:15" },
-    { question: "Clock 12", answer: "8:15" },
-  ],
-  // Page 4 - 12 clocks
-  [
-    { question: "Clock 1", answer: "9:15" },
-    { question: "Clock 2", answer: "10:15" },
-    { question: "Clock 3", answer: "11:15" },
-    { question: "Clock 4", answer: "12:15" },
-    { question: "Clock 5", answer: "1:45" },
-    { question: "Clock 6", answer: "2:45" },
-    { question: "Clock 7", answer: "3:45" },
-    { question: "Clock 8", answer: "4:45" },
-    { question: "Clock 9", answer: "5:45" },
-    { question: "Clock 10", answer: "6:45" },
-    { question: "Clock 11", answer: "7:45" },
-    { question: "Clock 12", answer: "8:45" },
-  ],
-  // Page 5 - 10 clocks
-  [
-    { question: "Clock 1", answer: "9:45" },
-    { question: "Clock 2", answer: "10:45" },
-    { question: "Clock 3", answer: "11:45" },
-    { question: "Clock 4", answer: "12:45" },
-    { question: "Clock 5", answer: "1:20" },
-    { question: "Clock 6", answer: "2:40" },
-    { question: "Clock 7", answer: "3:50" },
-    { question: "Clock 8", answer: "4:25" },
-    { question: "Clock 9", answer: "5:35" },
-    { question: "Clock 10", answer: "6:55" },
-  ],
-];
+// Number of clocks on each worksheet page
+const clockCounts = [9, 12, 12, 12, 10];
 
 const ClockFaces = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -93,9 +22,7 @@ const ClockFaces = () => {
   const [activeColor, setActiveColor] = useState("#FF6B6B");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
-  const [backgroundImage, setBackgroundImage] = useState<string>(worksheets[0]);
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
-  const [checkedAnswers, setCheckedAnswers] = useState<Record<number, boolean | null>>({});
 
   const colors = [
     { name: "Red", value: "#FF6B6B" },
@@ -128,10 +55,6 @@ const ClockFaces = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!fabricCanvas) return;
-    setBackgroundImage(worksheets[currentPage]);
-  }, [currentPage, fabricCanvas]);
 
   useEffect(() => {
     if (!fabricCanvas) return;
@@ -198,36 +121,11 @@ const ClockFaces = () => {
 
   const handleAnswerChange = (index: number, value: string) => {
     setUserAnswers((prev) => ({ ...prev, [index]: value }));
-    // Clear the check status when user changes answer
-    setCheckedAnswers((prev) => ({ ...prev, [index]: null }));
-  };
-
-  const handleCheckAnswers = () => {
-    const currentProblems = problems[currentPage];
-    const newCheckedAnswers: Record<number, boolean> = {};
-    let allCorrect = true;
-
-    currentProblems.forEach((problem, index) => {
-      const userAnswer = userAnswers[index]?.trim().toLowerCase() || "";
-      const correctAnswer = problem.answer.toLowerCase();
-      const isCorrect = userAnswer === correctAnswer;
-      newCheckedAnswers[index] = isCorrect;
-      if (!isCorrect) allCorrect = false;
-    });
-
-    setCheckedAnswers(newCheckedAnswers);
-
-    if (allCorrect) {
-      toast.success("Perfect! All answers are correct! 🎉");
-    } else {
-      toast.error("Some answers need correction. Try again!");
-    }
   };
 
   const handleResetAnswers = () => {
     setUserAnswers({});
-    setCheckedAnswers({});
-    toast.success("Answers reset!");
+    toast.success("Answers cleared!");
   };
 
   return (
@@ -305,7 +203,7 @@ const ClockFaces = () => {
               <div className="relative border-4 border-gray-200 rounded-xl overflow-hidden bg-white">
                 <div
                   className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
-                  style={{ backgroundImage: `url(${backgroundImage})` }}
+                  style={{ backgroundImage: `url(${worksheets[currentPage]})` }}
                 />
                 <canvas ref={canvasRef} className="relative" />
               </div>
@@ -366,44 +264,25 @@ const ClockFaces = () => {
             <div className="bg-white rounded-2xl shadow-xl p-6">
               <h3 className="text-lg font-bold text-gray-800 mb-4">Answer Sheet</h3>
               <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-4">
-                {problems[currentPage].map((problem, index) => (
+                {Array.from({ length: clockCounts[currentPage] }).map((_, index) => (
                   <div key={index} className="flex flex-col">
                     <label className="text-sm font-semibold text-gray-700 mb-1">
-                      {problem.question}
+                      Clock {index + 1}
                     </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={userAnswers[index] || ""}
-                        onChange={(e) => handleAnswerChange(index, e.target.value)}
-                        placeholder="e.g., 3:00"
-                        className={`w-full px-3 py-2 border-2 rounded-lg text-center font-semibold ${
-                          checkedAnswers[index] === true
-                            ? "border-green-500 bg-green-50"
-                            : checkedAnswers[index] === false
-                            ? "border-red-500 bg-red-50"
-                            : "border-gray-300"
-                        }`}
-                      />
-                      {checkedAnswers[index] === true && (
-                        <Check className="absolute right-2 top-2.5 w-5 h-5 text-green-600" />
-                      )}
-                      {checkedAnswers[index] === false && (
-                        <X className="absolute right-2 top-2.5 w-5 h-5 text-red-600" />
-                      )}
-                    </div>
+                    <input
+                      type="text"
+                      value={userAnswers[index] || ""}
+                      onChange={(e) => handleAnswerChange(index, e.target.value)}
+                      placeholder="e.g., 3:00"
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-center font-semibold focus:border-primary focus:outline-none"
+                    />
                   </div>
                 ))}
               </div>
 
-              <div className="flex gap-2">
-                <Button onClick={handleCheckAnswers} className="flex-1">
-                  Check Answers
-                </Button>
-                <Button onClick={handleResetAnswers} variant="outline">
-                  Reset
-                </Button>
-              </div>
+              <Button onClick={handleResetAnswers} variant="outline" className="w-full">
+                Clear All Answers
+              </Button>
             </div>
           </div>
         </div>
