@@ -397,6 +397,12 @@ const AlphabetRecognition = () => {
   const [showCorrectRegions, setShowCorrectRegions] = useState(false);
   const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // Manual selection mode state
+  const [manualMode, setManualMode] = useState(false);
+  const [manualRegions, setManualRegions] = useState<{ x: number; y: number; width: number; height: number; }[]>([]);
+  const drawStartRef = useRef<{ x: number; y: number } | null>(null);
+  const tempRectRef = useRef<Rect | null>(null);
+
   const currentWorksheet = alphabetWorksheets[currentIndex];
 
   useEffect(() => {
@@ -452,6 +458,16 @@ const AlphabetRecognition = () => {
       if (ctx) {
         const imgElement = img.getElement() as HTMLImageElement;
         ctx.drawImage(imgElement, 0, 0, fabricCanvas.width!, fabricCanvas.height!);
+      }
+
+      // Load saved manual regions for this worksheet (by letter)
+      try {
+        const storageKey = `alphabet-recognition-regions-${currentWorksheet.letter}`;
+        const saved = localStorage.getItem(storageKey);
+        setManualRegions(saved ? JSON.parse(saved) : []);
+      } catch (err) {
+        console.error('Failed to load manual regions', err);
+        setManualRegions([]);
       }
     });
   };
