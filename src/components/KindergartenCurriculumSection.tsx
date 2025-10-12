@@ -31,6 +31,7 @@ const KindergartenCurriculumSection = () => {
         { name: "Counting - Ten Frames", link: "/counting-worksheets" },
         { name: "Addition with Dots", link: "/addition-dots" },
         { name: "Subtraction with Number Lines", link: "/subtraction-numberline" },
+        { name: "Clock Reading", link: "/clock-faces" },
         { name: "Shape Recognition", link: "#" },
         { name: "Pattern Practice", link: "#" }
       ]
