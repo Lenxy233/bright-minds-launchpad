@@ -21,39 +21,20 @@ interface AnswerZoneManagerProps {
   pageNumber: number;
   answerZones: AnswerZone[];
   onZonesUpdate: () => void;
-  imageWidth: number;
-  imageHeight: number;
-  isPlacingZone: boolean;
-  onPlacingZoneChange: (placing: boolean) => void;
-  onImageClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onAddBox: () => void;
+  onDeleteZone: (zoneId: string) => void;
 }
 
 export const AnswerZoneManager = ({
   pageNumber,
   answerZones,
   onZonesUpdate,
-  imageWidth,
-  imageHeight,
-  isPlacingZone,
-  onPlacingZoneChange,
-  onImageClick,
+  onAddBox,
+  onDeleteZone,
 }: AnswerZoneManagerProps) => {
   const [editingZone, setEditingZone] = useState<string | null>(null);
   const [editAnswer, setEditAnswer] = useState("");
 
-  const handleDeleteZone = async (zoneId: string) => {
-    const { error } = await supabase
-      .from("clock_worksheet_answer_zones")
-      .delete()
-      .eq("id", zoneId);
-
-    if (error) {
-      toast.error("Failed to delete answer zone");
-    } else {
-      toast.success("Answer zone deleted");
-      onZonesUpdate();
-    }
-  };
 
   const handleUpdateAnswer = async (zoneId: string) => {
     const { error } = await supabase
@@ -74,17 +55,17 @@ export const AnswerZoneManager = ({
     <div className="space-y-4">
       <div className="flex gap-2">
         <Button
-          onClick={() => onPlacingZoneChange(!isPlacingZone)}
-          variant={isPlacingZone ? "default" : "outline"}
+          onClick={onAddBox}
+          variant="outline"
           className="flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          {isPlacingZone ? "Click on image to place" : "Add Answer Zone"}
+          Add Answer Box
         </Button>
       </div>
 
       <p className="text-sm text-muted-foreground">
-        {isPlacingZone ? "Click anywhere on the worksheet to place an answer box" : `${answerZones.length} answer zones created`}
+        Click and drag boxes on the worksheet to position and resize them. {answerZones.length} answer zones created.
       </p>
 
       <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -124,7 +105,7 @@ export const AnswerZoneManager = ({
                 <Button
                   size="sm"
                   variant="destructive"
-                  onClick={() => handleDeleteZone(zone.id)}
+                  onClick={() => onDeleteZone(zone.id)}
                 >
                   <Trash2 className="w-3 h-3" />
                 </Button>

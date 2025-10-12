@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Canvas as FabricCanvas, PencilBrush } from "fabric";
-import { Eraser, Pencil, Undo, Trash2, Download, ChevronLeft, ChevronRight, Save, CheckCircle, Settings } from "lucide-react";
+import { Canvas as FabricCanvas, PencilBrush, Rect } from "fabric";
+import { Eraser, Pencil, Undo, Trash2, Download, ChevronLeft, ChevronRight, Save, CheckCircle, Settings, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { AnswerZoneManager } from "@/components/clock-worksheet/AnswerZoneManager";
 import { StudentAnswerZones } from "@/components/clock-worksheet/StudentAnswerZones";
-import { TeacherAnswerZoneOverlay } from "@/components/clock-worksheet/TeacherAnswerZoneOverlay";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Import clock worksheet images
@@ -42,7 +41,6 @@ const ClockFaces = () => {
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [checkedAnswers, setCheckedAnswers] = useState<Record<string, boolean>>({});
   const [isSaving, setIsSaving] = useState(false);
-  const [isPlacingZone, setIsPlacingZone] = useState(false);
 
   const colors = [
     { name: "Red", value: "#FF6B6B" },
@@ -149,34 +147,135 @@ const ClockFaces = () => {
     toast.success("Student answers cleared!");
   };
 
-  const handleImageClick = async (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isPlacingZone || mode !== "teacher") return;
+  const saveAnswers = async () => {
+    if (!user) {
+      toast.error("Please sign in to save answers");
+      return;
+    }
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setIsSaving(true);
 
-    const { error } = await supabase.from("clock_worksheet_answer_zones").insert({
-      page_number: currentPage,
-      x_position: x,
-      y_position: y,
-      width: 15,
-      height: 8,
-      order_index: answerZones.length,
-      correct_answer: "",
-    });
+    try {
+      // Delete existing answers for this page
+      await supabase
+        .from("clock_worksheet_answers")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("page_number", currentPage + 1);
 
-    if (error) {
-      toast.error("Failed to create answer zone");
-      console.error(error);
-    } else {
-      toast.success("Answer zone created! Set the correct answer below.");
-      loadData();
-      setIsPlacingZone(false);
+      // Insert new answers
+      const answersToInsert = Object.entries(userAnswers).map(([zoneId, answer]) => ({
+        user_id: user.id,
+        page_number: currentPage + 1,
+        answer_zone_id: zoneId,
+        student_answer: answer,
+        clock_index: 0, // Not used with answer zones
+      }));
+
+      if (answersToInsert.length > 0) {
+        const { error } = await supabase
+          .from("clock_worksheet_answers")
+          .insert(answersToInsert);
+
+        if (error) throw error;
+      }
+
+      toast.success("Answers saved!");
+    } catch (error) {
+      console.error("Error saving answers:", error);
+      toast.error("Failed to save answers");
+    } finally {
+      setIsSaving(false);
     }
   };
 
+  const handleCheckAnswers = () => {
+    const checked: Record<string, boolean> = {};
+    
+    answerZones.forEach((zone) => {
+      const userAnswer = userAnswers[zone.id]?.trim().toLowerCase();
+      const correctAnswer = zone.correct_answer.trim().toLowerCase();
+      checked[zone.id] = userAnswer === correctAnswer;
+    });
+
+    setCheckedAnswers(checked);
+    const correctCount = Object.values(checked).filter(Boolean).length;
+    toast.success(`${correctCount} out of ${answerZones.length} correct!`);
+  };
+
+  const addAnswerBox = async () => {
+    if (!fabricCanvas) return;
+
+    const rect = new Rect({
+      left: 100,
+      top: 100,
+      fill: "rgba(255, 165, 0, 0.3)",
+      stroke: "orange",
+      strokeWidth: 2,
+      width: 150,
+      height: 40,
+    });
+
+    // Calculate percentages for database
+    const x = (rect.left! / 800) * 100;
+    const y = (rect.top! / 1000) * 100;
+    const width = (rect.width! / 800) * 100;
+    const height = (rect.height! / 1000) * 100;
+
+    const { data, error } = await supabase
+      .from("clock_worksheet_answer_zones")
+      .insert({
+        page_number: currentPage + 1,
+        x_position: x,
+        y_position: y,
+        width: width,
+        height: height,
+        order_index: answerZones.length,
+        correct_answer: "",
+      })
+      .select()
+      .single();
+
+    if (error) {
+      toast.error("Failed to create answer zone");
+      return;
+    }
+
+    rect.on("modified", async () => {
+      const newX = ((rect.left || 0) / 800) * 100;
+      const newY = ((rect.top || 0) / 1000) * 100;
+      const newWidth = ((rect.width || 0) * (rect.scaleX || 1) / 800) * 100;
+      const newHeight = ((rect.height || 0) * (rect.scaleY || 1) / 1000) * 100;
+
+      await supabase
+        .from("clock_worksheet_answer_zones")
+        .update({
+          x_position: newX,
+          y_position: newY,
+          width: newWidth,
+          height: newHeight,
+        })
+        .eq("id", data.id);
+
+      loadData();
+    });
+
+    fabricCanvas.add(rect);
+    toast.success("Answer box added - drag to move, resize from corners");
+    loadData();
+  };
+
+
   const handleDeleteZone = async (zoneId: string) => {
+    // Remove from fabric canvas
+    if (fabricCanvas) {
+      const objects = fabricCanvas.getObjects();
+      const zoneIndex = answerZones.findIndex((z) => z.id === zoneId);
+      if (zoneIndex !== -1 && objects[zoneIndex] && objects[zoneIndex].type === "rect") {
+        fabricCanvas.remove(objects[zoneIndex]);
+      }
+    }
+
     const { error } = await supabase
       .from("clock_worksheet_answer_zones")
       .delete()
@@ -193,110 +292,105 @@ const ClockFaces = () => {
   // Load answer zones and student answers
   const loadData = async () => {
     // Load answer zones
-    const { data: zonesData, error: zonesError } = await supabase
+    const { data: zones, error: zonesError } = await supabase
       .from("clock_worksheet_answer_zones")
       .select("*")
-      .eq("page_number", currentPage)
+      .eq("page_number", currentPage + 1)
       .order("order_index");
 
     if (zonesError) {
       console.error("Error loading answer zones:", zonesError);
-    } else {
-      setAnswerZones(zonesData || []);
-    }
-
-    // Load student answers if user is logged in
-    if (user) {
-      const { data: answersData, error: answersError } = await supabase
-        .from("clock_worksheet_answers")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("page_number", currentPage);
-
-      if (answersError) {
-        console.error("Error loading answers:", answersError);
-      } else {
-        const answers: Record<string, string> = {};
-        answersData?.forEach((row) => {
-          if (row.answer_zone_id && row.student_answer) {
-            answers[row.answer_zone_id] = row.student_answer;
-          }
-        });
-        setUserAnswers(answers);
-      }
-    }
-
-    setCheckedAnswers({});
-  };
-
-  // Save student answers to database
-  const saveAnswers = async () => {
-    if (!user) {
-      toast.error("Please log in to save your answers");
       return;
     }
 
-    setIsSaving(true);
+    const loadedZones = (zones || []).map((z) => ({
+      id: z.id,
+      page_number: z.page_number,
+      x_position: z.x_position,
+      y_position: z.y_position,
+      width: z.width,
+      height: z.height,
+      order_index: z.order_index,
+      correct_answer: z.correct_answer,
+    }));
 
-    // Save student answers for each zone
-    for (const zone of answerZones) {
-      const answer = userAnswers[zone.id];
-      
-      if (answer) {
-        const { error } = await supabase
-          .from("clock_worksheet_answers")
-          .upsert({
-            user_id: user.id,
-            page_number: currentPage,
-            answer_zone_id: zone.id,
-            clock_index: zone.order_index,
-            student_answer: answer,
-          });
+    setAnswerZones(loadedZones);
 
-        if (error) {
-          console.error("Error saving answer:", error);
-          toast.error("Failed to save answers");
-          setIsSaving(false);
-          return;
-        }
+    // Load user answers if authenticated
+    if (user) {
+      const { data: answers } = await supabase
+        .from("clock_worksheet_answers")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("page_number", currentPage + 1);
+
+      if (answers) {
+        const answersMap: Record<string, string> = {};
+        answers.forEach((a) => {
+          if (a.answer_zone_id) {
+            answersMap[a.answer_zone_id] = a.student_answer || "";
+          }
+        });
+        setUserAnswers(answersMap);
       }
     }
 
-    setIsSaving(false);
-    toast.success("Answers saved successfully!");
-  };
+    // Load zones into fabric canvas for teacher mode
+    if (mode === "teacher" && fabricCanvas) {
+      // Enable drawing mode off and selection mode on for teacher
+      fabricCanvas.isDrawingMode = false;
 
-  // Check student answers against correct answers
-  const handleCheckAnswers = () => {
-    const results: Record<string, boolean> = {};
-    let correctCount = 0;
-    let totalChecked = 0;
+      // Remove existing rectangles
+      fabricCanvas.getObjects().forEach((obj) => {
+        if (obj.type === "rect") {
+          fabricCanvas.remove(obj);
+        }
+      });
 
-    answerZones.forEach((zone) => {
-      const studentAns = userAnswers[zone.id]?.trim().toLowerCase();
-      const correctAns = zone.correct_answer?.trim().toLowerCase();
+      loadedZones.forEach((zone) => {
+        const rect = new Rect({
+          left: (zone.x_position / 100) * 800,
+          top: (zone.y_position / 100) * 1000,
+          width: (zone.width / 100) * 800,
+          height: (zone.height / 100) * 1000,
+          fill: "rgba(255, 165, 0, 0.3)",
+          stroke: "orange",
+          strokeWidth: 2,
+        });
 
-      if (studentAns && correctAns) {
-        const isCorrect = studentAns === correctAns;
-        results[zone.id] = isCorrect;
-        if (isCorrect) correctCount++;
-        totalChecked++;
-      }
-    });
+        rect.on("modified", async () => {
+          const newX = ((rect.left || 0) / 800) * 100;
+          const newY = ((rect.top || 0) / 1000) * 100;
+          const newWidth = ((rect.width || 0) * (rect.scaleX || 1) / 800) * 100;
+          const newHeight = ((rect.height || 0) * (rect.scaleY || 1) / 1000) * 100;
 
-    setCheckedAnswers(results);
-    
-    if (totalChecked > 0) {
-      toast.success(`Score: ${correctCount}/${totalChecked} correct!`);
-    } else {
-      toast.info("Please fill in your answers to check");
+          await supabase
+            .from("clock_worksheet_answer_zones")
+            .update({
+              x_position: newX,
+              y_position: newY,
+              width: newWidth,
+              height: newHeight,
+            })
+            .eq("id", zone.id);
+
+          toast.success("Answer box updated");
+        });
+
+        fabricCanvas.add(rect);
+      });
+
+      fabricCanvas.renderAll();
+    } else if (mode === "student" && fabricCanvas) {
+      // Enable drawing mode for student
+      fabricCanvas.isDrawingMode = true;
     }
   };
 
   // Load data when page changes
   useEffect(() => {
     loadData();
-  }, [currentPage, user]);
+  }, [currentPage, user, mode, fabricCanvas]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8 px-4">
@@ -384,18 +478,7 @@ const ClockFaces = () => {
                   className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
                   style={{ backgroundImage: `url(${worksheets[currentPage]})` }}
                 />
-                <canvas ref={canvasRef} className="relative" style={{ pointerEvents: mode === "teacher" ? "none" : "auto" }} />
-                
-                {mode === "teacher" && (
-                  <TeacherAnswerZoneOverlay
-                    answerZones={answerZones}
-                    isPlacingZone={isPlacingZone}
-                    onImageClick={handleImageClick}
-                    onDeleteZone={handleDeleteZone}
-                    imageWidth={800}
-                    imageHeight={1000}
-                  />
-                )}
+                <canvas ref={canvasRef} className="relative" />
                 
                 {mode === "student" && answerZones.length > 0 && (
                   <div className="absolute inset-0 pointer-events-none">
@@ -483,17 +566,14 @@ const ClockFaces = () => {
                   Manage Answer Zones
                 </h3>
                 <p className="text-sm text-amber-700 mb-4">
-                  Click "Add Answer Zone" then click on the worksheet to place answer boxes
+                  Drag and resize answer boxes directly on the worksheet. Click "Add Answer Box" to create a new one.
                 </p>
                 <AnswerZoneManager
-                  pageNumber={currentPage}
+                  pageNumber={currentPage + 1}
                   answerZones={answerZones}
                   onZonesUpdate={loadData}
-                  imageWidth={800}
-                  imageHeight={1000}
-                  isPlacingZone={isPlacingZone}
-                  onPlacingZoneChange={setIsPlacingZone}
-                  onImageClick={handleImageClick}
+                  onAddBox={addAnswerBox}
+                  onDeleteZone={handleDeleteZone}
                 />
               </div>
             ) : (

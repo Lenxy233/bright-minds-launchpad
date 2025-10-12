@@ -51,12 +51,12 @@ export const StudentAnswerZones = ({
                 value={userAnswers[zone.id] || ""}
                 onChange={(e) => onAnswerChange(zone.id, e.target.value)}
                 placeholder={`#${zone.order_index + 1}`}
-                className={`h-full text-center text-sm font-semibold ${
+                className={`h-full text-center text-sm font-semibold bg-white/90 ${
                   isCorrect === true
-                    ? "border-green-500 bg-green-50"
+                    ? "border-2 border-green-500 bg-green-50"
                     : isCorrect === false
-                    ? "border-red-500 bg-red-50"
-                    : "border-gray-300"
+                    ? "border-2 border-red-500 bg-red-50"
+                    : "border border-gray-300"
                 }`}
               />
               {isCorrect === true && (
