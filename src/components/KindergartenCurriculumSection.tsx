@@ -15,6 +15,7 @@ const KindergartenCurriculumSection = () => {
       subtopics: [
         { name: "A - Z Tracing & Coloring", link: "/alphabet-az-tracing" },
         { name: "Alphabet Tracing & Coloring", link: "/alphabet-tracing" },
+        { name: "Fruit Drawing & Coloring", link: "/fruit-drawing" },
         { name: "Letter Recognition", link: "#" },
         { name: "Phonics Practice", link: "#" }
       ]

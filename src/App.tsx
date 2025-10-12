@@ -22,6 +22,7 @@ import ScissorsCutting from "./pages/ScissorsCutting";
 import AlphabetTracing from "./pages/AlphabetTracing";
 import AlphabetAZTracing from "./pages/AlphabetAZTracing";
 import NumbersTracing from "./pages/NumbersTracing";
+import FruitDrawing from "./pages/FruitDrawing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -65,7 +66,8 @@ const App = () => (
             <Route path="/scissors-cutting" element={<ScissorsCutting />} />
             <Route path="/alphabet-tracing" element={<AlphabetTracing />} />
             <Route path="/alphabet-az-tracing" element={<AlphabetAZTracing />} />
-            <Route path="/numbers-tracing" element={<NumbersTracing />} />
+          <Route path="/numbers-tracing" element={<NumbersTracing />} />
+          <Route path="/fruit-drawing" element={<FruitDrawing />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
