@@ -111,8 +111,8 @@ const AlphabetAZTracing = () => {
     
     img.src = letters[index].image;
     img.onload = () => {
-      const canvasWidth = canvas.width || 800;
-      const canvasHeight = canvas.height || 600;
+      const canvasWidth = 1200;
+      const canvasHeight = 900;
       
       coloringCanvas.width = canvasWidth;
       coloringCanvas.height = canvasHeight;
@@ -413,7 +413,7 @@ const AlphabetAZTracing = () => {
             </div>
           </div>
 
-          <div className="relative bg-gray-50 rounded-lg overflow-hidden" style={{ height: "600px" }}>
+          <div className="relative bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center" style={{ minHeight: "900px" }}>
             <canvas 
               ref={coloringCanvasRef} 
               className="absolute inset-0" 
