@@ -44,8 +44,48 @@ export type Database = {
         }
         Relationships: []
       }
+      clock_worksheet_answer_zones: {
+        Row: {
+          correct_answer: string
+          created_at: string
+          height: number
+          id: string
+          order_index: number
+          page_number: number
+          updated_at: string
+          width: number
+          x_position: number
+          y_position: number
+        }
+        Insert: {
+          correct_answer: string
+          created_at?: string
+          height: number
+          id?: string
+          order_index: number
+          page_number: number
+          updated_at?: string
+          width: number
+          x_position: number
+          y_position: number
+        }
+        Update: {
+          correct_answer?: string
+          created_at?: string
+          height?: number
+          id?: string
+          order_index?: number
+          page_number?: number
+          updated_at?: string
+          width?: number
+          x_position?: number
+          y_position?: number
+        }
+        Relationships: []
+      }
       clock_worksheet_answers: {
         Row: {
+          answer_zone_id: string | null
           clock_index: number
           correct_answer: string | null
           created_at: string
@@ -56,6 +96,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          answer_zone_id?: string | null
           clock_index: number
           correct_answer?: string | null
           created_at?: string
@@ -66,6 +107,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          answer_zone_id?: string | null
           clock_index?: number
           correct_answer?: string | null
           created_at?: string
@@ -75,7 +117,15 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "clock_worksheet_answers_answer_zone_id_fkey"
+            columns: ["answer_zone_id"]
+            isOneToOne: false
+            referencedRelation: "clock_worksheet_answer_zones"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       clock_worksheet_correct_answers: {
         Row: {

@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Canvas as FabricCanvas, PencilBrush } from "fabric";
-import { Eraser, Pencil, Undo, Trash2, Download, ChevronLeft, ChevronRight, Save, CheckCircle } from "lucide-react";
+import { Eraser, Pencil, Undo, Trash2, Download, ChevronLeft, ChevronRight, Save, CheckCircle, Settings } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { AnswerZoneManager } from "@/components/clock-worksheet/AnswerZoneManager";
+import { StudentAnswerZones } from "@/components/clock-worksheet/StudentAnswerZones";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Import clock worksheet images
 import page1 from "@/assets/clocks/page-1.jpg";
@@ -15,8 +18,16 @@ import page5 from "@/assets/clocks/page-5.jpg";
 
 const worksheets = [page1, page2, page3, page4, page5];
 
-// Number of clocks on each worksheet page
-const clockCounts = [9, 12, 12, 12, 10];
+interface AnswerZone {
+  id: string;
+  page_number: number;
+  x_position: number;
+  y_position: number;
+  width: number;
+  height: number;
+  order_index: number;
+  correct_answer: string;
+}
 
 const ClockFaces = () => {
   const { user } = useAuth();
@@ -25,9 +36,10 @@ const ClockFaces = () => {
   const [activeColor, setActiveColor] = useState("#FF6B6B");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
-  const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
-  const [correctAnswers, setCorrectAnswers] = useState<Record<number, string>>({});
-  const [checkedAnswers, setCheckedAnswers] = useState<Record<number, boolean | null>>({});
+  const [mode, setMode] = useState<"student" | "teacher">("student");
+  const [answerZones, setAnswerZones] = useState<AnswerZone[]>([]);
+  const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
+  const [checkedAnswers, setCheckedAnswers] = useState<Record<string, boolean>>({});
   const [isSaving, setIsSaving] = useState(false);
 
   const colors = [
@@ -125,66 +137,56 @@ const ClockFaces = () => {
     }
   };
 
-  const handleAnswerChange = (index: number, value: string) => {
-    setUserAnswers((prev) => ({ ...prev, [index]: value }));
+  const handleAnswerChange = (zoneId: string, value: string) => {
+    setUserAnswers((prev) => ({ ...prev, [zoneId]: value }));
   };
 
   const handleResetAnswers = () => {
     setUserAnswers({});
+    setCheckedAnswers({});
     toast.success("Student answers cleared!");
   };
 
-  const handleCorrectAnswerChange = (index: number, value: string) => {
-    setCorrectAnswers((prev) => ({ ...prev, [index]: value }));
-  };
-
-  const handleResetCorrectAnswers = () => {
-    setCorrectAnswers({});
-    toast.success("Correct answers cleared!");
-  };
-
-  // Load saved answers from database
-  const loadAnswers = async () => {
-    if (!user) return;
-
-    // Load student answers
-    const { data: studentData, error: studentError } = await supabase
-      .from("clock_worksheet_answers")
+  // Load answer zones and student answers
+  const loadData = async () => {
+    // Load answer zones
+    const { data: zonesData, error: zonesError } = await supabase
+      .from("clock_worksheet_answer_zones")
       .select("*")
-      .eq("user_id", user.id)
-      .eq("page_number", currentPage);
+      .eq("page_number", currentPage)
+      .order("order_index");
 
-    if (studentError) {
-      console.error("Error loading student answers:", studentError);
+    if (zonesError) {
+      console.error("Error loading answer zones:", zonesError);
+    } else {
+      setAnswerZones(zonesData || []);
     }
 
-    const studentAnswers: Record<number, string> = {};
-    studentData?.forEach((row) => {
-      if (row.student_answer) studentAnswers[row.clock_index] = row.student_answer;
-    });
+    // Load student answers if user is logged in
+    if (user) {
+      const { data: answersData, error: answersError } = await supabase
+        .from("clock_worksheet_answers")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("page_number", currentPage);
 
-    setUserAnswers(studentAnswers);
-
-    // Load global correct answers
-    const { data: correctData, error: correctError } = await supabase
-      .from("clock_worksheet_correct_answers")
-      .select("*")
-      .eq("page_number", currentPage);
-
-    if (correctError) {
-      console.error("Error loading correct answers:", correctError);
+      if (answersError) {
+        console.error("Error loading answers:", answersError);
+      } else {
+        const answers: Record<string, string> = {};
+        answersData?.forEach((row) => {
+          if (row.answer_zone_id && row.student_answer) {
+            answers[row.answer_zone_id] = row.student_answer;
+          }
+        });
+        setUserAnswers(answers);
+      }
     }
 
-    const correctAns: Record<number, string> = {};
-    correctData?.forEach((row) => {
-      correctAns[row.clock_index] = row.correct_answer;
-    });
-
-    setCorrectAnswers(correctAns);
     setCheckedAnswers({});
   };
 
-  // Save answers to database
+  // Save student answers to database
   const saveAnswers = async () => {
     if (!user) {
       toast.error("Please log in to save your answers");
@@ -192,52 +194,25 @@ const ClockFaces = () => {
     }
 
     setIsSaving(true);
-    const allClocks = clockCounts[currentPage];
 
-    // Save student answers
-    for (let i = 0; i < allClocks; i++) {
-      const studentAns = userAnswers[i] || null;
-
-      if (studentAns) {
+    // Save student answers for each zone
+    for (const zone of answerZones) {
+      const answer = userAnswers[zone.id];
+      
+      if (answer) {
         const { error } = await supabase
           .from("clock_worksheet_answers")
           .upsert({
             user_id: user.id,
             page_number: currentPage,
-            clock_index: i,
-            student_answer: studentAns,
-          }, {
-            onConflict: "user_id,page_number,clock_index"
+            answer_zone_id: zone.id,
+            clock_index: zone.order_index,
+            student_answer: answer,
           });
 
         if (error) {
-          console.error("Error saving student answer:", error);
-          toast.error("Failed to save student answers");
-          setIsSaving(false);
-          return;
-        }
-      }
-    }
-
-    // Save correct answers globally
-    for (let i = 0; i < allClocks; i++) {
-      const correctAns = correctAnswers[i] || null;
-
-      if (correctAns) {
-        const { error } = await supabase
-          .from("clock_worksheet_correct_answers")
-          .upsert({
-            page_number: currentPage,
-            clock_index: i,
-            correct_answer: correctAns,
-            created_by: user.id,
-          }, {
-            onConflict: "page_number,clock_index"
-          });
-
-        if (error) {
-          console.error("Error saving correct answer:", error);
-          toast.error("Failed to save correct answers");
+          console.error("Error saving answer:", error);
+          toast.error("Failed to save answers");
           setIsSaving(false);
           return;
         }
@@ -250,18 +225,17 @@ const ClockFaces = () => {
 
   // Check student answers against correct answers
   const handleCheckAnswers = () => {
-    const results: Record<number, boolean | null> = {};
+    const results: Record<string, boolean> = {};
     let correctCount = 0;
     let totalChecked = 0;
 
-    Object.keys(userAnswers).forEach((key) => {
-      const index = parseInt(key);
-      const studentAns = userAnswers[index]?.trim().toLowerCase();
-      const correctAns = correctAnswers[index]?.trim().toLowerCase();
+    answerZones.forEach((zone) => {
+      const studentAns = userAnswers[zone.id]?.trim().toLowerCase();
+      const correctAns = zone.correct_answer?.trim().toLowerCase();
 
       if (studentAns && correctAns) {
         const isCorrect = studentAns === correctAns;
-        results[index] = isCorrect;
+        results[zone.id] = isCorrect;
         if (isCorrect) correctCount++;
         totalChecked++;
       }
@@ -272,15 +246,13 @@ const ClockFaces = () => {
     if (totalChecked > 0) {
       toast.success(`Score: ${correctCount}/${totalChecked} correct!`);
     } else {
-      toast.info("Please fill in both student and correct answers to check");
+      toast.info("Please fill in your answers to check");
     }
   };
 
-  // Load answers when page changes
+  // Load data when page changes
   useEffect(() => {
-    if (user) {
-      loadAnswers();
-    }
+    loadData();
   }, [currentPage, user]);
 
   return (
@@ -363,13 +335,28 @@ const ClockFaces = () => {
                 </Button>
               </div>
 
-              {/* Canvas */}
+              {/* Canvas and Answer Zones */}
               <div className="relative border-4 border-gray-200 rounded-xl overflow-hidden bg-white">
                 <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
-                  style={{ backgroundImage: `url(${worksheets[currentPage]})` }}
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                  style={{ 
+                    backgroundImage: `url(${worksheets[currentPage]})`,
+                    pointerEvents: mode === "teacher" ? "none" : "auto"
+                  }}
                 />
-                <canvas ref={canvasRef} className="relative" />
+                <canvas ref={canvasRef} className="relative" style={{ pointerEvents: mode === "teacher" ? "none" : "auto" }} />
+                {mode === "student" && answerZones.length > 0 && (
+                  <div className="absolute inset-0">
+                    <StudentAnswerZones
+                      answerZones={answerZones}
+                      userAnswers={userAnswers}
+                      checkedAnswers={checkedAnswers}
+                      onAnswerChange={handleAnswerChange}
+                      imageWidth={800}
+                      imageHeight={1000}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Navigation */}
@@ -399,8 +386,18 @@ const ClockFaces = () => {
             </div>
           </div>
 
-          {/* Right: Answer Sheet & Quick Navigation */}
+          {/* Right: Mode Switcher & Controls */}
           <div className="lg:w-96">
+            {/* Mode Switcher */}
+            <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
+              <Tabs value={mode} onValueChange={(v) => setMode(v as "student" | "teacher")}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="student">Student Mode</TabsTrigger>
+                  <TabsTrigger value="teacher">Teacher Mode</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
             {/* Quick Navigation */}
             <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
               <h3 className="text-lg font-bold text-gray-800 mb-3">Quick Navigation</h3>
@@ -424,76 +421,51 @@ const ClockFaces = () => {
               </div>
             </div>
 
-            {/* Correct Answers (Teacher View) */}
-            <div className="bg-amber-50 rounded-2xl shadow-xl p-6 mb-6 border-2 border-amber-200">
-              <h3 className="text-lg font-bold text-amber-900 mb-2">✏️ Correct Answers</h3>
-              <p className="text-sm text-amber-700 mb-4">Teacher: Enter the correct time for each clock</p>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-3 mb-4">
-                {Array.from({ length: clockCounts[currentPage] }).map((_, index) => (
-                  <div key={index} className="flex flex-col">
-                    <label className="text-xs font-semibold text-amber-800 mb-1">
-                      Clock {index + 1}
-                    </label>
-                    <input
-                      type="text"
-                      value={correctAnswers[index] || ""}
-                      onChange={(e) => handleCorrectAnswerChange(index, e.target.value)}
-                      placeholder="e.g., 3:00"
-                      className="w-full px-2 py-1.5 border-2 border-amber-300 rounded-lg text-center text-sm font-semibold bg-white focus:border-amber-500 focus:outline-none"
-                    />
-                  </div>
-                ))}
+            {mode === "teacher" ? (
+              /* Teacher Mode: Answer Zone Manager */
+              <div className="bg-amber-50 rounded-2xl shadow-xl p-6 border-2 border-amber-200">
+                <h3 className="text-lg font-bold text-amber-900 mb-2">
+                  <Settings className="inline w-5 h-5 mr-2" />
+                  Manage Answer Zones
+                </h3>
+                <p className="text-sm text-amber-700 mb-4">
+                  Click "Add Answer Zone" then click on the worksheet to place answer boxes
+                </p>
+                <AnswerZoneManager
+                  pageNumber={currentPage}
+                  answerZones={answerZones}
+                  onZonesUpdate={loadData}
+                  imageWidth={800}
+                  imageHeight={1000}
+                />
               </div>
-
-              <div className="flex gap-2">
-                <Button onClick={handleResetCorrectAnswers} variant="outline" className="flex-1">
-                  Clear Correct Answers
-                </Button>
+            ) : (
+              /* Student Mode: Answer Controls */
+              <div className="bg-white rounded-2xl shadow-xl p-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">📝 Your Answers</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Fill in the answer boxes on the worksheet
+                </p>
+                <div className="space-y-2 mb-4">
+                  <p className="text-sm">
+                    <span className="font-semibold">Total questions:</span> {answerZones.length}
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-semibold">Answered:</span>{" "}
+                    {Object.keys(userAnswers).filter((k) => userAnswers[k]?.trim()).length}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button onClick={handleResetAnswers} variant="outline" className="flex-1">
+                    Clear Answers
+                  </Button>
+                  <Button onClick={handleCheckAnswers} variant="default" className="flex-1">
+                    <CheckCircle className="w-4 h-4 mr-1" />
+                    Check
+                  </Button>
+                </div>
               </div>
-            </div>
-
-            {/* Student Answer Sheet */}
-            <div className="bg-white rounded-2xl shadow-xl p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-2">📝 Student Answers</h3>
-              <p className="text-sm text-gray-600 mb-4">Student: Write your answers here</p>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-3 mb-4">
-                {Array.from({ length: clockCounts[currentPage] }).map((_, index) => (
-                  <div key={index} className="flex flex-col relative">
-                    <label className="text-xs font-semibold text-gray-700 mb-1">
-                      Clock {index + 1}
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={userAnswers[index] || ""}
-                        onChange={(e) => handleAnswerChange(index, e.target.value)}
-                        placeholder="e.g., 3:00"
-                        className={`w-full px-2 py-1.5 border-2 rounded-lg text-center text-sm font-semibold focus:outline-none ${
-                          checkedAnswers[index] === true
-                            ? "border-green-500 bg-green-50"
-                            : checkedAnswers[index] === false
-                            ? "border-red-500 bg-red-50"
-                            : "border-gray-300 focus:border-primary"
-                        }`}
-                      />
-                      {checkedAnswers[index] === true && (
-                        <CheckCircle className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex gap-2">
-                <Button onClick={handleResetAnswers} variant="outline" className="flex-1">
-                  Clear Answers
-                </Button>
-                <Button onClick={handleCheckAnswers} variant="default" className="flex-1">
-                  <CheckCircle className="w-4 h-4 mr-1" />
-                  Check
-                </Button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
