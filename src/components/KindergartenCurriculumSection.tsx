@@ -16,7 +16,7 @@ const KindergartenCurriculumSection = () => {
         { name: "A - Z Tracing & Coloring", link: "/alphabet-az-tracing" },
         { name: "Alphabet Tracing & Coloring", link: "/alphabet-tracing" },
         { name: "Fruit Drawing & Coloring", link: "/fruit-drawing" },
-        { name: "Letter Recognition", link: "#" },
+        { name: "Alphabet Recognition", link: "/alphabet-recognition" },
         { name: "Phonics Practice", link: "#" }
       ]
     },
