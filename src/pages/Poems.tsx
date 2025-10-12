@@ -388,35 +388,6 @@ const Poems = () => {
           ))}
         </div>
 
-        {/* Tips Section */}
-        <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200">
-          <CardHeader>
-            <CardTitle className="text-2xl flex items-center gap-2">
-              <Lightbulb className="w-6 h-6 text-yellow-500" />
-              Tips for Parents & Teachers
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-3 text-gray-700">
-              <li className="flex items-start gap-2">
-                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
-                <span><strong>Think Together:</strong> Encourage children to think out loud and share their reasoning</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
-                <span><strong>No Rush:</strong> Give them time to think before revealing the answer</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
-                <span><strong>Celebrate Efforts:</strong> Praise creative thinking, even if the answer is wrong</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
-                <span><strong>Make It Fun:</strong> Act out the riddles or draw pictures to help visualize</span>
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
