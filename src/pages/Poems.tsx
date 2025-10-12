@@ -286,7 +286,6 @@ const Poems = () => {
         {/* Main Riddle Card */}
         <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-orange-200 mb-6">
           <CardHeader className="text-center bg-gradient-to-r from-yellow-100 to-orange-100 border-b-4 border-orange-200">
-            <div className="text-6xl mb-4">{riddle.icon}</div>
             <CardTitle className="text-2xl font-bold text-orange-800 flex items-center justify-center gap-2">
               <HelpCircle className="w-6 h-6" />
               Riddle #{riddle.id}
@@ -313,8 +312,9 @@ const Poems = () => {
                 </Button>
               </div>
             ) : (
-              <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 border-4 border-green-300 animate-in fade-in slide-in-from-bottom-4">
+              <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 border-4 border-green-300 animate-in fade-in scale-in">
                 <div className="text-center">
+                  <div className="text-6xl mb-4 animate-scale-in">{riddle.icon}</div>
                   <p className="text-green-700 font-bold text-lg mb-2">✨ The Answer Is... ✨</p>
                   <p className="text-3xl md:text-4xl text-green-800 font-bold">
                     {riddle.answer}
@@ -322,15 +322,6 @@ const Poems = () => {
                 </div>
               </div>
             )}
-
-            {/* Decorative Icons */}
-            <div className="flex justify-center gap-4 mt-8">
-              <Brain className="w-8 h-8 text-purple-400" />
-              <Lightbulb className="w-8 h-8 text-yellow-400" />
-              <Heart className="w-8 h-8 text-pink-400" />
-              <Lightbulb className="w-8 h-8 text-orange-400" />
-              <Brain className="w-8 h-8 text-blue-400" />
-            </div>
           </CardContent>
         </Card>
 
