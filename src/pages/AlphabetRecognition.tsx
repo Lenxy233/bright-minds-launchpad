@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas as FabricCanvas, Circle, FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Eraser, Download } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { Progress } from "@/components/ui/progress";
 
 // Import all alphabet recognition worksheets
 import letterA from "@/assets/alphabet-recognition/letter-a.jpg";
@@ -32,33 +33,347 @@ import letterX from "@/assets/alphabet-recognition/letter-x.jpg";
 import letterY from "@/assets/alphabet-recognition/letter-y.jpg";
 import letterZ from "@/assets/alphabet-recognition/letter-z.jpg";
 
+// Define correct regions for each worksheet (approximate coordinates)
+// Each region represents an item with the correct letter
 const alphabetWorksheets = [
-  { letter: "A", image: letterA, theme: "Apple" },
-  { letter: "B", image: letterB, theme: "Bee" },
-  { letter: "C", image: letterC, theme: "Car" },
-  { letter: "D", image: letterD, theme: "Dinosaur" },
-  { letter: "E", image: letterE, theme: "Elephant" },
-  { letter: "F", image: letterF, theme: "Fish" },
-  { letter: "G", image: letterG, theme: "Girl" },
-  { letter: "H", image: letterH, theme: "Hat" },
-  { letter: "I", image: letterI, theme: "Ice cream" },
-  { letter: "J", image: letterJ, theme: "Jet" },
-  { letter: "K", image: letterK, theme: "Kitten" },
-  { letter: "L", image: letterL, theme: "Lemon" },
-  { letter: "M", image: letterM, theme: "Moon" },
-  { letter: "N", image: letterN, theme: "Nest" },
-  { letter: "O", image: letterO, theme: "Octopus" },
-  { letter: "P", image: letterP, theme: "Pig" },
-  { letter: "Q", image: letterQ, theme: "Queen" },
-  { letter: "R", image: letterR, theme: "Rainbow" },
-  { letter: "S", image: letterS, theme: "Sun" },
-  { letter: "T", image: letterT, theme: "Turtle" },
-  { letter: "U", image: letterU, theme: "Umbrella" },
-  { letter: "V", image: letterV, theme: "Violin" },
-  { letter: "W", image: letterW, theme: "Watermelon" },
-  { letter: "X", image: letterX, theme: "Xylophone" },
-  { letter: "Y", image: letterY, theme: "Yarn" },
-  { letter: "Z", image: letterZ, theme: "Zebra" },
+  { 
+    letter: "A", 
+    image: letterA, 
+    theme: "Apple",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "B", 
+    image: letterB, 
+    theme: "Bee",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "C", 
+    image: letterC, 
+    theme: "Car",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "D", 
+    image: letterD, 
+    theme: "Dinosaur",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "E", 
+    image: letterE, 
+    theme: "Elephant",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "F", 
+    image: letterF, 
+    theme: "Fish",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "G", 
+    image: letterG, 
+    theme: "Girl",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "H", 
+    image: letterH, 
+    theme: "Hat",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "I", 
+    image: letterI, 
+    theme: "Ice cream",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "J", 
+    image: letterJ, 
+    theme: "Jet",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "K", 
+    image: letterK, 
+    theme: "Kitten",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "L", 
+    image: letterL, 
+    theme: "Lemon",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "M", 
+    image: letterM, 
+    theme: "Moon",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "N", 
+    image: letterN, 
+    theme: "Nest",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "O", 
+    image: letterO, 
+    theme: "Octopus",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "P", 
+    image: letterP, 
+    theme: "Pig",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "Q", 
+    image: letterQ, 
+    theme: "Queen",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "R", 
+    image: letterR, 
+    theme: "Rainbow",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "S", 
+    image: letterS, 
+    theme: "Sun",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "T", 
+    image: letterT, 
+    theme: "Turtle",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "U", 
+    image: letterU, 
+    theme: "Umbrella",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "V", 
+    image: letterV, 
+    theme: "Violin",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "W", 
+    image: letterW, 
+    theme: "Watermelon",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "X", 
+    image: letterX, 
+    theme: "Xylophone",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "Y", 
+    image: letterY, 
+    theme: "Yarn",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
+  { 
+    letter: "Z", 
+    image: letterZ, 
+    theme: "Zebra",
+    correctRegions: [
+      { x: 100, y: 200, width: 150, height: 150 },
+      { x: 350, y: 200, width: 150, height: 150 },
+      { x: 600, y: 200, width: 150, height: 150 },
+      { x: 100, y: 450, width: 150, height: 150 },
+      { x: 350, y: 450, width: 150, height: 150 },
+    ],
+    totalItems: 8
+  },
 ];
 
 const colors = [
@@ -77,6 +392,9 @@ const AlphabetRecognition = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeColor, setActiveColor] = useState(colors[0].value);
   const [isDrawing, setIsDrawing] = useState(true);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
+  const [coloredRegions, setColoredRegions] = useState<Set<number>>(new Set());
 
   const currentWorksheet = alphabetWorksheets[currentIndex];
 
@@ -99,6 +417,9 @@ const AlphabetRecognition = () => {
   useEffect(() => {
     if (!fabricCanvas) return;
     loadWorksheet();
+    setCorrectCount(0);
+    setIncorrectCount(0);
+    setColoredRegions(new Set());
   }, [fabricCanvas, currentIndex]);
 
   const loadWorksheet = async () => {
@@ -122,6 +443,21 @@ const AlphabetRecognition = () => {
     });
   };
 
+  const checkIfCorrect = (x: number, y: number): { isCorrect: boolean; regionIndex: number } => {
+    for (let i = 0; i < currentWorksheet.correctRegions.length; i++) {
+      const region = currentWorksheet.correctRegions[i];
+      if (
+        x >= region.x &&
+        x <= region.x + region.width &&
+        y >= region.y &&
+        y <= region.y + region.height
+      ) {
+        return { isCorrect: true, regionIndex: i };
+      }
+    }
+    return { isCorrect: false, regionIndex: -1 };
+  };
+
   useEffect(() => {
     if (!fabricCanvas) return;
 
@@ -129,15 +465,48 @@ const AlphabetRecognition = () => {
       if (!isDrawing) return;
       
       const pointer = fabricCanvas.getPointer(e.e);
+      const { isCorrect, regionIndex } = checkIfCorrect(pointer.x, pointer.y);
+      
+      let circleColor = activeColor;
+      let feedbackMessage = "";
+      
+      if (isCorrect && !coloredRegions.has(regionIndex)) {
+        // Correct answer - first time coloring this region
+        circleColor = "#22c55e"; // green
+        setCorrectCount(prev => prev + 1);
+        setColoredRegions(prev => new Set(prev).add(regionIndex));
+        feedbackMessage = "✓ Correct! That has letter " + currentWorksheet.letter;
+        toast.success(feedbackMessage);
+      } else if (isCorrect && coloredRegions.has(regionIndex)) {
+        // Already colored this correct region
+        circleColor = "#22c55e"; // green
+        feedbackMessage = "Already colored!";
+      } else {
+        // Incorrect answer
+        circleColor = "#ef4444"; // red
+        setIncorrectCount(prev => prev + 1);
+        feedbackMessage = "✗ Wrong! That doesn't have letter " + currentWorksheet.letter;
+        toast.error(feedbackMessage);
+      }
+      
       const circle = new Circle({
         left: pointer.x,
         top: pointer.y,
         radius: 25,
-        fill: activeColor,
+        fill: circleColor,
         opacity: 0.7,
         selectable: true,
+        stroke: circleColor === "#22c55e" ? "#16a34a" : "#dc2626",
+        strokeWidth: 2,
       });
       fabricCanvas.add(circle);
+
+      // Check if all correct regions are colored
+      if (coloredRegions.size + 1 === currentWorksheet.correctRegions.length && isCorrect && !coloredRegions.has(regionIndex)) {
+        setTimeout(() => {
+          toast.success("🎉 Excellent! You found all the correct " + currentWorksheet.theme + "s!");
+        }, 500);
+      }
     };
 
     fabricCanvas.on("mouse:down", handleMouseDown);
@@ -145,17 +514,23 @@ const AlphabetRecognition = () => {
     return () => {
       fabricCanvas.off("mouse:down", handleMouseDown);
     };
-  }, [fabricCanvas, activeColor, isDrawing]);
+  }, [fabricCanvas, activeColor, isDrawing, coloredRegions, correctCount]);
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      setCorrectCount(0);
+      setIncorrectCount(0);
+      setColoredRegions(new Set());
     }
   };
 
   const handleNext = () => {
     if (currentIndex < alphabetWorksheets.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      setCorrectCount(0);
+      setIncorrectCount(0);
+      setColoredRegions(new Set());
     }
   };
 
@@ -164,6 +539,9 @@ const AlphabetRecognition = () => {
     const objects = fabricCanvas.getObjects().filter((obj) => obj.type === "circle");
     objects.forEach((obj) => fabricCanvas.remove(obj));
     fabricCanvas.renderAll();
+    setCorrectCount(0);
+    setIncorrectCount(0);
+    setColoredRegions(new Set());
     toast.success("Cleared all colors!");
   };
 
@@ -226,20 +604,28 @@ const AlphabetRecognition = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 mb-6">
-            <div className="flex gap-2">
-              <span className="font-semibold text-foreground">Choose Color:</span>
-              {colors.map((color) => (
-                <button
-                  key={color.value}
-                  onClick={() => setActiveColor(color.value)}
-                  className={`w-10 h-10 rounded-full border-4 transition-transform hover:scale-110 ${
-                    activeColor === color.value ? "border-foreground scale-110" : "border-transparent"
-                  }`}
-                  style={{ backgroundColor: color.value }}
-                  title={color.name}
-                />
-              ))}
+          <div className="space-y-4 mb-6">
+            <div className="bg-secondary/50 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-semibold text-foreground">Progress</h3>
+                <span className="text-sm text-muted-foreground">
+                  {coloredRegions.size} / {currentWorksheet.correctRegions.length} correct items found
+                </span>
+              </div>
+              <Progress 
+                value={(coloredRegions.size / currentWorksheet.correctRegions.length) * 100} 
+                className="h-3"
+              />
+              <div className="flex gap-4 mt-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span className="text-foreground">Correct: <strong>{correctCount}</strong></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <XCircle className="w-4 h-4 text-red-600" />
+                  <span className="text-foreground">Incorrect: <strong>{incorrectCount}</strong></span>
+                </div>
+              </div>
             </div>
           </div>
 
