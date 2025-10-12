@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Canvas as FabricCanvas, PencilBrush } from "fabric";
+import { Canvas as FabricCanvas, PencilBrush, FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Download, Eraser, Pencil, RotateCcw, ChevronLeft, ChevronRight, Home } from "lucide-react";
@@ -77,37 +77,30 @@ const NumbersTracing = () => {
     if (!fabricCanvas) return;
 
     fabricCanvas.clear();
-
-    const canvas = fabricCanvas.getElement();
-    const coloringCanvas = fabricCanvas;
+    fabricCanvas.backgroundColor = "#FFFFFF";
     
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    
-    img.src = numbers[index].image;
-    img.onload = () => {
+    FabricImage.fromURL(numbers[index].image, {
+      crossOrigin: "anonymous",
+    }).then((img) => {
       const canvasWidth = 1200;
       const canvasHeight = 900;
       
-      coloringCanvas.width = canvasWidth;
-      coloringCanvas.height = canvasHeight;
+      fabricCanvas.setDimensions({ width: canvasWidth, height: canvasHeight });
 
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        const scale = Math.min(canvasWidth / img.width, canvasHeight / img.height);
-        const x = (canvasWidth - img.width * scale) / 2;
-        const y = (canvasHeight - img.height * scale) / 2;
+      const scale = Math.min(canvasWidth / img.width!, canvasHeight / img.height!);
+      img.scale(scale);
+      img.set({
+        left: (canvasWidth - img.width! * scale) / 2,
+        top: (canvasHeight - img.height! * scale) / 2,
+        selectable: false,
+        evented: false,
+      });
 
-        coloringCanvas.backgroundImage = undefined;
-        coloringCanvas.backgroundColor = "#FFFFFF";
-        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-        coloringCanvas.renderAll();
-      }
-    };
-
-    img.onerror = () => {
+      fabricCanvas.backgroundImage = img;
+      fabricCanvas.renderAll();
+    }).catch(() => {
       toast.error("Failed to load number image");
-    };
+    });
   };
 
   useEffect(() => {
