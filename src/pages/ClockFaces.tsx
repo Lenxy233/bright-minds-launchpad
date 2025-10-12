@@ -39,7 +39,7 @@ const ClockFaces = () => {
     const canvas = new FabricCanvas(canvasRef.current, {
       width: 800,
       height: 1000,
-      backgroundColor: "#ffffff",
+      backgroundColor: "transparent",
       isDrawingMode: true,
     });
 
@@ -77,7 +77,7 @@ const ClockFaces = () => {
   const handleClear = () => {
     if (!fabricCanvas) return;
     fabricCanvas.clear();
-    fabricCanvas.backgroundColor = "#ffffff";
+    fabricCanvas.backgroundColor = "transparent";
     fabricCanvas.renderAll();
     toast.success("Canvas cleared!");
   };
