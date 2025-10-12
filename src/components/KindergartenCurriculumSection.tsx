@@ -29,6 +29,7 @@ const KindergartenCurriculumSection = () => {
         { name: "Numbers Tracing", link: "/numbers-tracing" },
         { name: "Number Practice 1-20", link: "/number-practice" },
         { name: "Counting - Ten Frames", link: "/counting-worksheets" },
+        { name: "Addition with Dots", link: "/addition-dots" },
         { name: "Shape Recognition", link: "#" },
         { name: "Pattern Practice", link: "#" }
       ]

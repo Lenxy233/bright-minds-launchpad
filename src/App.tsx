@@ -26,6 +26,7 @@ import FruitDrawing from "./pages/FruitDrawing";
 import AlphabetRecognition from "./pages/AlphabetRecognition";
 import NumberPractice from "./pages/NumberPractice";
 import CountingWorksheets from "./pages/CountingWorksheets";
+import AdditionWithDots from "./pages/AdditionWithDots";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/alphabet-recognition" element={<AlphabetRecognition />} />
             <Route path="/number-practice" element={<NumberPractice />} />
             <Route path="/counting-worksheets" element={<CountingWorksheets />} />
+            <Route path="/addition-dots" element={<AdditionWithDots />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
