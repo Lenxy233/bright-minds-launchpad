@@ -77,6 +77,36 @@ export type Database = {
         }
         Relationships: []
       }
+      clock_worksheet_correct_answers: {
+        Row: {
+          clock_index: number
+          correct_answer: string
+          created_at: string
+          created_by: string | null
+          id: string
+          page_number: number
+          updated_at: string
+        }
+        Insert: {
+          clock_index: number
+          correct_answer: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          page_number: number
+          updated_at?: string
+        }
+        Update: {
+          clock_index?: number
+          correct_answer?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          page_number?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null

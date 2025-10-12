@@ -147,26 +147,39 @@ const ClockFaces = () => {
   const loadAnswers = async () => {
     if (!user) return;
 
-    const { data, error } = await supabase
+    // Load student answers
+    const { data: studentData, error: studentError } = await supabase
       .from("clock_worksheet_answers")
       .select("*")
       .eq("user_id", user.id)
       .eq("page_number", currentPage);
 
-    if (error) {
-      console.error("Error loading answers:", error);
-      return;
+    if (studentError) {
+      console.error("Error loading student answers:", studentError);
     }
 
     const studentAnswers: Record<number, string> = {};
-    const correctAns: Record<number, string> = {};
-
-    data?.forEach((row) => {
+    studentData?.forEach((row) => {
       if (row.student_answer) studentAnswers[row.clock_index] = row.student_answer;
-      if (row.correct_answer) correctAns[row.clock_index] = row.correct_answer;
     });
 
     setUserAnswers(studentAnswers);
+
+    // Load global correct answers
+    const { data: correctData, error: correctError } = await supabase
+      .from("clock_worksheet_correct_answers")
+      .select("*")
+      .eq("page_number", currentPage);
+
+    if (correctError) {
+      console.error("Error loading correct answers:", correctError);
+    }
+
+    const correctAns: Record<number, string> = {};
+    correctData?.forEach((row) => {
+      correctAns[row.clock_index] = row.correct_answer;
+    });
+
     setCorrectAnswers(correctAns);
     setCheckedAnswers({});
   };
@@ -181,11 +194,11 @@ const ClockFaces = () => {
     setIsSaving(true);
     const allClocks = clockCounts[currentPage];
 
+    // Save student answers
     for (let i = 0; i < allClocks; i++) {
       const studentAns = userAnswers[i] || null;
-      const correctAns = correctAnswers[i] || null;
 
-      if (studentAns || correctAns) {
+      if (studentAns) {
         const { error } = await supabase
           .from("clock_worksheet_answers")
           .upsert({
@@ -193,14 +206,38 @@ const ClockFaces = () => {
             page_number: currentPage,
             clock_index: i,
             student_answer: studentAns,
-            correct_answer: correctAns,
           }, {
             onConflict: "user_id,page_number,clock_index"
           });
 
         if (error) {
-          console.error("Error saving answer:", error);
-          toast.error("Failed to save answers");
+          console.error("Error saving student answer:", error);
+          toast.error("Failed to save student answers");
+          setIsSaving(false);
+          return;
+        }
+      }
+    }
+
+    // Save correct answers globally
+    for (let i = 0; i < allClocks; i++) {
+      const correctAns = correctAnswers[i] || null;
+
+      if (correctAns) {
+        const { error } = await supabase
+          .from("clock_worksheet_correct_answers")
+          .upsert({
+            page_number: currentPage,
+            clock_index: i,
+            correct_answer: correctAns,
+            created_by: user.id,
+          }, {
+            onConflict: "page_number,clock_index"
+          });
+
+        if (error) {
+          console.error("Error saving correct answer:", error);
+          toast.error("Failed to save correct answers");
           setIsSaving(false);
           return;
         }
