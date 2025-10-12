@@ -28,7 +28,7 @@ const KindergartenCurriculumSection = () => {
       subtopics: [
         { name: "Numbers Tracing", link: "/numbers-tracing" },
         { name: "Number Practice 1-20", link: "/number-practice" },
-        { name: "Counting Activities", link: "#" },
+        { name: "Counting - Ten Frames", link: "/counting-worksheets" },
         { name: "Shape Recognition", link: "#" },
         { name: "Pattern Practice", link: "#" }
       ]
