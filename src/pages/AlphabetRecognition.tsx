@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Canvas as FabricCanvas, Rect, FabricImage } from "fabric";
+import { Canvas as FabricCanvas, Circle, Rect, FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
