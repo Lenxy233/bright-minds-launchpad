@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Canvas as FabricCanvas, Circle, Rect, FabricImage } from "fabric";
+import { Canvas as FabricCanvas, Rect, FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 
@@ -391,10 +391,11 @@ const AlphabetRecognition = () => {
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeColor, setActiveColor] = useState(colors[0].value);
-  const [isDrawing, setIsDrawing] = useState(true);
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [coloredRegions, setColoredRegions] = useState<Set<number>>(new Set());
+  const [showCorrectRegions, setShowCorrectRegions] = useState(false);
+  const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const currentWorksheet = alphabetWorksheets[currentIndex];
 
@@ -440,7 +441,99 @@ const AlphabetRecognition = () => {
       
       fabricCanvas.backgroundImage = img;
       fabricCanvas.renderAll();
+
+      // Create offscreen canvas for pixel data
+      if (!offscreenCanvasRef.current) {
+        offscreenCanvasRef.current = document.createElement('canvas');
+      }
+      offscreenCanvasRef.current.width = fabricCanvas.width!;
+      offscreenCanvasRef.current.height = fabricCanvas.height!;
+      const ctx = offscreenCanvasRef.current.getContext('2d');
+      if (ctx) {
+        const imgElement = img.getElement() as HTMLImageElement;
+        ctx.drawImage(imgElement, 0, 0, fabricCanvas.width!, fabricCanvas.height!);
+      }
     });
+  };
+
+  const floodFill = (startX: number, startY: number, fillColor: string) => {
+    if (!fabricCanvas || !offscreenCanvasRef.current) return;
+
+    const ctx = offscreenCanvasRef.current.getContext('2d');
+    if (!ctx) return;
+
+    const imageData = ctx.getImageData(0, 0, fabricCanvas.width!, fabricCanvas.height!);
+    const pixels = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+
+    const startPos = (Math.floor(startY) * width + Math.floor(startX)) * 4;
+    const startR = pixels[startPos];
+    const startG = pixels[startPos + 1];
+    const startB = pixels[startPos + 2];
+
+    const fillRgb = hexToRgb(fillColor);
+    if (!fillRgb) return;
+
+    const tolerance = 40;
+    const visited = new Set<number>();
+    const stack: Array<[number, number]> = [[Math.floor(startX), Math.floor(startY)]];
+
+    const colorMatch = (pos: number) => {
+      const r = pixels[pos];
+      const g = pixels[pos + 1];
+      const b = pixels[pos + 2];
+      return (
+        Math.abs(r - startR) <= tolerance &&
+        Math.abs(g - startG) <= tolerance &&
+        Math.abs(b - startB) <= tolerance
+      );
+    };
+
+    while (stack.length > 0) {
+      const [x, y] = stack.pop()!;
+      const key = y * width + x;
+
+      if (
+        x < 0 || x >= width ||
+        y < 0 || y >= height ||
+        visited.has(key)
+      ) continue;
+
+      const pos = key * 4;
+      if (!colorMatch(pos)) continue;
+
+      visited.add(key);
+      pixels[pos] = fillRgb.r;
+      pixels[pos + 1] = fillRgb.g;
+      pixels[pos + 2] = fillRgb.b;
+      pixels[pos + 3] = 200; // Semi-transparent
+
+      stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
+    // Convert to fabric image and add as overlay
+    FabricImage.fromURL(offscreenCanvasRef.current.toDataURL()).then((img) => {
+      img.set({
+        left: 0,
+        top: 0,
+        selectable: false,
+        evented: false,
+      });
+      fabricCanvas.add(img);
+      fabricCanvas.renderAll();
+    });
+  };
+
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
   };
 
   const checkIfCorrect = (x: number, y: number): { isCorrect: boolean; regionIndex: number } => {
@@ -462,44 +555,33 @@ const AlphabetRecognition = () => {
     if (!fabricCanvas) return;
 
     const handleMouseDown = (e: any) => {
-      if (!isDrawing) return;
-      
       const pointer = fabricCanvas.getPointer(e.e);
       const { isCorrect, regionIndex } = checkIfCorrect(pointer.x, pointer.y);
       
-      let circleColor = activeColor;
+      let fillColor = activeColor;
       let feedbackMessage = "";
       
       if (isCorrect && !coloredRegions.has(regionIndex)) {
         // Correct answer - first time coloring this region
-        circleColor = "#22c55e"; // green
+        fillColor = "#22c55e"; // green
         setCorrectCount(prev => prev + 1);
         setColoredRegions(prev => new Set(prev).add(regionIndex));
         feedbackMessage = "✓ Correct! That has letter " + currentWorksheet.letter;
         toast.success(feedbackMessage);
       } else if (isCorrect && coloredRegions.has(regionIndex)) {
         // Already colored this correct region
-        circleColor = "#22c55e"; // green
+        fillColor = "#22c55e"; // green
         feedbackMessage = "Already colored!";
+        toast.info(feedbackMessage);
       } else {
         // Incorrect answer
-        circleColor = "#ef4444"; // red
+        fillColor = "#ef4444"; // red
         setIncorrectCount(prev => prev + 1);
         feedbackMessage = "✗ Wrong! That doesn't have letter " + currentWorksheet.letter;
         toast.error(feedbackMessage);
       }
       
-      const circle = new Circle({
-        left: pointer.x,
-        top: pointer.y,
-        radius: 25,
-        fill: circleColor,
-        opacity: 0.7,
-        selectable: true,
-        stroke: circleColor === "#22c55e" ? "#16a34a" : "#dc2626",
-        strokeWidth: 2,
-      });
-      fabricCanvas.add(circle);
+      floodFill(pointer.x, pointer.y, fillColor);
 
       // Check if all correct regions are colored
       if (coloredRegions.size + 1 === currentWorksheet.correctRegions.length && isCorrect && !coloredRegions.has(regionIndex)) {
@@ -514,7 +596,7 @@ const AlphabetRecognition = () => {
     return () => {
       fabricCanvas.off("mouse:down", handleMouseDown);
     };
-  }, [fabricCanvas, activeColor, isDrawing, coloredRegions, correctCount]);
+  }, [fabricCanvas, activeColor, coloredRegions, correctCount]);
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
@@ -536,13 +618,46 @@ const AlphabetRecognition = () => {
 
   const handleClear = () => {
     if (!fabricCanvas) return;
-    const objects = fabricCanvas.getObjects().filter((obj) => obj.type === "circle");
-    objects.forEach((obj) => fabricCanvas.remove(obj));
-    fabricCanvas.renderAll();
+    loadWorksheet();
     setCorrectCount(0);
     setIncorrectCount(0);
     setColoredRegions(new Set());
+    setShowCorrectRegions(false);
     toast.success("Cleared all colors!");
+  };
+
+  const toggleCorrectRegions = () => {
+    if (!fabricCanvas) return;
+    
+    if (!showCorrectRegions) {
+      // Show correct regions
+      currentWorksheet.correctRegions.forEach((region, index) => {
+        const rect = new Rect({
+          left: region.x,
+          top: region.y,
+          width: region.width,
+          height: region.height,
+          fill: 'transparent',
+          stroke: '#22c55e',
+          strokeWidth: 3,
+          strokeDashArray: [5, 5],
+          selectable: false,
+          evented: false,
+          name: `hint-${index}`,
+        });
+        fabricCanvas.add(rect);
+      });
+      fabricCanvas.renderAll();
+      toast.info("Showing correct regions!");
+    } else {
+      // Hide correct regions
+      const hints = fabricCanvas.getObjects().filter((obj: any) => obj.name?.startsWith('hint-'));
+      hints.forEach((obj) => fabricCanvas.remove(obj));
+      fabricCanvas.renderAll();
+      toast.info("Hiding correct regions!");
+    }
+    
+    setShowCorrectRegions(!showCorrectRegions);
   };
 
   const handleDownload = () => {
@@ -634,10 +749,17 @@ const AlphabetRecognition = () => {
               <canvas ref={canvasRef} />
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button onClick={handleClear} variant="outline" size="sm">
                 <Eraser className="w-4 h-4 mr-2" />
-                Clear Colors
+                Clear
+              </Button>
+              <Button onClick={toggleCorrectRegions} variant="outline" size="sm">
+                {showCorrectRegions ? (
+                  <><EyeOff className="w-4 h-4 mr-2" />Hide Hints</>
+                ) : (
+                  <><Eye className="w-4 h-4 mr-2" />Show Hints</>
+                )}
               </Button>
               <Button onClick={handleDownload} variant="default" size="sm">
                 <Download className="w-4 h-4 mr-2" />
