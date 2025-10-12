@@ -134,7 +134,13 @@ const AlphabetRecognition = () => {
   const loadWorksheet = async () => {
     if (!fabricCanvas) return;
 
-    fabricCanvas.clear();
+    try {
+      fabricCanvas.clear();
+    } catch (err) {
+      const objs = fabricCanvas.getObjects();
+      objs.forEach((o: any) => fabricCanvas.remove(o));
+      fabricCanvas.renderAll();
+    }
     
     FabricImage.fromURL(currentWorksheet.image).then((img) => {
       const scaleX = fabricCanvas.width! / img.width!;
@@ -244,6 +250,23 @@ const AlphabetRecognition = () => {
     } : null;
   };
 
+  const getCanvasCoords = (evt: MouseEvent) => {
+    const canvasEl = canvasRef.current as HTMLCanvasElement | null;
+    if (!canvasEl) return { x: 0, y: 0 };
+    const rect = canvasEl.getBoundingClientRect();
+    const scaleX = canvasEl.width / rect.width;
+    const scaleY = canvasEl.height / rect.height;
+
+    const anyEvt: any = evt as any;
+    const clientX = anyEvt.clientX ?? anyEvt.touches?.[0]?.clientX ?? anyEvt.changedTouches?.[0]?.clientX;
+    const clientY = anyEvt.clientY ?? anyEvt.touches?.[0]?.clientY ?? anyEvt.changedTouches?.[0]?.clientY;
+
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
+    };
+  };
+
   const checkIfCorrect = (x: number, y: number): { isCorrect: boolean; regionIndex: number } => {
     for (let i = 0; i < currentRegions.length; i++) {
       const region = currentRegions[i];
@@ -263,7 +286,7 @@ const AlphabetRecognition = () => {
     if (!fabricCanvas) return;
 
     const handleMouseDown = (e: any) => {
-      const pointer = fabricCanvas.getScenePoint(e.e);
+      const pointer = getCanvasCoords(e.e);
       
       // Admin mode: Define regions
       if (adminMode) {
@@ -312,7 +335,7 @@ const AlphabetRecognition = () => {
     const handleMouseMove = (e: any) => {
       if (!adminMode || !isDefiningRegion || !regionStart) return;
 
-      const pointer = fabricCanvas.getScenePoint(e.e);
+      const pointer = getCanvasCoords(e.e);
       
       // Remove previous preview rectangle
       const previews = fabricCanvas.getObjects().filter((obj: any) => obj.name === 'region-preview');
@@ -338,7 +361,7 @@ const AlphabetRecognition = () => {
     const handleMouseUp = (e: any) => {
       if (!adminMode || !isDefiningRegion || !regionStart) return;
 
-      const pointer = fabricCanvas.getScenePoint(e.e);
+      const pointer = getCanvasCoords(e.e);
       
       // Remove preview
       const previews = fabricCanvas.getObjects().filter((obj: any) => obj.name === 'region-preview');
