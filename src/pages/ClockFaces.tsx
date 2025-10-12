@@ -23,6 +23,7 @@ const ClockFaces = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
+  const [correctAnswers, setCorrectAnswers] = useState<Record<number, string>>({});
 
   const colors = [
     { name: "Red", value: "#FF6B6B" },
@@ -125,7 +126,16 @@ const ClockFaces = () => {
 
   const handleResetAnswers = () => {
     setUserAnswers({});
-    toast.success("Answers cleared!");
+    toast.success("Student answers cleared!");
+  };
+
+  const handleCorrectAnswerChange = (index: number, value: string) => {
+    setCorrectAnswers((prev) => ({ ...prev, [index]: value }));
+  };
+
+  const handleResetCorrectAnswers = () => {
+    setCorrectAnswers({});
+    toast.success("Correct answers cleared!");
   };
 
   return (
@@ -260,13 +270,40 @@ const ClockFaces = () => {
               </div>
             </div>
 
-            {/* Answer Sheet */}
-            <div className="bg-white rounded-2xl shadow-xl p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Answer Sheet</h3>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-3 mb-4">
+            {/* Correct Answers (Teacher View) */}
+            <div className="bg-amber-50 rounded-2xl shadow-xl p-6 mb-6 border-2 border-amber-200">
+              <h3 className="text-lg font-bold text-amber-900 mb-2">✏️ Correct Answers</h3>
+              <p className="text-sm text-amber-700 mb-4">Teacher: Enter the correct time for each clock</p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3 mb-4">
                 {Array.from({ length: clockCounts[currentPage] }).map((_, index) => (
                   <div key={index} className="flex flex-col">
-                    <label className="text-sm font-semibold text-gray-700 mb-1">
+                    <label className="text-xs font-semibold text-amber-800 mb-1">
+                      Clock {index + 1}
+                    </label>
+                    <input
+                      type="text"
+                      value={correctAnswers[index] || ""}
+                      onChange={(e) => handleCorrectAnswerChange(index, e.target.value)}
+                      placeholder="e.g., 3:00"
+                      className="w-full px-2 py-1.5 border-2 border-amber-300 rounded-lg text-center text-sm font-semibold bg-white focus:border-amber-500 focus:outline-none"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <Button onClick={handleResetCorrectAnswers} variant="outline" className="w-full">
+                Clear Correct Answers
+              </Button>
+            </div>
+
+            {/* Student Answer Sheet */}
+            <div className="bg-white rounded-2xl shadow-xl p-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-2">📝 Student Answers</h3>
+              <p className="text-sm text-gray-600 mb-4">Student: Write your answers here</p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3 mb-4">
+                {Array.from({ length: clockCounts[currentPage] }).map((_, index) => (
+                  <div key={index} className="flex flex-col">
+                    <label className="text-xs font-semibold text-gray-700 mb-1">
                       Clock {index + 1}
                     </label>
                     <input
@@ -274,14 +311,14 @@ const ClockFaces = () => {
                       value={userAnswers[index] || ""}
                       onChange={(e) => handleAnswerChange(index, e.target.value)}
                       placeholder="e.g., 3:00"
-                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-center font-semibold focus:border-primary focus:outline-none"
+                      className="w-full px-2 py-1.5 border-2 border-gray-300 rounded-lg text-center text-sm font-semibold focus:border-primary focus:outline-none"
                     />
                   </div>
                 ))}
               </div>
 
               <Button onClick={handleResetAnswers} variant="outline" className="w-full">
-                Clear All Answers
+                Clear Student Answers
               </Button>
             </div>
           </div>
