@@ -27,6 +27,7 @@ const KindergartenCurriculumSection = () => {
       color: "from-green-400 to-green-600",
       subtopics: [
         { name: "Numbers Tracing", link: "/numbers-tracing" },
+        { name: "Number Practice 1-20", link: "/number-practice" },
         { name: "Counting Activities", link: "#" },
         { name: "Shape Recognition", link: "#" },
         { name: "Pattern Practice", link: "#" }

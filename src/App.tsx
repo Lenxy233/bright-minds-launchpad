@@ -24,6 +24,7 @@ import AlphabetAZTracing from "./pages/AlphabetAZTracing";
 import NumbersTracing from "./pages/NumbersTracing";
 import FruitDrawing from "./pages/FruitDrawing";
 import AlphabetRecognition from "./pages/AlphabetRecognition";
+import NumberPractice from "./pages/NumberPractice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -70,6 +71,7 @@ const App = () => (
             <Route path="/numbers-tracing" element={<NumbersTracing />} />
             <Route path="/fruit-drawing" element={<FruitDrawing />} />
             <Route path="/alphabet-recognition" element={<AlphabetRecognition />} />
+            <Route path="/number-practice" element={<NumberPractice />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
