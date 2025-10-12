@@ -44,6 +44,39 @@ export type Database = {
         }
         Relationships: []
       }
+      clock_worksheet_answers: {
+        Row: {
+          clock_index: number
+          correct_answer: string | null
+          created_at: string
+          id: string
+          page_number: number
+          student_answer: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          clock_index: number
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          page_number: number
+          student_answer?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          clock_index?: number
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          page_number?: number
+          student_answer?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null

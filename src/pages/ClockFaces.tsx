@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Canvas as FabricCanvas, PencilBrush } from "fabric";
-import { Eraser, Pencil, Undo, Redo, Trash2, Download, ChevronLeft, ChevronRight } from "lucide-react";
+import { Eraser, Pencil, Undo, Trash2, Download, ChevronLeft, ChevronRight, Save, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Import clock worksheet images
 import page1 from "@/assets/clocks/page-1.jpg";
@@ -17,6 +19,7 @@ const worksheets = [page1, page2, page3, page4, page5];
 const clockCounts = [9, 12, 12, 12, 10];
 
 const ClockFaces = () => {
+  const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(0);
   const [activeTool, setActiveTool] = useState<"pencil" | "eraser">("pencil");
   const [activeColor, setActiveColor] = useState("#FF6B6B");
@@ -24,6 +27,8 @@ const ClockFaces = () => {
   const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
   const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
   const [correctAnswers, setCorrectAnswers] = useState<Record<number, string>>({});
+  const [checkedAnswers, setCheckedAnswers] = useState<Record<number, boolean | null>>({});
+  const [isSaving, setIsSaving] = useState(false);
 
   const colors = [
     { name: "Red", value: "#FF6B6B" },
@@ -138,6 +143,107 @@ const ClockFaces = () => {
     toast.success("Correct answers cleared!");
   };
 
+  // Load saved answers from database
+  const loadAnswers = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("clock_worksheet_answers")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("page_number", currentPage);
+
+    if (error) {
+      console.error("Error loading answers:", error);
+      return;
+    }
+
+    const studentAnswers: Record<number, string> = {};
+    const correctAns: Record<number, string> = {};
+
+    data?.forEach((row) => {
+      if (row.student_answer) studentAnswers[row.clock_index] = row.student_answer;
+      if (row.correct_answer) correctAns[row.clock_index] = row.correct_answer;
+    });
+
+    setUserAnswers(studentAnswers);
+    setCorrectAnswers(correctAns);
+    setCheckedAnswers({});
+  };
+
+  // Save answers to database
+  const saveAnswers = async () => {
+    if (!user) {
+      toast.error("Please log in to save your answers");
+      return;
+    }
+
+    setIsSaving(true);
+    const allClocks = clockCounts[currentPage];
+
+    for (let i = 0; i < allClocks; i++) {
+      const studentAns = userAnswers[i] || null;
+      const correctAns = correctAnswers[i] || null;
+
+      if (studentAns || correctAns) {
+        const { error } = await supabase
+          .from("clock_worksheet_answers")
+          .upsert({
+            user_id: user.id,
+            page_number: currentPage,
+            clock_index: i,
+            student_answer: studentAns,
+            correct_answer: correctAns,
+          }, {
+            onConflict: "user_id,page_number,clock_index"
+          });
+
+        if (error) {
+          console.error("Error saving answer:", error);
+          toast.error("Failed to save answers");
+          setIsSaving(false);
+          return;
+        }
+      }
+    }
+
+    setIsSaving(false);
+    toast.success("Answers saved successfully!");
+  };
+
+  // Check student answers against correct answers
+  const handleCheckAnswers = () => {
+    const results: Record<number, boolean | null> = {};
+    let correctCount = 0;
+    let totalChecked = 0;
+
+    Object.keys(userAnswers).forEach((key) => {
+      const index = parseInt(key);
+      const studentAns = userAnswers[index]?.trim().toLowerCase();
+      const correctAns = correctAnswers[index]?.trim().toLowerCase();
+
+      if (studentAns && correctAns) {
+        const isCorrect = studentAns === correctAns;
+        results[index] = isCorrect;
+        if (isCorrect) correctCount++;
+        totalChecked++;
+      }
+    });
+
+    setCheckedAnswers(results);
+    
+    if (totalChecked > 0) {
+      toast.success(`Score: ${correctCount}/${totalChecked} correct!`);
+    } else {
+      toast.info("Please fill in both student and correct answers to check");
+    }
+  };
+
+  // Load answers when page changes
+  useEffect(() => {
+    loadAnswers();
+  }, [currentPage, user]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -206,6 +312,15 @@ const ClockFaces = () => {
                 <Button variant="outline" onClick={handleDownload} className="flex items-center gap-2">
                   <Download className="w-4 h-4" />
                   Download
+                </Button>
+                <Button 
+                  variant="default" 
+                  onClick={saveAnswers} 
+                  disabled={isSaving || !user}
+                  className="flex items-center gap-2"
+                >
+                  <Save className="w-4 h-4" />
+                  {isSaving ? "Saving..." : "Save Answers"}
                 </Button>
               </div>
 
@@ -291,9 +406,11 @@ const ClockFaces = () => {
                 ))}
               </div>
 
-              <Button onClick={handleResetCorrectAnswers} variant="outline" className="w-full">
-                Clear Correct Answers
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={handleResetCorrectAnswers} variant="outline" className="flex-1">
+                  Clear Correct Answers
+                </Button>
+              </div>
             </div>
 
             {/* Student Answer Sheet */}
@@ -302,24 +419,41 @@ const ClockFaces = () => {
               <p className="text-sm text-gray-600 mb-4">Student: Write your answers here</p>
               <div className="grid grid-cols-2 gap-x-4 gap-y-3 mb-4">
                 {Array.from({ length: clockCounts[currentPage] }).map((_, index) => (
-                  <div key={index} className="flex flex-col">
+                  <div key={index} className="flex flex-col relative">
                     <label className="text-xs font-semibold text-gray-700 mb-1">
                       Clock {index + 1}
                     </label>
-                    <input
-                      type="text"
-                      value={userAnswers[index] || ""}
-                      onChange={(e) => handleAnswerChange(index, e.target.value)}
-                      placeholder="e.g., 3:00"
-                      className="w-full px-2 py-1.5 border-2 border-gray-300 rounded-lg text-center text-sm font-semibold focus:border-primary focus:outline-none"
-                    />
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={userAnswers[index] || ""}
+                        onChange={(e) => handleAnswerChange(index, e.target.value)}
+                        placeholder="e.g., 3:00"
+                        className={`w-full px-2 py-1.5 border-2 rounded-lg text-center text-sm font-semibold focus:outline-none ${
+                          checkedAnswers[index] === true
+                            ? "border-green-500 bg-green-50"
+                            : checkedAnswers[index] === false
+                            ? "border-red-500 bg-red-50"
+                            : "border-gray-300 focus:border-primary"
+                        }`}
+                      />
+                      {checkedAnswers[index] === true && (
+                        <CheckCircle className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600" />
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
 
-              <Button onClick={handleResetAnswers} variant="outline" className="w-full">
-                Clear Student Answers
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={handleResetAnswers} variant="outline" className="flex-1">
+                  Clear Answers
+                </Button>
+                <Button onClick={handleCheckAnswers} variant="default" className="flex-1">
+                  <CheckCircle className="w-4 h-4 mr-1" />
+                  Check
+                </Button>
+              </div>
             </div>
           </div>
         </div>
