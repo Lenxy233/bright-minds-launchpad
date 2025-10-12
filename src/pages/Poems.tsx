@@ -1,137 +1,269 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Heart, Star, Smile } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Brain, Lightbulb, HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
-interface Poem {
+interface Riddle {
   id: number;
-  title: string;
-  content: string[];
-  theme: string;
+  question: string;
+  answer: string;
   icon: string;
 }
 
-const poems: Poem[] = [
+const riddles: Riddle[] = [
   {
     id: 1,
-    title: "Feelings Are Like Colors",
-    content: [
-      "Happy is yellow, bright and sunny,",
-      "Making jokes that are quite funny.",
-      "Sad is blue, like rain that falls,",
-      "It's okay to cry when sadness calls.",
-      "",
-      "Angry is red, like a burning flame,",
-      "But we can cool down, it's not a shame.",
-      "Calm is green, like grass so still,",
-      "Breathing deeply helps us chill."
-    ],
-    theme: "emotions",
-    icon: "🎨"
+    question: "What has a ring but no finger?",
+    answer: "A telephone",
+    icon: "📞"
   },
   {
     id: 2,
-    title: "Kindness Is Magic",
-    content: [
-      "A smile to share, a hand to hold,",
-      "Kindness is better than silver or gold.",
-      "Help a friend when they are down,",
-      "Turn their frown into a crown.",
-      "",
-      "Share your toys, say 'please' and 'thank you',",
-      "These little things mean so much, it's true.",
-      "Kindness grows like flowers bright,",
-      "Spreading love and pure delight."
-    ],
-    theme: "kindness",
-    icon: "✨"
+    question: "I have a neck but no head. What am I?",
+    answer: "A bottle",
+    icon: "🍾"
   },
   {
     id: 3,
-    title: "I Am Special",
-    content: [
-      "I am special, one of a kind,",
-      "With a wonderful heart and an amazing mind.",
-      "I can learn and I can grow,",
-      "There's so much that I can know.",
-      "",
-      "I make mistakes, and that's okay,",
-      "I'll try again another day.",
-      "I am brave, I am strong,",
-      "I am special all day long!"
-    ],
-    theme: "self-worth",
-    icon: "⭐"
+    question: "I show you places to go, but I'm not a GPS. What am I?",
+    answer: "A map",
+    icon: "🗺️"
   },
   {
     id: 4,
-    title: "Friends Are Treasures",
-    content: [
-      "Friends are treasures, oh so bright,",
-      "They make the world feel just right.",
-      "We play together, laugh and share,",
-      "Friends show us they truly care.",
-      "",
-      "When I'm sad, they understand,",
-      "They offer me a helping hand.",
-      "Friends make life a joyful song,",
-      "With friends beside me, I belong."
-    ],
-    theme: "friendship",
-    icon: "🤝"
+    question: "What has a head and a tail but no body?",
+    answer: "A coin",
+    icon: "🪙"
   },
   {
     id: 5,
-    title: "Taking Turns",
-    content: [
-      "Taking turns is how we play,",
-      "Everyone gets a turn today.",
-      "Wait with patience, one by one,",
-      "Taking turns is so much fun!",
-      "",
-      "When we share and wait our turn,",
-      "Important lessons we will learn.",
-      "Playing fair makes friendships grow,",
-      "Taking turns, now we all know!"
-    ],
-    theme: "cooperation",
-    icon: "🎈"
+    question: "I'm tall when I'm young, and I'm short when I'm old. What am I?",
+    answer: "A candle",
+    icon: "🕯️"
   },
   {
     id: 6,
-    title: "Brave Little Heart",
-    content: [
-      "When I feel scared or all alone,",
-      "I remember how much I've grown.",
-      "I take a breath, I count to three,",
-      "Being brave is inside of me.",
-      "",
-      "I can face what's new and strange,",
-      "I'm brave enough to try and change.",
-      "Step by step, I'll find my way,",
-      "My brave little heart will save the day."
-    ],
-    theme: "courage",
-    icon: "🦁"
+    question: "The more you take, the more you leave behind. What am I?",
+    answer: "Footsteps",
+    icon: "👣"
+  },
+  {
+    id: 7,
+    question: "What goes up but never comes down?",
+    answer: "Your age",
+    icon: "🎂"
+  },
+  {
+    id: 8,
+    question: "What has a face and two hands but no arms or legs?",
+    answer: "A clock",
+    icon: "🕐"
+  },
+  {
+    id: 9,
+    question: "What has to be broken before you can use it?",
+    answer: "An egg",
+    icon: "🥚"
+  },
+  {
+    id: 10,
+    question: "What is full of holes but still holds water?",
+    answer: "A sponge",
+    icon: "🧽"
+  },
+  {
+    id: 11,
+    question: "What has eyes but can't see?",
+    answer: "A potato",
+    icon: "🥔"
+  },
+  {
+    id: 12,
+    question: "I have days and months, I help you plan, but I'm not a clock. What am I?",
+    answer: "A calendar",
+    icon: "📅"
+  },
+  {
+    id: 13,
+    question: "I'm colorful and used for drawing, I'm not a paintbrush. What am I?",
+    answer: "Crayons",
+    icon: "🖍️"
+  },
+  {
+    id: 14,
+    question: "I reflect what you show, but I'm not a TV. What am I?",
+    answer: "A mirror",
+    icon: "🪞"
+  },
+  {
+    id: 15,
+    question: "I'm colorful and bright, I appear after a rain, but I'm not the sun. What am I?",
+    answer: "A rainbow",
+    icon: "🌈"
+  },
+  {
+    id: 16,
+    question: "What has a thumb and four fingers but is not alive?",
+    answer: "A glove",
+    icon: "🧤"
+  },
+  {
+    id: 17,
+    question: "What starts with an E and only has one letter in it?",
+    answer: "An envelope",
+    icon: "✉️"
+  },
+  {
+    id: 18,
+    question: "What has a heart that doesn't beat?",
+    answer: "An artichoke",
+    icon: "🫒"
+  },
+  {
+    id: 19,
+    question: "What has keys but can't open doors?",
+    answer: "A computer",
+    icon: "⌨️"
+  },
+  {
+    id: 20,
+    question: "What has words but never speaks?",
+    answer: "Books",
+    icon: "📚"
+  },
+  {
+    id: 21,
+    question: "What gets wetter as it dries?",
+    answer: "A towel",
+    icon: "🧻"
+  },
+  {
+    id: 22,
+    question: "What has four legs but can't walk?",
+    answer: "A table",
+    icon: "🪑"
+  },
+  {
+    id: 23,
+    question: "What has one eye but cannot see?",
+    answer: "A needle",
+    icon: "🪡"
+  },
+  {
+    id: 24,
+    question: "I stretch but am not a rope. What am I?",
+    answer: "A rubber band",
+    icon: "🔴"
+  },
+  {
+    id: 25,
+    question: "I have two wheels, and you pedal to move me. What am I?",
+    answer: "A bicycle",
+    icon: "🚲"
+  },
+  {
+    id: 26,
+    question: "What comes down but never goes up?",
+    answer: "Rain",
+    icon: "🌧️"
+  },
+  {
+    id: 27,
+    question: "I help you get clean and bubbly in the bath. What am I?",
+    answer: "Soap",
+    icon: "🧼"
+  },
+  {
+    id: 28,
+    question: "I swim in water, but I'm not a duck. What am I?",
+    answer: "A fish",
+    icon: "🐠"
+  },
+  {
+    id: 29,
+    question: "I help you clean your teeth, but I'm not a toothbrush. What am I?",
+    answer: "Toothpaste",
+    icon: "🦷"
+  },
+  {
+    id: 30,
+    question: "I'm soft and fluffy, and you rest your head on me at night. What am I?",
+    answer: "A pillow",
+    icon: "🛏️"
+  },
+  {
+    id: 31,
+    question: "I start as a caterpillar and transform into something colorful that flies. What am I?",
+    answer: "A butterfly",
+    icon: "🦋"
+  },
+  {
+    id: 32,
+    question: "I make noise when you hit me, but I'm not a bell. What am I?",
+    answer: "A drum",
+    icon: "🥁"
+  },
+  {
+    id: 33,
+    question: "I'm long, have many cars, and travel on train tracks. What am I?",
+    answer: "A train",
+    icon: "🚂"
+  },
+  {
+    id: 34,
+    question: "I have eight legs, I weave a web, but I'm not a beetle. What am I?",
+    answer: "A spider",
+    icon: "🕷️"
+  },
+  {
+    id: 35,
+    question: "I'm round and float in the air, I pop when touched. What am I?",
+    answer: "A balloon",
+    icon: "🎈"
+  },
+  {
+    id: 36,
+    question: "You sleep on me, but I'm not a chair. What am I?",
+    answer: "A bed",
+    icon: "🛌"
+  },
+  {
+    id: 37,
+    question: "I'm slow and carry my home. What am I?",
+    answer: "A snail",
+    icon: "🐌"
+  },
+  {
+    id: 38,
+    question: "I'm contagious but not a cold, I show happiness when I unfold. What am I?",
+    answer: "A smile",
+    icon: "😊"
   }
 ];
 
 const Poems = () => {
-  const [currentPoem, setCurrentPoem] = useState(0);
+  const [currentRiddle, setCurrentRiddle] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   const handlePrevious = () => {
-    setCurrentPoem((prev) => (prev > 0 ? prev - 1 : poems.length - 1));
+    setCurrentRiddle((prev) => (prev > 0 ? prev - 1 : riddles.length - 1));
+    setShowAnswer(false);
   };
 
   const handleNext = () => {
-    setCurrentPoem((prev) => (prev < poems.length - 1 ? prev + 1 : 0));
+    setCurrentRiddle((prev) => (prev < riddles.length - 1 ? prev + 1 : 0));
+    setShowAnswer(false);
   };
 
-  const poem = poems[currentPoem];
+  const handleRevealAnswer = () => {
+    setShowAnswer(true);
+  };
+
+  const riddle = riddles[currentRiddle];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -143,50 +275,61 @@ const Poems = () => {
             <span className="font-semibold">Back to Learning</span>
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            <Heart className="inline w-10 h-10 mr-3 text-red-500" />
-            Poems & Rhymes
+            <Brain className="inline w-10 h-10 mr-3 text-purple-600" />
+            Brain-Boosting Riddles
           </h1>
           <p className="text-xl text-gray-600">
-            Beautiful poems about feelings, friendship, and being special
+            Test your thinking skills with fun riddles!
           </p>
         </div>
 
-        {/* Main Poem Card */}
-        <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-purple-200 mb-6">
-          <CardHeader className="text-center bg-gradient-to-r from-purple-100 to-pink-100 border-b-4 border-purple-200">
-            <div className="text-6xl mb-4">{poem.icon}</div>
-            <CardTitle className="text-3xl font-bold text-purple-800">
-              {poem.title}
+        {/* Main Riddle Card */}
+        <Card className="bg-white/90 backdrop-blur-sm shadow-2xl border-4 border-orange-200 mb-6">
+          <CardHeader className="text-center bg-gradient-to-r from-yellow-100 to-orange-100 border-b-4 border-orange-200">
+            <div className="text-6xl mb-4">{riddle.icon}</div>
+            <CardTitle className="text-2xl font-bold text-orange-800 flex items-center justify-center gap-2">
+              <HelpCircle className="w-6 h-6" />
+              Riddle #{riddle.id}
             </CardTitle>
-            <p className="text-sm text-purple-600 capitalize">Theme: {poem.theme}</p>
           </CardHeader>
           <CardContent className="p-8 md:p-12">
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 border-2 border-purple-200">
-              <div className="space-y-4">
-                {poem.content.map((line, index) => (
-                  <p
-                    key={index}
-                    className={`text-lg md:text-xl text-gray-700 leading-relaxed ${
-                      line === "" ? "h-4" : ""
-                    } ${
-                      index === 0 || poem.content[index - 1] === ""
-                        ? "font-semibold text-purple-800"
-                        : ""
-                    }`}
-                  >
-                    {line}
-                  </p>
-                ))}
-              </div>
+            {/* Question */}
+            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-8 border-2 border-orange-200 mb-6">
+              <p className="text-2xl md:text-3xl text-gray-800 leading-relaxed font-semibold text-center">
+                {riddle.question}
+              </p>
             </div>
 
-            {/* Decorative Stars */}
+            {/* Answer Section */}
+            {!showAnswer ? (
+              <div className="text-center">
+                <Button
+                  onClick={handleRevealAnswer}
+                  size="lg"
+                  className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-xl px-8 py-6"
+                >
+                  <Lightbulb className="w-6 h-6 mr-2" />
+                  Show Answer
+                </Button>
+              </div>
+            ) : (
+              <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 border-4 border-green-300 animate-in fade-in slide-in-from-bottom-4">
+                <div className="text-center">
+                  <p className="text-green-700 font-bold text-lg mb-2">✨ The Answer Is... ✨</p>
+                  <p className="text-3xl md:text-4xl text-green-800 font-bold">
+                    {riddle.answer}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Decorative Icons */}
             <div className="flex justify-center gap-4 mt-8">
-              <Star className="w-8 h-8 text-yellow-400 fill-yellow-400" />
-              <Smile className="w-8 h-8 text-pink-400" />
-              <Heart className="w-8 h-8 text-red-400 fill-red-400" />
-              <Smile className="w-8 h-8 text-blue-400" />
-              <Star className="w-8 h-8 text-purple-400 fill-purple-400" />
+              <Brain className="w-8 h-8 text-purple-400" />
+              <Lightbulb className="w-8 h-8 text-yellow-400" />
+              <Heart className="w-8 h-8 text-pink-400" />
+              <Lightbulb className="w-8 h-8 text-orange-400" />
+              <Brain className="w-8 h-8 text-blue-400" />
             </div>
           </CardContent>
         </Card>
@@ -197,7 +340,7 @@ const Poems = () => {
             onClick={handlePrevious}
             variant="outline"
             size="lg"
-            className="flex items-center gap-2 border-2 border-purple-300 hover:bg-purple-100"
+            className="flex items-center gap-2 border-2 border-orange-300 hover:bg-orange-100"
           >
             <ChevronLeft className="w-5 h-5" />
             Previous
@@ -205,7 +348,7 @@ const Poems = () => {
           
           <div className="text-center">
             <p className="text-lg font-semibold text-gray-700">
-              Poem {currentPoem + 1} of {poems.length}
+              Riddle {currentRiddle + 1} of {riddles.length}
             </p>
           </div>
 
@@ -213,60 +356,63 @@ const Poems = () => {
             onClick={handleNext}
             variant="outline"
             size="lg"
-            className="flex items-center gap-2 border-2 border-purple-300 hover:bg-purple-100"
+            className="flex items-center gap-2 border-2 border-orange-300 hover:bg-orange-100"
           >
             Next
             <ChevronRight className="w-5 h-5" />
           </Button>
         </div>
 
-        {/* Poem Selector Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {poems.map((p, index) => (
+        {/* Riddle Selector Grid */}
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-8">
+          {riddles.map((r, index) => (
             <button
-              key={p.id}
-              onClick={() => setCurrentPoem(index)}
-              className={`p-4 rounded-xl border-2 transition-all ${
-                currentPoem === index
-                  ? "bg-gradient-to-br from-purple-500 to-pink-500 text-white border-purple-600 shadow-lg scale-105"
-                  : "bg-white border-purple-200 hover:border-purple-400 hover:shadow-md"
+              key={r.id}
+              onClick={() => {
+                setCurrentRiddle(index);
+                setShowAnswer(false);
+              }}
+              className={`p-3 rounded-xl border-2 transition-all ${
+                currentRiddle === index
+                  ? "bg-gradient-to-br from-orange-500 to-pink-500 text-white border-orange-600 shadow-lg scale-105"
+                  : "bg-white border-orange-200 hover:border-orange-400 hover:shadow-md"
               }`}
             >
-              <div className="text-3xl mb-2">{p.icon}</div>
-              <p className={`font-semibold text-sm ${
-                currentPoem === index ? "text-white" : "text-gray-700"
+              <div className="text-2xl mb-1">{r.icon}</div>
+              <p className={`font-semibold text-xs ${
+                currentRiddle === index ? "text-white" : "text-gray-700"
               }`}>
-                {p.title}
+                #{r.id}
               </p>
             </button>
           ))}
         </div>
 
         {/* Tips Section */}
-        <Card className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200">
+        <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200">
           <CardHeader>
             <CardTitle className="text-2xl flex items-center gap-2">
-              <Smile className="w-6 h-6 text-blue-600" />
+              <Lightbulb className="w-6 h-6 text-yellow-500" />
               Tips for Parents & Teachers
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start gap-2">
-                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 mt-1 flex-shrink-0" />
-                <span><strong>Read Together:</strong> Read the poems aloud with expression and rhythm</span>
+                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
+                <span><strong>Think Together:</strong> Encourage children to think out loud and share their reasoning</span>
               </li>
               <li className="flex items-start gap-2">
-                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 mt-1 flex-shrink-0" />
-                <span><strong>Discuss Feelings:</strong> Talk about the emotions and themes in each poem</span>
+                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
+                <span><strong>No Rush:</strong> Give them time to think before revealing the answer</span>
               </li>
               <li className="flex items-start gap-2">
-                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 mt-1 flex-shrink-0" />
-                <span><strong>Act It Out:</strong> Use gestures and movements to bring the poems to life</span>
+                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
+                <span><strong>Celebrate Efforts:</strong> Praise creative thinking, even if the answer is wrong</span>
               </li>
               <li className="flex items-start gap-2">
-                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500 mt-1 flex-shrink-0" />
-                <span><strong>Create Your Own:</strong> Encourage children to write their own simple poems</span>
+                <Brain className="w-5 h-5 text-purple-500 mt-1 flex-shrink-0" />
+                <span><strong>Make It Fun:</strong> Act out the riddles or draw pictures to help visualize</span>
               </li>
             </ul>
           </CardContent>
