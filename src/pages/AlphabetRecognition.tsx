@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas as FabricCanvas, Rect, FabricImage } from "fabric";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle, Eye, EyeOff, MousePointer2, Hand } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eraser, Download, CheckCircle, XCircle, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
 
@@ -861,42 +861,17 @@ const AlphabetRecognition = () => {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Button 
-                onClick={() => setManualMode(!manualMode)} 
-                variant={manualMode ? "default" : "outline"} 
-                size="sm"
-              >
-                {manualMode ? (
-                  <><MousePointer2 className="w-4 h-4 mr-2" />Manual Mode (Click & Drag)</>
+              <Button onClick={handleClear} variant="outline" size="sm">
+                <Eraser className="w-4 h-4 mr-2" />
+                Clear
+              </Button>
+              <Button onClick={toggleCorrectRegions} variant="outline" size="sm">
+                {showCorrectRegions ? (
+                  <><EyeOff className="w-4 h-4 mr-2" />Hide Hints</>
                 ) : (
-                  <><Hand className="w-4 h-4 mr-2" />Play Mode</>
+                  <><Eye className="w-4 h-4 mr-2" />Show Hints</>
                 )}
               </Button>
-              {manualMode && (
-                <>
-                  <Button onClick={saveManualRegions} variant="default" size="sm">
-                    Save Regions ({manualRegions.length})
-                  </Button>
-                  <Button onClick={clearManualRegions} variant="destructive" size="sm">
-                    Clear Regions
-                  </Button>
-                </>
-              )}
-              {!manualMode && (
-                <>
-                  <Button onClick={handleClear} variant="outline" size="sm">
-                    <Eraser className="w-4 h-4 mr-2" />
-                    Clear
-                  </Button>
-                  <Button onClick={toggleCorrectRegions} variant="outline" size="sm">
-                    {showCorrectRegions ? (
-                      <><EyeOff className="w-4 h-4 mr-2" />Hide Hints</>
-                    ) : (
-                      <><Eye className="w-4 h-4 mr-2" />Show Hints</>
-                    )}
-                  </Button>
-                </>
-              )}
               <Button onClick={handleDownload} variant="default" size="sm">
                 <Download className="w-4 h-4 mr-2" />
                 Download
