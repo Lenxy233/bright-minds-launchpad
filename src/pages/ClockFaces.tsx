@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { AnswerZoneManager } from "@/components/clock-worksheet/AnswerZoneManager";
 import { StudentAnswerZones } from "@/components/clock-worksheet/StudentAnswerZones";
+import { TeacherAnswerZoneOverlay } from "@/components/clock-worksheet/TeacherAnswerZoneOverlay";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Import clock worksheet images
@@ -41,6 +42,7 @@ const ClockFaces = () => {
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [checkedAnswers, setCheckedAnswers] = useState<Record<string, boolean>>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [isPlacingZone, setIsPlacingZone] = useState(false);
 
   const colors = [
     { name: "Red", value: "#FF6B6B" },
@@ -145,6 +147,47 @@ const ClockFaces = () => {
     setUserAnswers({});
     setCheckedAnswers({});
     toast.success("Student answers cleared!");
+  };
+
+  const handleImageClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isPlacingZone || mode !== "teacher") return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    const { error } = await supabase.from("clock_worksheet_answer_zones").insert({
+      page_number: currentPage,
+      x_position: x,
+      y_position: y,
+      width: 15,
+      height: 8,
+      order_index: answerZones.length,
+      correct_answer: "",
+    });
+
+    if (error) {
+      toast.error("Failed to create answer zone");
+      console.error(error);
+    } else {
+      toast.success("Answer zone created! Set the correct answer below.");
+      loadData();
+      setIsPlacingZone(false);
+    }
+  };
+
+  const handleDeleteZone = async (zoneId: string) => {
+    const { error } = await supabase
+      .from("clock_worksheet_answer_zones")
+      .delete()
+      .eq("id", zoneId);
+
+    if (error) {
+      toast.error("Failed to delete answer zone");
+    } else {
+      toast.success("Answer zone deleted");
+      loadData();
+    }
   };
 
   // Load answer zones and student answers
@@ -338,23 +381,34 @@ const ClockFaces = () => {
               {/* Canvas and Answer Zones */}
               <div className="relative border-4 border-gray-200 rounded-xl overflow-hidden bg-white">
                 <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                  style={{ 
-                    backgroundImage: `url(${worksheets[currentPage]})`,
-                    pointerEvents: mode === "teacher" ? "none" : "auto"
-                  }}
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
+                  style={{ backgroundImage: `url(${worksheets[currentPage]})` }}
                 />
                 <canvas ref={canvasRef} className="relative" style={{ pointerEvents: mode === "teacher" ? "none" : "auto" }} />
+                
+                {mode === "teacher" && (
+                  <TeacherAnswerZoneOverlay
+                    answerZones={answerZones}
+                    isPlacingZone={isPlacingZone}
+                    onImageClick={handleImageClick}
+                    onDeleteZone={handleDeleteZone}
+                    imageWidth={800}
+                    imageHeight={1000}
+                  />
+                )}
+                
                 {mode === "student" && answerZones.length > 0 && (
-                  <div className="absolute inset-0">
-                    <StudentAnswerZones
-                      answerZones={answerZones}
-                      userAnswers={userAnswers}
-                      checkedAnswers={checkedAnswers}
-                      onAnswerChange={handleAnswerChange}
-                      imageWidth={800}
-                      imageHeight={1000}
-                    />
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="pointer-events-auto">
+                      <StudentAnswerZones
+                        answerZones={answerZones}
+                        userAnswers={userAnswers}
+                        checkedAnswers={checkedAnswers}
+                        onAnswerChange={handleAnswerChange}
+                        imageWidth={800}
+                        imageHeight={1000}
+                      />
+                    </div>
                   </div>
                 )}
               </div>
@@ -437,6 +491,9 @@ const ClockFaces = () => {
                   onZonesUpdate={loadData}
                   imageWidth={800}
                   imageHeight={1000}
+                  isPlacingZone={isPlacingZone}
+                  onPlacingZoneChange={setIsPlacingZone}
+                  onImageClick={handleImageClick}
                 />
               </div>
             ) : (
