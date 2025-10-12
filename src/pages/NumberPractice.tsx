@@ -79,8 +79,8 @@ const NumberPractice = () => {
 
     const canvas = new FabricCanvas(canvasRef.current, {
       isDrawingMode: true,
-      width: 1200,
-      height: 1600,
+      width: 850,
+      height: 1100,
     });
 
     const brush = new PencilBrush(canvas);
@@ -110,8 +110,8 @@ const NumberPractice = () => {
     FabricImage.fromURL(worksheets[index].image, {
       crossOrigin: "anonymous",
     }).then((img) => {
-      const canvasWidth = 1200;
-      const canvasHeight = 1600;
+      const canvasWidth = 850;
+      const canvasHeight = 1100;
       
       fabricCanvas.setDimensions({ width: canvasWidth, height: canvasHeight });
 
@@ -288,10 +288,9 @@ const NumberPractice = () => {
               </div>
             </div>
 
-            <div className="relative bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center" style={{ minHeight: "1600px" }}>
+            <div className="relative bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
               <canvas 
                 ref={canvasRef} 
-                className="absolute inset-0" 
                 style={{ 
                   cursor: activeTool === "draw" ? "crosshair" : "pointer",
                   touchAction: "none"
