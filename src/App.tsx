@@ -29,6 +29,7 @@ import CountingWorksheets from "./pages/CountingWorksheets";
 import AdditionWithDots from "./pages/AdditionWithDots";
 import SubtractionNumberLine from "./pages/SubtractionNumberLine";
 import ClockFaces from "./pages/ClockFaces";
+import Poems from "./pages/Poems";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -80,6 +81,7 @@ const App = () => (
             <Route path="/addition-dots" element={<AdditionWithDots />} />
             <Route path="/subtraction-numberline" element={<SubtractionNumberLine />} />
             <Route path="/clock-faces" element={<ClockFaces />} />
+            <Route path="/poems" element={<Poems />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />

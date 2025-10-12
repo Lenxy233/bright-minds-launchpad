@@ -75,6 +75,7 @@ const KindergartenCurriculumSection = () => {
       description: "Building relationships, empathy, and self-awareness",
       color: "from-red-400 to-red-600",
       subtopics: [
+        { name: "Poems & Rhymes", link: "/poems" },
         { name: "Feelings & Emotions", link: "#" },
         { name: "Friendship Activities", link: "#" },
         { name: "Sharing & Caring", link: "#" }
