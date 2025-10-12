@@ -263,7 +263,7 @@ const AlphabetRecognition = () => {
     if (!fabricCanvas) return;
 
     const handleMouseDown = (e: any) => {
-      const pointer = fabricCanvas.getPointer(e.e);
+      const pointer = fabricCanvas.getScenePoint(e.e);
       
       // Admin mode: Define regions
       if (adminMode) {
@@ -312,7 +312,7 @@ const AlphabetRecognition = () => {
     const handleMouseMove = (e: any) => {
       if (!adminMode || !isDefiningRegion || !regionStart) return;
 
-      const pointer = fabricCanvas.getPointer(e.e);
+      const pointer = fabricCanvas.getScenePoint(e.e);
       
       // Remove previous preview rectangle
       const previews = fabricCanvas.getObjects().filter((obj: any) => obj.name === 'region-preview');
@@ -338,7 +338,7 @@ const AlphabetRecognition = () => {
     const handleMouseUp = (e: any) => {
       if (!adminMode || !isDefiningRegion || !regionStart) return;
 
-      const pointer = fabricCanvas.getPointer(e.e);
+      const pointer = fabricCanvas.getScenePoint(e.e);
       
       // Remove preview
       const previews = fabricCanvas.getObjects().filter((obj: any) => obj.name === 'region-preview');
