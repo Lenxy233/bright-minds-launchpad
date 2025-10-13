@@ -3,6 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import scenario1 from "@/assets/emotion-scenarios/scenario-1-sharing-toy.jpg";
+import scenario2 from "@/assets/emotion-scenarios/scenario-2-lost-toy.jpg";
+import scenario3 from "@/assets/emotion-scenarios/scenario-3-pushed-line.jpg";
+import scenario4 from "@/assets/emotion-scenarios/scenario-4-birthday-party.jpg";
+import scenario5 from "@/assets/emotion-scenarios/scenario-5-strange-noise.jpg";
+import scenario6 from "@/assets/emotion-scenarios/scenario-6-reading-book.jpg";
+import scenario7 from "@/assets/emotion-scenarios/scenario-7-ice-cream.jpg";
+import scenario8 from "@/assets/emotion-scenarios/scenario-8-friend-wont-play.jpg";
+import scenario9 from "@/assets/emotion-scenarios/scenario-9-broken-crayon.jpg";
+import scenario10 from "@/assets/emotion-scenarios/scenario-10-zoo-visit.jpg";
+import scenario11 from "@/assets/emotion-scenarios/scenario-11-first-day-school.jpg";
+import scenario12 from "@/assets/emotion-scenarios/scenario-12-garden-butterflies.jpg";
 
 const EmotionScenarios = () => {
   const navigate = useNavigate();
@@ -13,73 +25,73 @@ const EmotionScenarios = () => {
 
   const scenarios = [
     {
-      situation: "Your best friend shares their favorite toy with you",
+      image: scenario1,
       correctEmotion: "Happy",
       emoji: "😊",
       color: "from-yellow-400 to-yellow-600"
     },
     {
-      situation: "You can't find your favorite stuffed animal anywhere",
+      image: scenario2,
       correctEmotion: "Sad",
       emoji: "😢",
       color: "from-blue-400 to-blue-600"
     },
     {
-      situation: "Someone pushed you in line at the playground",
+      image: scenario3,
       correctEmotion: "Angry",
       emoji: "😠",
       color: "from-red-400 to-red-600"
     },
     {
-      situation: "Tomorrow is your birthday party with all your friends!",
+      image: scenario4,
       correctEmotion: "Excited",
       emoji: "🤩",
       color: "from-purple-400 to-purple-600"
     },
     {
-      situation: "You hear a strange, loud noise in the middle of the night",
+      image: scenario5,
       correctEmotion: "Worried",
       emoji: "😰",
       color: "from-orange-400 to-orange-600"
     },
     {
-      situation: "You're sitting quietly, reading your favorite book",
+      image: scenario6,
       correctEmotion: "Calm",
       emoji: "😌",
       color: "from-green-400 to-green-600"
     },
     {
-      situation: "Your parent says you can get ice cream after dinner",
+      image: scenario7,
       correctEmotion: "Happy",
       emoji: "😊",
       color: "from-yellow-400 to-yellow-600"
     },
     {
-      situation: "Your friend doesn't want to play with you today",
+      image: scenario8,
       correctEmotion: "Sad",
       emoji: "😢",
       color: "from-blue-400 to-blue-600"
     },
     {
-      situation: "Someone broke your favorite crayon on purpose",
+      image: scenario9,
       correctEmotion: "Angry",
       emoji: "😠",
       color: "from-red-400 to-red-600"
     },
     {
-      situation: "You're going to the zoo to see all the animals!",
+      image: scenario10,
       correctEmotion: "Excited",
       emoji: "🤩",
       color: "from-purple-400 to-purple-600"
     },
     {
-      situation: "It's your first day at a new school",
+      image: scenario11,
       correctEmotion: "Worried",
       emoji: "😰",
       color: "from-orange-400 to-orange-600"
     },
     {
-      situation: "You're relaxing in the garden watching butterflies",
+      image: scenario12,
       correctEmotion: "Calm",
       emoji: "😌",
       color: "from-green-400 to-green-600"
@@ -140,7 +152,7 @@ const EmotionScenarios = () => {
             Feeling Situations 🌟
           </h1>
           <p className="text-lg md:text-xl text-gray-700">
-            Read the situation and choose how you would feel!
+            Look at the picture and choose how the child might feel!
           </p>
         </div>
       </div>
@@ -158,11 +170,15 @@ const EmotionScenarios = () => {
           <CardContent className="p-8">
             {!isGameComplete ? (
               <>
-                {/* Scenario */}
-                <div className="mb-8 p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
-                  <p className="text-xl md:text-2xl text-center text-gray-800 font-semibold">
-                    {scenarios[currentScenario].situation}
-                  </p>
+                {/* Scenario Image */}
+                <div className="mb-8">
+                  <div className="relative rounded-xl overflow-hidden border-4 border-purple-200 shadow-2xl">
+                    <img 
+                      src={scenarios[currentScenario].image} 
+                      alt={`Scenario ${currentScenario + 1}`}
+                      className="w-full h-auto object-cover"
+                    />
+                  </div>
                 </div>
 
                 {/* Emotion Options */}
