@@ -16,13 +16,19 @@ import scenario10 from "@/assets/emotion-scenarios/scenario-10-zoo-visit.jpg";
 import scenario11 from "@/assets/emotion-scenarios/scenario-11-first-day-school.jpg";
 import scenario12 from "@/assets/emotion-scenarios/scenario-12-garden-butterflies.jpg";
 
+type EmotionOption = {
+  name: string;
+  emoji: string;
+  color: string;
+};
+
 const EmotionScenarios = () => {
   const navigate = useNavigate();
   const [currentScenario, setCurrentScenario] = useState(0);
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
-  const [shuffledOptions, setShuffledOptions] = useState<typeof emotionOptions>([]);
+  const [shuffledOptions, setShuffledOptions] = useState<EmotionOption[]>([]);
 
   const scenarios = [
     {
