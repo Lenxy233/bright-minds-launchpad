@@ -254,21 +254,38 @@ const FeelingsEmotions = () => {
           </Card>
         </section>
 
-        {/* Next Activity Button */}
-        <section className="text-center">
+        {/* Next Activity Buttons */}
+        <section className="grid md:grid-cols-2 gap-6">
           <Card className="bg-gradient-to-br from-purple-100 to-pink-100 border-4 border-purple-300">
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold text-purple-800 mb-4">
-                Ready for More Practice?
+                Matching Game
               </h3>
               <p className="text-lg text-gray-700 mb-6">
-                Try matching the emotion faces with their names!
+                Match the emotion faces with their names!
               </p>
               <Button
                 onClick={() => navigate("/emotion-matching")}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-xl py-6 px-8"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-xl py-6"
               >
-                Play Matching Game! 🎯
+                Play Matching! 🎯
+              </Button>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-gradient-to-br from-blue-100 to-green-100 border-4 border-blue-300">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold text-blue-800 mb-4">
+                Situation Practice
+              </h3>
+              <p className="text-lg text-gray-700 mb-6">
+                Match emotions to different situations!
+              </p>
+              <Button
+                onClick={() => navigate("/emotion-scenarios")}
+                className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-xl py-6"
+              >
+                Practice Scenarios! 🌟
               </Button>
             </CardContent>
           </Card>
