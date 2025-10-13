@@ -30,6 +30,7 @@ import AdditionWithDots from "./pages/AdditionWithDots";
 import SubtractionNumberLine from "./pages/SubtractionNumberLine";
 import ClockFaces from "./pages/ClockFaces";
 import Poems from "./pages/Poems";
+import FeelingsEmotions from "./pages/FeelingsEmotions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -82,6 +83,7 @@ const App = () => (
             <Route path="/subtraction-numberline" element={<SubtractionNumberLine />} />
             <Route path="/clock-faces" element={<ClockFaces />} />
             <Route path="/poems" element={<Poems />} />
+            <Route path="/feelings-emotions" element={<FeelingsEmotions />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />

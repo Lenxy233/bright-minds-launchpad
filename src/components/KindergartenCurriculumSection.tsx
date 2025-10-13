@@ -76,7 +76,7 @@ const KindergartenCurriculumSection = () => {
       color: "from-red-400 to-red-600",
       subtopics: [
         { name: "Riddles & Brain Teasers", link: "/poems" },
-        { name: "Feelings & Emotions", link: "#" },
+        { name: "Feelings & Emotions", link: "/feelings-emotions" },
         { name: "Friendship Activities", link: "#" },
         { name: "Sharing & Caring", link: "#" }
       ]
