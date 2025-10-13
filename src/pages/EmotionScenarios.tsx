@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
@@ -22,6 +22,7 @@ const EmotionScenarios = () => {
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
+  const [shuffledOptions, setShuffledOptions] = useState<typeof emotionOptions>([]);
 
   const scenarios = [
     {
@@ -107,6 +108,17 @@ const EmotionScenarios = () => {
     { name: "Calm", emoji: "😌", color: "from-green-400 to-green-600" }
   ];
 
+  // Shuffle options when scenario changes
+  const shuffleOptions = () => {
+    const shuffled = [...emotionOptions].sort(() => Math.random() - 0.5);
+    setShuffledOptions(shuffled);
+  };
+
+  // Initialize shuffled options on mount
+  useEffect(() => {
+    shuffleOptions();
+  }, []);
+
   const handleEmotionSelect = (emotion: string) => {
     setSelectedEmotion(emotion);
     setShowFeedback(true);
@@ -121,6 +133,7 @@ const EmotionScenarios = () => {
       setCurrentScenario(currentScenario + 1);
       setSelectedEmotion(null);
       setShowFeedback(false);
+      shuffleOptions(); // Shuffle for next scenario
     }
   };
 
@@ -129,6 +142,7 @@ const EmotionScenarios = () => {
     setSelectedEmotion(null);
     setShowFeedback(false);
     setScore(0);
+    shuffleOptions(); // Shuffle for first scenario
   };
 
   const isCorrect = selectedEmotion === scenarios[currentScenario].correctEmotion;
@@ -185,10 +199,10 @@ const EmotionScenarios = () => {
                 {!showFeedback ? (
                   <div>
                     <p className="text-center text-lg text-gray-600 mb-4">
-                      How would you feel?
+                      How might this child feel?
                     </p>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {emotionOptions.map((emotion) => (
+                      {shuffledOptions.map((emotion) => (
                         <Button
                           key={emotion.name}
                           onClick={() => handleEmotionSelect(emotion.name)}
