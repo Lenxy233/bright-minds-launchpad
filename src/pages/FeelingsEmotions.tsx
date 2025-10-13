@@ -3,6 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Heart, Smile, Frown, Angry, Meh, Laugh, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import happyImage from "@/assets/emotions/happy.jpg";
+import sadImage from "@/assets/emotions/sad.jpg";
+import angryImage from "@/assets/emotions/angry.jpg";
+import excitedImage from "@/assets/emotions/excited.jpg";
+import worriedImage from "@/assets/emotions/worried.jpg";
+import calmImage from "@/assets/emotions/calm.jpg";
 
 const FeelingsEmotions = () => {
   const navigate = useNavigate();
@@ -14,6 +20,7 @@ const FeelingsEmotions = () => {
     {
       name: "Happy",
       emoji: "😊",
+      image: happyImage,
       icon: Smile,
       color: "from-yellow-400 to-yellow-600",
       description: "When you feel joyful, cheerful, and everything feels good!",
@@ -22,6 +29,7 @@ const FeelingsEmotions = () => {
     {
       name: "Sad",
       emoji: "😢",
+      image: sadImage,
       icon: Frown,
       color: "from-blue-400 to-blue-600",
       description: "When you feel down, hurt, or want to cry.",
@@ -30,6 +38,7 @@ const FeelingsEmotions = () => {
     {
       name: "Angry",
       emoji: "😠",
+      image: angryImage,
       icon: Angry,
       color: "from-red-400 to-red-600",
       description: "When you feel mad, frustrated, or want to yell.",
@@ -38,6 +47,7 @@ const FeelingsEmotions = () => {
     {
       name: "Excited",
       emoji: "🤩",
+      image: excitedImage,
       icon: Laugh,
       color: "from-purple-400 to-purple-600",
       description: "When you can't wait for something amazing to happen!",
@@ -46,6 +56,7 @@ const FeelingsEmotions = () => {
     {
       name: "Worried",
       emoji: "😰",
+      image: worriedImage,
       icon: AlertCircle,
       color: "from-orange-400 to-orange-600",
       description: "When you feel nervous or scared about something.",
@@ -54,6 +65,7 @@ const FeelingsEmotions = () => {
     {
       name: "Calm",
       emoji: "😌",
+      image: calmImage,
       icon: Meh,
       color: "from-green-400 to-green-600",
       description: "When you feel peaceful, relaxed, and everything is okay.",
@@ -144,9 +156,17 @@ const FeelingsEmotions = () => {
                   }`}
                   onClick={() => setSelectedEmotion(isSelected ? null : emotion.name)}
                 >
-                  <CardHeader className={`bg-gradient-to-br ${emotion.color} text-white rounded-t-lg`}>
-                    <div className="text-6xl text-center mb-2">{emotion.emoji}</div>
-                    <CardTitle className="text-center text-2xl">{emotion.name}</CardTitle>
+                  <CardHeader className={`bg-gradient-to-br ${emotion.color} text-white rounded-t-lg p-0 overflow-hidden`}>
+                    <div className="relative w-full aspect-square">
+                      <img 
+                        src={emotion.image} 
+                        alt={`${emotion.name} emotion`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                        <CardTitle className="text-center text-2xl text-white">{emotion.name}</CardTitle>
+                      </div>
+                    </div>
                   </CardHeader>
                   <CardContent className="pt-4">
                     <CardDescription className="text-gray-700 text-center mb-4">
