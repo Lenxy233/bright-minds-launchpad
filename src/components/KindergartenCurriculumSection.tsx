@@ -77,7 +77,7 @@ const KindergartenCurriculumSection = () => {
       subtopics: [
         { name: "Riddles & Brain Teasers", link: "/poems" },
         { name: "Feelings & Emotions", link: "/feelings-emotions" },
-        { name: "Friendship Activities", link: "#" },
+        { name: "Friendship & Activities", link: "/friendship-activities" },
         { name: "Sharing & Caring", link: "#" }
       ]
     }
