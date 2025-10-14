@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Globe, MapPin, Users, Languages } from "lucide-react";
+import { ArrowLeft, Globe, MapPin, Users, Languages, Utensils, Coins, Shirt, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import thomasCharacter from "@/assets/geography/thomas-character.jpg";
 import franceEiffel from "@/assets/geography/france-eiffel.jpg";
@@ -24,6 +24,10 @@ type Country = {
   greeting: string;
   people: string;
   color: string;
+  food: string;
+  currency: string;
+  clothing: string;
+  introduction: string;
 };
 
 const WhereIsThomas = () => {
@@ -42,7 +46,11 @@ const WhereIsThomas = () => {
       funFact: "France is famous for croissants and the Eiffel Tower!",
       greeting: "Bonjour! (Hello!)",
       people: "French people love art, food, and culture",
-      color: "from-blue-400 to-red-400"
+      color: "from-blue-400 to-red-400",
+      food: "Croissants, Baguettes, and Cheese 🥐",
+      currency: "Euro (€)",
+      clothing: "Berets and Striped Shirts",
+      introduction: "Je m'appelle... (My name is...)"
     },
     {
       name: "China",
@@ -54,7 +62,11 @@ const WhereIsThomas = () => {
       funFact: "The Great Wall is so long, it can be seen from space!",
       greeting: "Nǐ hǎo! (Hello!)",
       people: "Chinese people celebrate with dragons and lanterns",
-      color: "from-red-400 to-yellow-400"
+      color: "from-red-400 to-yellow-400",
+      food: "Dumplings, Noodles, and Rice 🥟",
+      currency: "Yuan (¥)",
+      clothing: "Traditional Cheongsam and Hanfu",
+      introduction: "Wǒ jiào... (I am called...)"
     },
     {
       name: "United States",
@@ -66,7 +78,11 @@ const WhereIsThomas = () => {
       funFact: "The Statue of Liberty was a gift from France!",
       greeting: "Hello!",
       people: "Americans love baseball and hamburgers",
-      color: "from-blue-500 to-red-500"
+      color: "from-blue-500 to-red-500",
+      food: "Hamburgers, Hot Dogs, and Apple Pie 🍔",
+      currency: "US Dollar ($)",
+      clothing: "Jeans and Cowboy Hats",
+      introduction: "My name is... Nice to meet you!"
     },
     {
       name: "Egypt",
@@ -78,7 +94,11 @@ const WhereIsThomas = () => {
       funFact: "The pyramids were built over 4,500 years ago!",
       greeting: "Marhaba! (Hello!)",
       people: "Ancient Egyptians built amazing pyramids and temples",
-      color: "from-yellow-400 to-orange-500"
+      color: "from-yellow-400 to-orange-500",
+      food: "Falafel, Koshari, and Pita Bread 🥙",
+      currency: "Egyptian Pound (E£)",
+      clothing: "Galabeya Robes",
+      introduction: "Ana ismi... (My name is...)"
     },
     {
       name: "United Kingdom",
@@ -90,7 +110,11 @@ const WhereIsThomas = () => {
       funFact: "Big Ben is actually the name of the bell, not the tower!",
       greeting: "Hello!",
       people: "British people love tea and have a royal family",
-      color: "from-blue-600 to-red-600"
+      color: "from-blue-600 to-red-600",
+      food: "Fish and Chips, Tea, and Scones 🫖",
+      currency: "British Pound (£)",
+      clothing: "Tartan Kilts and Bowler Hats",
+      introduction: "I'm... Lovely to meet you!"
     },
     {
       name: "India",
@@ -102,7 +126,11 @@ const WhereIsThomas = () => {
       funFact: "The Taj Mahal is made of beautiful white marble!",
       greeting: "Namaste! (Hello!)",
       people: "Indian people celebrate colorful festivals like Holi",
-      color: "from-orange-500 to-green-500"
+      color: "from-orange-500 to-green-500",
+      food: "Curry, Naan Bread, and Samosas 🍛",
+      currency: "Indian Rupee (₹)",
+      clothing: "Colorful Saris and Turbans",
+      introduction: "Mera naam... hai (My name is...)"
     },
     {
       name: "Australia",
@@ -114,7 +142,11 @@ const WhereIsThomas = () => {
       funFact: "Australia has kangaroos and koalas!",
       greeting: "G'day! (Hello!)",
       people: "Australians love beaches and surfing",
-      color: "from-blue-400 to-yellow-400"
+      color: "from-blue-400 to-yellow-400",
+      food: "Meat Pies, Vegemite, and Tim Tams 🥧",
+      currency: "Australian Dollar ($)",
+      clothing: "Cork Hats and Outback Gear",
+      introduction: "I'm... G'day mate!"
     },
     {
       name: "Brazil",
@@ -126,7 +158,11 @@ const WhereIsThomas = () => {
       funFact: "Brazil has the biggest rainforest in the world!",
       greeting: "Olá! (Hello!)",
       people: "Brazilians love soccer and carnival celebrations",
-      color: "from-green-500 to-yellow-500"
+      color: "from-green-500 to-yellow-500",
+      food: "Feijoada, Açaí Bowls, and Brigadeiro 🍲",
+      currency: "Brazilian Real (R$)",
+      clothing: "Colorful Carnival Costumes",
+      introduction: "Meu nome é... (My name is...)"
     }
   ];
 
@@ -242,7 +278,7 @@ const WhereIsThomas = () => {
               </div>
 
               {/* Information Grid */}
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <Card className="p-6 bg-blue-50 border-2 border-blue-200">
                   <div className="flex items-start gap-3">
                     <MapPin className="w-8 h-8 text-blue-600 flex-shrink-0" />
@@ -267,18 +303,48 @@ const WhereIsThomas = () => {
                   <div className="flex items-start gap-3">
                     <Globe className="w-8 h-8 text-purple-600 flex-shrink-0" />
                     <div>
-                      <h3 className="font-bold text-lg mb-2 text-gray-800">Famous Landmark</h3>
+                      <h3 className="font-bold text-lg mb-2 text-gray-800">Monument</h3>
                       <p className="text-gray-700 text-xl">{selectedCountry.landmark}</p>
                     </div>
                   </div>
                 </Card>
 
-                <Card className="p-6 bg-orange-50 border-2 border-orange-200">
+                <Card className="p-6 bg-pink-50 border-2 border-pink-200">
                   <div className="flex items-start gap-3">
-                    <Users className="w-8 h-8 text-orange-600 flex-shrink-0" />
+                    <Utensils className="w-8 h-8 text-pink-600 flex-shrink-0" />
                     <div>
-                      <h3 className="font-bold text-lg mb-2 text-gray-800">The People</h3>
-                      <p className="text-gray-700 text-xl">{selectedCountry.people}</p>
+                      <h3 className="font-bold text-lg mb-2 text-gray-800">Traditional Food</h3>
+                      <p className="text-gray-700 text-xl">{selectedCountry.food}</p>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="p-6 bg-yellow-50 border-2 border-yellow-200">
+                  <div className="flex items-start gap-3">
+                    <Coins className="w-8 h-8 text-yellow-600 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-bold text-lg mb-2 text-gray-800">Currency</h3>
+                      <p className="text-gray-700 text-xl">{selectedCountry.currency}</p>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="p-6 bg-indigo-50 border-2 border-indigo-200">
+                  <div className="flex items-start gap-3">
+                    <Shirt className="w-8 h-8 text-indigo-600 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-bold text-lg mb-2 text-gray-800">Traditional Clothing</h3>
+                      <p className="text-gray-700 text-xl">{selectedCountry.clothing}</p>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="p-6 bg-teal-50 border-2 border-teal-200 md:col-span-2 lg:col-span-3">
+                  <div className="flex items-start gap-3">
+                    <MessageCircle className="w-8 h-8 text-teal-600 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-bold text-lg mb-2 text-gray-800">How to Introduce Yourself</h3>
+                      <p className="text-gray-700 text-xl">{selectedCountry.introduction}</p>
                     </div>
                   </div>
                 </Card>
