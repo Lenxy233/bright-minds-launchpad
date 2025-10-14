@@ -34,6 +34,7 @@ import FeelingsEmotions from "./pages/FeelingsEmotions";
 import EmotionMatching from "./pages/EmotionMatching";
 import EmotionScenarios from "./pages/EmotionScenarios";
 import FriendshipActivities from "./pages/FriendshipActivities";
+import WhereIsThomas from "./pages/WhereIsThomas";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -90,6 +91,7 @@ const App = () => (
           <Route path="/emotion-matching" element={<EmotionMatching />} />
           <Route path="/emotion-scenarios" element={<EmotionScenarios />} />
           <Route path="/friendship-activities" element={<FriendshipActivities />} />
+          <Route path="/where-is-thomas" element={<WhereIsThomas />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />

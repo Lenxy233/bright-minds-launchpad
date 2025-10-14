@@ -1,4 +1,4 @@
-import { BookOpen, Palette, Music, Calculator, Globe, Heart, ChevronRight } from "lucide-react";
+import { BookOpen, Palette, Music, Calculator, Globe, Heart, ChevronRight, Plane } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -79,6 +79,17 @@ const KindergartenCurriculumSection = () => {
         { name: "Feelings & Emotions", link: "/feelings-emotions" },
         { name: "Friendship & Activities", link: "/friendship-activities" },
         { name: "Sharing & Caring", link: "#" }
+      ]
+    },
+    {
+      icon: Plane,
+      title: "Around the World",
+      description: "Explore countries, cultures, landmarks, and languages",
+      color: "from-teal-400 to-cyan-600",
+      subtopics: [
+        { name: "Where is Thomas?", link: "/where-is-thomas" },
+        { name: "World Languages", link: "#" },
+        { name: "Cultural Celebrations", link: "#" }
       ]
     }
   ];
