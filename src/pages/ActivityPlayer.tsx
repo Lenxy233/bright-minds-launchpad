@@ -343,24 +343,47 @@ export default function ActivityPlayer() {
 
                 {activity.activity_type === "tap-find" && (
                   <div className="space-y-6">
-                    <div className="text-center text-2xl font-bold text-purple-600 mb-4">
-                      👆 Tap on all the Circles! 
+                    <div className="text-center text-3xl font-bold text-purple-600 mb-6">
+                      🎯 Drag all the Circles to the box! 
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div 
+                      className="min-h-[200px] p-8 border-8 border-dashed border-green-400 rounded-3xl bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center mb-8"
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        const itemId = e.dataTransfer.getData("itemId");
+                        const item = items.find(i => i.id === itemId);
+                        if (item?.content.content === "Circle") {
+                          handleAnswer(itemId, true);
+                        }
+                      }}
+                    >
+                      <div className="text-center">
+                        <div className="text-6xl mb-2">📦</div>
+                        <div className="text-2xl font-bold text-gray-600">Drop Circles Here!</div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-6">
                       {items.map((item) => (
-                        <Button
+                        <div
                           key={item.id}
-                          size="lg"
-                          onClick={() => handleAnswer(item.id, !userAnswers[item.id])}
-                          className={`aspect-square text-5xl py-12 font-bold border-4 animate-fade-in ${
+                          draggable={!userAnswers[item.id]}
+                          onDragStart={(e) => {
+                            e.dataTransfer.setData("itemId", item.id);
+                          }}
+                          className={`aspect-square flex items-center justify-center text-7xl font-bold border-8 rounded-3xl cursor-move transition-all animate-fade-in ${
                             userAnswers[item.id]
-                              ? "bg-gradient-to-br from-green-400 to-green-600 scale-110 shadow-2xl"
-                              : "bg-white hover:bg-yellow-100 border-purple-300"
-                          } transition-all`}
+                              ? "opacity-30 scale-75 border-gray-300 bg-gray-100 cursor-not-allowed"
+                              : item.content.content === "Circle" 
+                                ? "bg-gradient-to-br from-blue-200 to-blue-400 border-blue-500 hover:scale-110 shadow-2xl"
+                                : item.content.content === "Square"
+                                  ? "bg-gradient-to-br from-red-200 to-red-400 border-red-500 hover:scale-110 shadow-2xl"
+                                  : "bg-gradient-to-br from-yellow-200 to-yellow-400 border-yellow-500 hover:scale-110 shadow-2xl"
+                          }`}
                         >
                           {item.content.content === "Circle" ? "⭕" : 
                            item.content.content === "Square" ? "⬜" : "🔺"}
-                        </Button>
+                        </div>
                       ))}
                     </div>
                   </div>
