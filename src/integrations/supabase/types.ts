@@ -14,6 +14,124 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          activity_type: string
+          age_range: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          difficulty: string | null
+          id: string
+          is_published: boolean | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          activity_type: string
+          age_range?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          difficulty?: string | null
+          id?: string
+          is_published?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          activity_type?: string
+          age_range?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          difficulty?: string | null
+          id?: string
+          is_published?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      activity_items: {
+        Row: {
+          activity_id: string
+          content: Json
+          correct_answer: string | null
+          created_at: string
+          id: string
+          item_type: string
+          order_index: number
+        }
+        Insert: {
+          activity_id: string
+          content: Json
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          item_type: string
+          order_index: number
+        }
+        Update: {
+          activity_id?: string
+          content?: Json
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          item_type?: string
+          order_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_items_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_responses: {
+        Row: {
+          activity_id: string
+          completed: boolean | null
+          created_at: string
+          id: string
+          responses: Json
+          score: number | null
+          user_id: string | null
+        }
+        Insert: {
+          activity_id: string
+          completed?: boolean | null
+          created_at?: string
+          id?: string
+          responses: Json
+          score?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          activity_id?: string
+          completed?: boolean | null
+          created_at?: string
+          id?: string
+          responses?: Json
+          score?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_responses_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bundle_links: {
         Row: {
           bundle_type: string

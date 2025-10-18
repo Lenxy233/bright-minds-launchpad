@@ -1,4 +1,4 @@
-import { BookOpen, Palette, Music, Calculator, Globe, Heart, ChevronRight, Plane } from "lucide-react";
+import { BookOpen, Palette, Music, Calculator, Globe, Heart, ChevronRight, Plane, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -90,6 +90,18 @@ const KindergartenCurriculumSection = () => {
         { name: "Where is Thomas?", link: "/where-is-thomas" },
         { name: "World Languages", link: "#" },
         { name: "Cultural Celebrations", link: "#" }
+      ]
+    },
+    {
+      icon: Sparkles,
+      title: "Interactive Activities",
+      description: "Create and play custom learning activities",
+      color: "from-yellow-400 to-amber-600",
+      subtopics: [
+        { name: "Activity Library", link: "/activities" },
+        { name: "Create Activity", link: "/activity-builder" },
+        { name: "Matching Games", link: "/activities" },
+        { name: "Quiz Builder", link: "/activities" }
       ]
     }
   ];
