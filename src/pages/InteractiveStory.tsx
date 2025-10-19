@@ -7,6 +7,11 @@ import beeImage from "@/assets/habitats/bee.png";
 import fishImage from "@/assets/habitats/fish.png";
 import birdImage from "@/assets/habitats/bird.png";
 import dogImage from "@/assets/habitats/dog.png";
+import stableImage from "@/assets/habitats/stable.jpg";
+import beehiveImage from "@/assets/habitats/beehive.jpg";
+import oceanImage from "@/assets/habitats/ocean.jpg";
+import nestboxImage from "@/assets/habitats/nestbox.jpg";
+import doghouseImage from "@/assets/habitats/doghouse.png";
 
 interface Animal {
   id: string;
@@ -27,8 +32,8 @@ const allAnimals: Animal[] = [
     name: "Horse",
     imageUrl: horseImage,
     correctHabitat: { x: 0, y: 0, width: 400, height: 400 },
-    x: 100,
-    y: 500,
+    x: 50,
+    y: 550,
     placed: false,
     correctMessage: "Great! Horses live in stables!",
     incorrectMessage: "Not quite! Horses live in stables with hay and shelter.",
@@ -39,8 +44,8 @@ const allAnimals: Animal[] = [
     name: "Bee",
     imageUrl: beeImage,
     correctHabitat: { x: 400, y: 0, width: 400, height: 400 },
-    x: 300,
-    y: 500,
+    x: 250,
+    y: 550,
     placed: false,
     correctMessage: "Amazing! Bees live in beehives!",
     incorrectMessage: "Try again! Bees make honey in beehives.",
@@ -51,8 +56,8 @@ const allAnimals: Animal[] = [
     name: "Fish",
     imageUrl: fishImage,
     correctHabitat: { x: 800, y: 0, width: 400, height: 400 },
-    x: 500,
-    y: 500,
+    x: 450,
+    y: 550,
     placed: false,
     correctMessage: "Perfect! Fish swim in the ocean!",
     incorrectMessage: "Oops! Fish need water to live in the ocean.",
@@ -63,8 +68,8 @@ const allAnimals: Animal[] = [
     name: "Bird",
     imageUrl: birdImage,
     correctHabitat: { x: 0, y: 400, width: 600, height: 400 },
-    x: 700,
-    y: 500,
+    x: 650,
+    y: 550,
     placed: false,
     correctMessage: "Wonderful! Birds nest in bird boxes!",
     incorrectMessage: "Not there! Birds like cozy nest boxes in trees.",
@@ -75,8 +80,8 @@ const allAnimals: Animal[] = [
     name: "Dog",
     imageUrl: dogImage,
     correctHabitat: { x: 600, y: 400, width: 600, height: 400 },
-    x: 900,
-    y: 500,
+    x: 850,
+    y: 550,
     placed: false,
     correctMessage: "Excellent! Dogs sleep in dog houses!",
     incorrectMessage: "Try somewhere else! Dogs have special houses.",
@@ -85,8 +90,7 @@ const allAnimals: Animal[] = [
 ];
 
 export default function InteractiveStory() {
-  const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
-  const [animals, setAnimals] = useState<Animal[]>([allAnimals[0]]);
+  const [animals, setAnimals] = useState<Animal[]>(allAnimals);
   const [draggedAnimal, setDraggedAnimal] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
@@ -126,7 +130,7 @@ export default function InteractiveStory() {
     // Introduction speech
     setTimeout(() => {
       const intro = new SpeechSynthesisUtterance(
-        "Welcome kids! Let's help these animals find their homes! Where does the " + animals[0].name.toLowerCase() + " live?"
+        "Welcome kids! Let's help all these animals find their homes! Drag each animal to where it lives!"
       );
       intro.rate = 0.9;
       intro.pitch = 1.1;
@@ -146,11 +150,11 @@ export default function InteractiveStory() {
 
     // Draw habitat grid (2x3 grid of habitats)
     const habitats = [
-      { name: "Stable", img: "/lovable-uploads/create_an_animated_image_for_a_stable.jpg", x: 0, y: 0, width: 400 },
-      { name: "Beehive", img: "/lovable-uploads/create_an_animated_image_of_the_beehive.jpg", x: 400, y: 0, width: 400 },
-      { name: "Ocean", img: "/lovable-uploads/create_an_animated_image_of_the_deap_sea.jpg", x: 800, y: 0, width: 400 },
-      { name: "Nest Box", img: "/lovable-uploads/create_an_animated_image_for_a_birds_nestbox.jpg", x: 0, y: 400, width: 600 },
-      { name: "Dog House", img: "/lovable-uploads/Untitled_design_8.png", x: 600, y: 400, width: 600 }
+      { name: "Stable", img: stableImage, x: 0, y: 0, width: 400 },
+      { name: "Beehive", img: beehiveImage, x: 400, y: 0, width: 400 },
+      { name: "Ocean", img: oceanImage, x: 800, y: 0, width: 400 },
+      { name: "Nest Box", img: nestboxImage, x: 0, y: 400, width: 600 },
+      { name: "Dog House", img: doghouseImage, x: 600, y: 400, width: 600 }
     ];
 
     habitats.forEach(habitat => {
@@ -278,21 +282,10 @@ export default function InteractiveStory() {
         )
       );
 
-      // Add next animal after a delay
-      setTimeout(() => {
-        if (currentAnimalIndex < allAnimals.length - 1) {
-          const nextIndex = currentAnimalIndex + 1;
-          setCurrentAnimalIndex(nextIndex);
-          setAnimals((prev) => [...prev, allAnimals[nextIndex]]);
-
-          const nextAnimal = allAnimals[nextIndex];
-          const nextSpeech = new SpeechSynthesisUtterance(
-            `Great job! Now, where does the ${nextAnimal.name.toLowerCase()} live?`
-          );
-          nextSpeech.rate = 0.9;
-          nextSpeech.pitch = 1.1;
-          window.speechSynthesis.speak(nextSpeech);
-        } else {
+      // Check if all animals are placed
+      const allPlaced = animals.every((a) => a.id === draggedAnimal || a.placed);
+      if (allPlaced) {
+        setTimeout(() => {
           const finalSpeech = new SpeechSynthesisUtterance(
             "Fantastic! You helped all the animals find their homes!"
           );
@@ -301,8 +294,8 @@ export default function InteractiveStory() {
           window.speechSynthesis.speak(finalSpeech);
           
           toast.success("🎉 You completed the game!");
-        }
-      }, 2000);
+        }, 1500);
+      }
     } else {
       toast.error(animal.incorrectMessage);
       
@@ -321,8 +314,7 @@ export default function InteractiveStory() {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
-    setCurrentAnimalIndex(0);
-    setAnimals([allAnimals[0]]);
+    setAnimals(allAnimals.map(a => ({ ...a, placed: false })));
     setScore(0);
     setGameStarted(false);
     setDraggedAnimal(null);
