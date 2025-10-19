@@ -177,8 +177,8 @@ export default function InteractiveStory() {
       const intro = new SpeechSynthesisUtterance(
         "Welcome kids! Draw lines to match each animal with its home!"
       );
-      intro.rate = 1.3;  // Faster, more enthusiastic
-      intro.pitch = 1.8; // Higher pitch for child voice
+      intro.rate = 1.4;  // Faster, more enthusiastic
+      intro.pitch = 2.0; // Maximum pitch for child voice
       window.speechSynthesis.speak(intro);
     }, 500);
   };
@@ -349,8 +349,8 @@ export default function InteractiveStory() {
         toast.success(animal.correctMessage);
 
         const speech = new SpeechSynthesisUtterance(animal.correctMessage);
-        speech.rate = 1.3;  // Enthusiastic speed
-        speech.pitch = 1.8; // Child voice pitch
+        speech.rate = 1.4;  // Enthusiastic speed
+        speech.pitch = 2.0; // Maximum child voice pitch
         window.speechSynthesis.speak(speech);
 
         setScore((prev) => prev + 1);
@@ -361,8 +361,8 @@ export default function InteractiveStory() {
             const finalSpeech = new SpeechSynthesisUtterance(
               "Fantastic! You matched all the animals to their homes!"
             );
-            finalSpeech.rate = 1.3;  // Enthusiastic speed
-            finalSpeech.pitch = 1.8; // Child voice pitch
+            finalSpeech.rate = 1.4;  // Enthusiastic speed
+            finalSpeech.pitch = 2.0; // Maximum child voice pitch
             window.speechSynthesis.speak(finalSpeech);
             
             toast.success("🎉 You completed the game!");
@@ -372,8 +372,8 @@ export default function InteractiveStory() {
         toast.error(animal.incorrectMessage);
         
         const speech = new SpeechSynthesisUtterance(animal.incorrectMessage);
-        speech.rate = 1.2;  // Slightly slower than correct for emphasis
-        speech.pitch = 1.7; // Still child voice
+        speech.rate = 1.3;  // Slightly slower for emphasis
+        speech.pitch = 2.0; // Maximum child voice pitch
         window.speechSynthesis.speak(speech);
       }
     }
