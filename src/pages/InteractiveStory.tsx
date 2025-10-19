@@ -12,6 +12,7 @@ import beehiveImage from "@/assets/habitats/beehive.jpg";
 import oceanImage from "@/assets/habitats/ocean.jpg";
 import nestboxImage from "@/assets/habitats/nestbox.jpg";
 import doghouseImage from "@/assets/habitats/doghouse.png";
+import oceanBackgroundImage from "@/assets/habitats/ocean-background.jpg";
 
 interface Animal {
   id: string;
@@ -110,14 +111,22 @@ export default function InteractiveStory() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
+  const backgroundImage = useRef<HTMLImageElement | null>(null);
   const imageSize = 120;
 
-  // Preload all images
+  // Preload all images including background
   useEffect(() => {
     const imagesToLoad = [
       ...allAnimals.map(a => a.imageUrl),
       ...allHabitats.map(h => h.imageUrl)
     ];
+
+    // Load background image
+    const bgImg = new Image();
+    bgImg.onload = () => {
+      backgroundImage.current = bgImg;
+    };
+    bgImg.src = oceanBackgroundImage;
 
     let loadedCount = 0;
     imagesToLoad.forEach(src => {
@@ -163,13 +172,13 @@ export default function InteractiveStory() {
       console.log("Audio error:", err);
     }
 
-    // Introduction speech
+    // Introduction speech with child-like voice
     setTimeout(() => {
       const intro = new SpeechSynthesisUtterance(
         "Welcome kids! Draw lines to match each animal with its home!"
       );
-      intro.rate = 0.9;
-      intro.pitch = 1.1;
+      intro.rate = 1.3;  // Faster, more enthusiastic
+      intro.pitch = 1.8; // Higher pitch for child voice
       window.speechSynthesis.speak(intro);
     }, 500);
   };
@@ -181,13 +190,17 @@ export default function InteractiveStory() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Clear canvas with gradient background
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#e0f2fe");
-    gradient.addColorStop(0.5, "#fef3c7");
-    gradient.addColorStop(1, "#ddd6fe");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Draw ocean background
+    if (backgroundImage.current) {
+      ctx.drawImage(backgroundImage.current, 0, 0, canvas.width, canvas.height);
+    } else {
+      // Fallback gradient if background not loaded
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, "#0c4a6e");
+      gradient.addColorStop(1, "#075985");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
     // Draw all connections
     connections.forEach((connection) => {
@@ -336,8 +349,8 @@ export default function InteractiveStory() {
         toast.success(animal.correctMessage);
 
         const speech = new SpeechSynthesisUtterance(animal.correctMessage);
-        speech.rate = 0.9;
-        speech.pitch = 1.1;
+        speech.rate = 1.3;  // Enthusiastic speed
+        speech.pitch = 1.8; // Child voice pitch
         window.speechSynthesis.speak(speech);
 
         setScore((prev) => prev + 1);
@@ -348,8 +361,8 @@ export default function InteractiveStory() {
             const finalSpeech = new SpeechSynthesisUtterance(
               "Fantastic! You matched all the animals to their homes!"
             );
-            finalSpeech.rate = 0.9;
-            finalSpeech.pitch = 1.1;
+            finalSpeech.rate = 1.3;  // Enthusiastic speed
+            finalSpeech.pitch = 1.8; // Child voice pitch
             window.speechSynthesis.speak(finalSpeech);
             
             toast.success("🎉 You completed the game!");
@@ -359,8 +372,8 @@ export default function InteractiveStory() {
         toast.error(animal.incorrectMessage);
         
         const speech = new SpeechSynthesisUtterance(animal.incorrectMessage);
-        speech.rate = 0.9;
-        speech.pitch = 1.0;
+        speech.rate = 1.2;  // Slightly slower than correct for emphasis
+        speech.pitch = 1.7; // Still child voice
         window.speechSynthesis.speak(speech);
       }
     }
