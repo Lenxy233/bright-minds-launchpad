@@ -194,9 +194,9 @@ export default function InteractiveStory() {
     
     // Play background music
     try {
-      audioRef.current = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+      audioRef.current = new Audio('https://assets.mixkit.co/music/preview/mixkit-happy-fun-147.mp3');
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.2;
+      audioRef.current.volume = 0.15;
       audioRef.current.play().catch((err) => {
         console.log("Background music couldn't play:", err);
       });
