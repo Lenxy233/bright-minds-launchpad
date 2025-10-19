@@ -37,6 +37,13 @@ export default function ActivityPlayer() {
     loadActivity();
   }, [id]);
 
+  useEffect(() => {
+    if (items.length > 0) {
+      console.log("Activity items loaded:", items);
+      console.log("First item content:", items[0]?.content);
+    }
+  }, [items]);
+
   const loadActivity = async () => {
     if (!id) return;
 
@@ -399,42 +406,55 @@ export default function ActivityPlayer() {
                         Choose the Right Answer!
                       </div>
                     </div>
-                    {items.map((item, questionIndex) => (
-                      <Card key={item.id} className="border-6 border-blue-400 overflow-hidden animate-fade-in shadow-2xl">
-                        <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-6">
-                          <div className="text-center">
-                            <span className="text-4xl font-black text-white mb-3 block">
-                              Question {questionIndex + 1}
-                            </span>
-                            <p className="text-3xl font-bold text-white leading-relaxed">
-                              {item.content.content}
-                            </p>
+                    {items.map((item, questionIndex) => {
+                      console.log("Rendering item:", item.id, "content:", item.content);
+                      const questionText = typeof item.content === 'string' ? item.content : item.content?.content || item.content;
+                      const options = item.content?.options || [];
+                      
+                      return (
+                        <Card key={item.id} className="border-6 border-blue-400 overflow-hidden animate-fade-in shadow-2xl">
+                          <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-6">
+                            <div className="text-center">
+                              <span className="text-4xl font-black text-white mb-3 block">
+                                Question {questionIndex + 1}
+                              </span>
+                              <p className="text-3xl font-bold text-white leading-relaxed">
+                                {questionText}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        <CardContent className="p-8 bg-gradient-to-br from-blue-50 to-purple-50">
-                          <div className="grid gap-4">
-                            {item.content.options?.map((option: string, idx: number) => (
-                              <Button
-                                key={idx}
-                                size="lg"
-                                variant="outline"
-                                onClick={() => handleAnswer(item.id, option)}
-                                className={`text-2xl py-10 px-6 justify-start font-bold border-4 rounded-2xl transition-all duration-300 ${
-                                  userAnswers[item.id] === option
-                                    ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white border-green-600 scale-105 shadow-2xl ring-4 ring-green-300"
-                                    : "bg-white hover:bg-gradient-to-r hover:from-blue-100 hover:to-purple-100 hover:scale-102 border-purple-300 hover:border-purple-500 hover:shadow-xl"
-                                }`}
-                              >
-                                <span className="text-4xl mr-4 min-w-[50px]">
-                                  {["🅰️", "🅱️", "©️", "🅳"][idx]}
-                                </span>
-                                <span className="text-left">{option}</span>
-                              </Button>
-                            ))}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                          <CardContent className="p-8 bg-gradient-to-br from-blue-50 to-purple-50">
+                            {options.length > 0 ? (
+                              <div className="grid gap-4">
+                                {options.map((option: string, idx: number) => (
+                                  <Button
+                                    key={idx}
+                                    size="lg"
+                                    variant="outline"
+                                    onClick={() => handleAnswer(item.id, option)}
+                                    className={`text-2xl py-10 px-6 justify-start font-bold border-4 rounded-2xl transition-all duration-300 ${
+                                      userAnswers[item.id] === option
+                                        ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white border-green-600 scale-105 shadow-2xl ring-4 ring-green-300"
+                                        : "bg-white hover:bg-gradient-to-r hover:from-blue-100 hover:to-purple-100 hover:scale-102 border-purple-300 hover:border-purple-500 hover:shadow-xl"
+                                    }`}
+                                  >
+                                    <span className="text-4xl mr-4 min-w-[50px]">
+                                      {["🅰️", "🅱️", "©️", "🅳"][idx]}
+                                    </span>
+                                    <span className="text-left">{option}</span>
+                                  </Button>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="text-center p-8">
+                                <p className="text-xl text-red-500 font-bold">⚠️ No answer options available</p>
+                                <p className="text-sm text-gray-500 mt-2">This activity needs to be recreated with the new format</p>
+                              </div>
+                            )}
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
                 )}
 
