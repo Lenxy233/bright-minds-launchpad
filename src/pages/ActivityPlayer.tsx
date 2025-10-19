@@ -392,33 +392,43 @@ export default function ActivityPlayer() {
                 )}
 
                 {activity.activity_type === "fill-blanks" && (
-                  <div className="space-y-6">
-                    <div className="text-center text-2xl font-bold text-purple-600 mb-4">
-                      ✏️ Pick the right word! 📝
+                  <div className="space-y-8">
+                    <div className="text-center">
+                      <div className="text-6xl mb-4 animate-bounce">❓</div>
+                      <div className="text-3xl font-bold text-purple-600">
+                        Choose the Right Answer!
+                      </div>
                     </div>
-                    {items.map((item) => (
-                      <Card key={item.id} className="border-4 border-purple-200 overflow-hidden animate-fade-in">
-                        <div className="bg-gradient-to-r from-green-400 to-blue-400 p-4">
-                          <p className="text-2xl font-bold text-center text-white">
-                            {item.content.content}
-                          </p>
+                    {items.map((item, questionIndex) => (
+                      <Card key={item.id} className="border-6 border-blue-400 overflow-hidden animate-fade-in shadow-2xl">
+                        <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-6">
+                          <div className="text-center">
+                            <span className="text-4xl font-black text-white mb-3 block">
+                              Question {questionIndex + 1}
+                            </span>
+                            <p className="text-3xl font-bold text-white leading-relaxed">
+                              {item.content.content}
+                            </p>
+                          </div>
                         </div>
-                        <CardContent className="p-6">
-                          <div className="grid gap-3">
+                        <CardContent className="p-8 bg-gradient-to-br from-blue-50 to-purple-50">
+                          <div className="grid gap-4">
                             {item.content.options?.map((option: string, idx: number) => (
                               <Button
                                 key={idx}
                                 size="lg"
-                                variant={userAnswers[item.id] === option ? "default" : "outline"}
+                                variant="outline"
                                 onClick={() => handleAnswer(item.id, option)}
-                                className={`text-xl py-6 justify-start font-bold ${
+                                className={`text-2xl py-10 px-6 justify-start font-bold border-4 rounded-2xl transition-all duration-300 ${
                                   userAnswers[item.id] === option
-                                    ? "bg-gradient-to-r from-green-400 to-blue-500 scale-105 shadow-lg"
-                                    : "hover:bg-purple-100 border-4"
-                                } transition-all`}
+                                    ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white border-green-600 scale-105 shadow-2xl ring-4 ring-green-300"
+                                    : "bg-white hover:bg-gradient-to-r hover:from-blue-100 hover:to-purple-100 hover:scale-102 border-purple-300 hover:border-purple-500 hover:shadow-xl"
+                                }`}
                               >
-                                <span className="text-2xl mr-3">{["🅰️", "🅱️", "©️", "🅳"][idx]}</span>
-                                {option}
+                                <span className="text-4xl mr-4 min-w-[50px]">
+                                  {["🅰️", "🅱️", "©️", "🅳"][idx]}
+                                </span>
+                                <span className="text-left">{option}</span>
                               </Button>
                             ))}
                           </div>

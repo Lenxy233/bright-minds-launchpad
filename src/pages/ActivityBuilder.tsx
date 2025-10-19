@@ -308,23 +308,28 @@ export default function ActivityBuilder() {
 
                         {activityType === "fill-blanks" && (
                           <div className="space-y-2">
-                            <Input
-                              placeholder="Sentence with blank (e.g., The cat is ___)"
+                            <Label>Question</Label>
+                            <Textarea
+                              placeholder="Ask a clear question (e.g., What color is the sky?)"
                               value={item.content}
                               onChange={(e) => updateItem(item.id, "content", e.target.value)}
+                              rows={2}
                             />
-                            <Label className="text-sm text-muted-foreground">Answer Choices:</Label>
+                            <Label className="text-sm font-semibold mt-4">Answer Choices (Option 1 is correct):</Label>
                             {item.options?.map((option, optIndex) => (
-                              <Input
-                                key={optIndex}
-                                placeholder={`Option ${optIndex + 1}${optIndex === 0 ? ' (correct answer)' : ''}`}
-                                value={option}
-                                onChange={(e) => {
-                                  const newOptions = [...(item.options || [])];
-                                  newOptions[optIndex] = e.target.value;
-                                  updateItem(item.id, "options", newOptions);
-                                }}
-                              />
+                              <div key={optIndex} className="flex items-center gap-2">
+                                <span className="text-lg font-bold min-w-[30px]">{["🅰️", "🅱️", "©️", "🅳"][optIndex]}</span>
+                                <Input
+                                  placeholder={`${optIndex === 0 ? '✓ Correct answer' : `Wrong answer ${optIndex}`}`}
+                                  value={option}
+                                  onChange={(e) => {
+                                    const newOptions = [...(item.options || [])];
+                                    newOptions[optIndex] = e.target.value;
+                                    updateItem(item.id, "options", newOptions);
+                                  }}
+                                  className={optIndex === 0 ? "border-green-500 border-2" : ""}
+                                />
+                              </div>
                             ))}
                           </div>
                         )}
