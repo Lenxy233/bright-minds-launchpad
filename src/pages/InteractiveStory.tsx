@@ -12,7 +12,7 @@ import beehiveImage from "@/assets/habitats/beehive.jpg";
 import oceanImage from "@/assets/habitats/ocean.jpg";
 import nestboxImage from "@/assets/habitats/nestbox.jpg";
 import doghouseImage from "@/assets/habitats/doghouse.png";
-import oceanBackgroundImage from "@/assets/habitats/ocean-background.jpg";
+import oceanBackgroundImage from "@/assets/habitats/beach-background.jpg";
 
 interface Animal {
   id: string;
