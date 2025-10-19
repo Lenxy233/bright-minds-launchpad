@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import backgroundImage from "@/assets/habitats/forest-desert-split.jpg";
 import camelImage from "@/assets/habitats/camel.jpg";
 import elephantImage from "@/assets/habitats/elephant.jpg";
+import { removeBackground, loadImageFromUrl } from "@/lib/backgroundRemoval";
 
 interface Animal {
   id: string;
@@ -52,39 +53,86 @@ export default function InteractiveStory() {
   const [draggedAnimal, setDraggedAnimal] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
+  const [processedImages, setProcessedImages] = useState<Record<string, string>>({});
+  const [isProcessing, setIsProcessing] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    drawScene();
-  }, [animals]);
+    const processImages = async () => {
+      setIsProcessing(true);
+      toast.info("Processing animal images...");
+      
+      try {
+        const processed: Record<string, string> = {};
+        
+        for (const animal of allAnimals) {
+          const img = await loadImageFromUrl(animal.imageUrl);
+          const blob = await removeBackground(img);
+          const url = URL.createObjectURL(blob);
+          processed[animal.id] = url;
+        }
+        
+        setProcessedImages(processed);
+        toast.success("Animals ready!");
+      } catch (error) {
+        console.error("Error processing images:", error);
+        toast.error("Using original images");
+        // Fallback to original images
+        const fallback: Record<string, string> = {};
+        allAnimals.forEach(animal => {
+          fallback[animal.id] = animal.imageUrl;
+        });
+        setProcessedImages(fallback);
+      } finally {
+        setIsProcessing(false);
+      }
+    };
+    
+    processImages();
+  }, []);
 
   useEffect(() => {
-    if (!gameStarted) {
-      // Play background music
-      audioRef.current = new Audio();
-      audioRef.current.src = "https://assets.mixkit.co/music/preview/mixkit-playground-fun-7.mp3";
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0.3;
-      audioRef.current.play().catch(() => console.log("Audio autoplay prevented"));
-
-      // Introduction
-      setTimeout(() => {
-        const intro = new SpeechSynthesisUtterance(
-          "Hey kids, let's play a fun game! Where does the elephant live?"
-        );
-        window.speechSynthesis.speak(intro);
-        setGameStarted(true);
-      }, 500);
+    if (processedImages[animals[0]?.id]) {
+      drawScene();
     }
+  }, [animals, processedImages]);
 
+  const startGame = () => {
+    // Play background music
+    audioRef.current = new Audio();
+    audioRef.current.src = "https://assets.mixkit.co/music/preview/mixkit-playground-fun-7.mp3";
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.3;
+    audioRef.current.play().catch((err) => {
+      console.log("Audio play error:", err);
+      toast.error("Could not play audio. Please check your browser settings.");
+    });
+
+    // Introduction
+    setTimeout(() => {
+      const intro = new SpeechSynthesisUtterance(
+        "Hey kids, let's play a fun game! Where does the elephant live?"
+      );
+      window.speechSynthesis.speak(intro);
+    }, 500);
+    
+    setGameStarted(true);
+  };
+
+  useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
+      Object.values(processedImages).forEach(url => {
+        if (url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
     };
-  }, [gameStarted]);
+  }, [processedImages]);
 
   const drawScene = () => {
     const canvas = canvasRef.current;
@@ -102,28 +150,34 @@ export default function InteractiveStory() {
     bg.onload = () => {
       ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
-      // Draw animals
+      // Draw animals - larger and bolder
       animals.forEach((animal) => {
+        const processedUrl = processedImages[animal.id];
+        if (!processedUrl) return;
+        
         const img = new Image();
-        img.src = animal.imageUrl;
+        img.src = processedUrl;
         img.onload = () => {
           if (!animal.placed) {
+            const animalSize = 250; // Much larger!
+            
             // Draw shadow
             ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
             ctx.beginPath();
-            ctx.ellipse(animal.x + 60, animal.y + 130, 50, 15, 0, 0, Math.PI * 2);
+            ctx.ellipse(animal.x + animalSize/2, animal.y + animalSize + 20, animalSize/3, 25, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw animal
-            ctx.drawImage(img, animal.x, animal.y, 120, 120);
+            // Draw animal (centered on canvas)
+            ctx.drawImage(img, animal.x, animal.y, animalSize, animalSize);
             
-            // Draw animal name with background
-            ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
-            ctx.fillRect(animal.x, animal.y - 35, 120, 30);
+            // Draw animal name with background - larger text
+            const nameWidth = animalSize;
+            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+            ctx.fillRect(animal.x, animal.y - 50, nameWidth, 45);
             ctx.fillStyle = "white";
-            ctx.font = "bold 18px Arial";
+            ctx.font = "bold 28px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(animal.name, animal.x + 60, animal.y - 12);
+            ctx.fillText(animal.name, animal.x + animalSize/2, animal.y - 15);
           }
         };
       });
@@ -138,13 +192,14 @@ export default function InteractiveStory() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    const animalSize = 250;
     const clickedAnimal = animals.find(
       (animal) =>
         !animal.placed &&
         x >= animal.x &&
-        x <= animal.x + 120 &&
+        x <= animal.x + animalSize &&
         y >= animal.y &&
-        y <= animal.y + 120
+        y <= animal.y + animalSize
     );
 
     if (clickedAnimal) {
@@ -159,8 +214,9 @@ export default function InteractiveStory() {
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left - 60;
-    const y = e.clientY - rect.top - 60;
+    const animalSize = 250;
+    const x = e.clientX - rect.left - animalSize/2;
+    const y = e.clientY - rect.top - animalSize/2;
 
     setAnimals((prev) =>
       prev.map((animal) =>
@@ -257,6 +313,10 @@ export default function InteractiveStory() {
 
   const resetGame = () => {
     window.speechSynthesis.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     setCurrentAnimalIndex(0);
     setAnimals([allAnimals[0]]);
     setScore(0);
@@ -280,10 +340,28 @@ export default function InteractiveStory() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-2xl p-6 mb-6">
-          <p className="text-xl text-center mb-6 font-medium text-gray-700">
-            🎯 Listen carefully and drag the animal to where it lives!
-          </p>
+        {!gameStarted && !isProcessing && (
+          <div className="bg-white rounded-lg shadow-2xl p-12 mb-6 text-center">
+            <h2 className="text-3xl font-bold mb-4 text-primary">Ready to Play?</h2>
+            <p className="text-xl mb-6 text-gray-700">Click start to begin the fun animal habitat game with sound!</p>
+            <Button onClick={startGame} size="lg" className="text-2xl py-6 px-12">
+              🎮 Start Game
+            </Button>
+          </div>
+        )}
+
+        {isProcessing && (
+          <div className="bg-white rounded-lg shadow-2xl p-12 mb-6 text-center">
+            <h2 className="text-2xl font-bold mb-4 text-primary">Preparing Animals...</h2>
+            <p className="text-lg text-gray-600">Please wait while we get everything ready!</p>
+          </div>
+        )}
+
+        {gameStarted && !isProcessing && (
+          <div className="bg-white rounded-lg shadow-2xl p-6 mb-6">
+            <p className="text-xl text-center mb-6 font-medium text-gray-700">
+              🎯 Listen carefully and drag the animal to where it lives!
+            </p>
 
           <div className="relative">
             <canvas
@@ -298,10 +376,11 @@ export default function InteractiveStory() {
             />
           </div>
 
-          <div className="mt-6 text-center text-sm text-muted-foreground">
-            💡 Tip: Click and drag the animals to the habitat where they naturally live!
+            <div className="mt-6 text-center text-sm text-muted-foreground">
+              💡 Tip: Click and drag the animals to the habitat where they naturally live!
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
