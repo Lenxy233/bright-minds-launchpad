@@ -14,20 +14,77 @@ interface Animal {
   x: number;
   y: number;
   placed: boolean;
+  correctMessage: string;
+  incorrectMessage: string;
+  educationalInfo: string;
 }
 
 export default function InteractiveStory() {
-  const [animals, setAnimals] = useState<Animal[]>([
-    { id: "camel", name: "Camel", imageUrl: camelImage, correctHabitat: "desert", x: 50, y: 300, placed: false },
-    { id: "elephant", name: "Elephant", imageUrl: elephantImage, correctHabitat: "forest", x: 50, y: 500, placed: false },
-  ]);
+  const allAnimals: Animal[] = [
+    { 
+      id: "elephant", 
+      name: "Elephant", 
+      imageUrl: elephantImage, 
+      correctHabitat: "forest", 
+      x: 50, 
+      y: 500, 
+      placed: false,
+      correctMessage: "Good job! The elephant lives in the forest.",
+      incorrectMessage: "No, that is not right. The elephant does not live in the desert. Let's try again.",
+      educationalInfo: "It is mainly herbivore that its main food is plants."
+    },
+    { 
+      id: "camel", 
+      name: "Camel", 
+      imageUrl: camelImage, 
+      correctHabitat: "desert", 
+      x: 50, 
+      y: 300, 
+      placed: false,
+      correctMessage: "Excellent! The camel lives in the desert.",
+      incorrectMessage: "Oops! The camel does not live in the forest. Try again.",
+      educationalInfo: "Camels are adapted to survive in hot, dry conditions with very little water."
+    },
+  ];
+
+  const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
+  const [animals, setAnimals] = useState<Animal[]>([allAnimals[0]]);
   const [draggedAnimal, setDraggedAnimal] = useState<string | null>(null);
   const [score, setScore] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     drawScene();
   }, [animals]);
+
+  useEffect(() => {
+    if (!gameStarted) {
+      // Play background music
+      audioRef.current = new Audio();
+      audioRef.current.src = "https://assets.mixkit.co/music/preview/mixkit-playground-fun-7.mp3";
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
+      audioRef.current.play().catch(() => console.log("Audio autoplay prevented"));
+
+      // Introduction
+      setTimeout(() => {
+        const intro = new SpeechSynthesisUtterance(
+          "Hey kids, let's play a fun game! Where does the elephant live?"
+        );
+        window.speechSynthesis.speak(intro);
+        setGameStarted(true);
+      }, 500);
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, [gameStarted]);
 
   const drawScene = () => {
     const canvas = canvasRef.current;
@@ -44,26 +101,6 @@ export default function InteractiveStory() {
     bg.src = backgroundImage;
     bg.onload = () => {
       ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-
-      // Draw drop zones with labels
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
-      ctx.lineWidth = 4;
-      ctx.setLineDash([15, 10]);
-      
-      // Forest zone (left half)
-      ctx.strokeRect(50, 50, 500, 600);
-      ctx.fillStyle = "white";
-      ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-      ctx.shadowBlur = 10;
-      ctx.font = "bold 32px Arial";
-      ctx.fillText("🌳 FOREST", 200, 100);
-      
-      // Desert zone (right half)
-      ctx.strokeRect(600, 50, 500, 600);
-      ctx.fillText("🏜️ DESERT", 750, 100);
-      
-      ctx.setLineDash([]);
-      ctx.shadowBlur = 0;
 
       // Draw animals
       animals.forEach((animal) => {
@@ -170,21 +207,40 @@ export default function InteractiveStory() {
         origin: { y: 0.6 },
       });
       
-      const utterance = new SpeechSynthesisUtterance(
-        `Great job! ${animal.name} lives in the ${animal.correctHabitat}!`
-      );
+      const fullMessage = `${animal.correctMessage} ${animal.educationalInfo}`;
+      const utterance = new SpeechSynthesisUtterance(fullMessage);
       window.speechSynthesis.speak(utterance);
       
-      toast.success(`Correct! ${animal.name} belongs in the ${animal.correctHabitat}! 🎉`);
+      toast.success(animal.correctMessage);
       
-      // Check if all animals placed
-      if (animals.filter((a) => !a.placed).length === 1) {
-        setTimeout(() => {
-          toast.success("🎊 Amazing! You matched all the animals correctly!");
-        }, 1000);
-      }
+      // Move to next animal
+      setTimeout(() => {
+        const nextIndex = currentAnimalIndex + 1;
+        if (nextIndex < allAnimals.length) {
+          setCurrentAnimalIndex(nextIndex);
+          setAnimals([allAnimals[nextIndex]]);
+          
+          setTimeout(() => {
+            const nextAnimal = allAnimals[nextIndex];
+            const nextIntro = new SpeechSynthesisUtterance(
+              `Now, where does the ${nextAnimal.name.toLowerCase()} live?`
+            );
+            window.speechSynthesis.speak(nextIntro);
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            const finalMessage = new SpeechSynthesisUtterance(
+              "Amazing! You matched all the animals correctly! Great job!"
+            );
+            window.speechSynthesis.speak(finalMessage);
+            toast.success("🎊 You completed the game!");
+          }, 2000);
+        }
+      }, 3000);
     } else if (inForestZone || inDesertZone) {
-      toast.error(`Oops! Try again. ${animal.name} doesn't live there.`);
+      const utterance = new SpeechSynthesisUtterance(animal.incorrectMessage);
+      window.speechSynthesis.speak(utterance);
+      toast.error("Try again!");
       
       // Reset position
       setAnimals((prev) =>
@@ -200,11 +256,11 @@ export default function InteractiveStory() {
   };
 
   const resetGame = () => {
-    setAnimals([
-      { id: "camel", name: "Camel", imageUrl: camelImage, correctHabitat: "desert", x: 50, y: 300, placed: false },
-      { id: "elephant", name: "Elephant", imageUrl: elephantImage, correctHabitat: "forest", x: 50, y: 500, placed: false },
-    ]);
+    window.speechSynthesis.cancel();
+    setCurrentAnimalIndex(0);
+    setAnimals([allAnimals[0]]);
     setScore(0);
+    setGameStarted(false);
   };
 
   return (
@@ -226,7 +282,7 @@ export default function InteractiveStory() {
 
         <div className="bg-white rounded-lg shadow-2xl p-6 mb-6">
           <p className="text-xl text-center mb-6 font-medium text-gray-700">
-            🎯 Drag each animal to its correct habitat! Forest on the left, Desert on the right.
+            🎯 Listen carefully and drag the animal to where it lives!
           </p>
 
           <div className="relative">
