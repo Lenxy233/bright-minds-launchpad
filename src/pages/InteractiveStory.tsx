@@ -91,12 +91,13 @@ const allAnimals: Animal[] = [
   }
 ];
 
+// Shuffled habitats to make it more challenging
 const allHabitats: Habitat[] = [
-  { id: "stable", name: "Stable", imageUrl: stableImage, x: 1030, y: 80 },
-  { id: "beehive", name: "Beehive", imageUrl: beehiveImage, x: 1030, y: 200 },
-  { id: "ocean", name: "Ocean", imageUrl: oceanImage, x: 1030, y: 320 },
-  { id: "nestbox", name: "Nest Box", imageUrl: nestboxImage, x: 1030, y: 440 },
-  { id: "doghouse", name: "Dog House", imageUrl: doghouseImage, x: 1030, y: 560 }
+  { id: "ocean", name: "Ocean", imageUrl: oceanImage, x: 1030, y: 80 },
+  { id: "doghouse", name: "Dog House", imageUrl: doghouseImage, x: 1030, y: 200 },
+  { id: "nestbox", name: "Nest Box", imageUrl: nestboxImage, x: 1030, y: 320 },
+  { id: "stable", name: "Stable", imageUrl: stableImage, x: 1030, y: 440 },
+  { id: "beehive", name: "Beehive", imageUrl: beehiveImage, x: 1030, y: 560 }
 ];
 
 export default function InteractiveStory() {
@@ -105,15 +106,38 @@ export default function InteractiveStory() {
   const [gameStarted, setGameStarted] = useState(false);
   const [drawingFrom, setDrawingFrom] = useState<{ id: string; x: number; y: number } | null>(null);
   const [currentMousePos, setCurrentMousePos] = useState<{ x: number; y: number } | null>(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
   const imageSize = 120;
 
+  // Preload all images
   useEffect(() => {
-    if (gameStarted) {
+    const imagesToLoad = [
+      ...allAnimals.map(a => a.imageUrl),
+      ...allHabitats.map(h => h.imageUrl)
+    ];
+
+    let loadedCount = 0;
+    imagesToLoad.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        imageCache.current.set(src, img);
+        loadedCount++;
+        if (loadedCount === imagesToLoad.length) {
+          setImagesLoaded(true);
+        }
+      };
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
+    if (gameStarted && imagesLoaded) {
       drawScene();
     }
-  }, [connections, gameStarted, drawingFrom, currentMousePos]);
+  }, [connections, gameStarted, drawingFrom, currentMousePos, imagesLoaded]);
 
   useEffect(() => {
     return () => {
@@ -157,8 +181,13 @@ export default function InteractiveStory() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas with gradient background
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, "#e0f2fe");
+    gradient.addColorStop(0.5, "#fef3c7");
+    gradient.addColorStop(1, "#ddd6fe");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw all connections
     connections.forEach((connection) => {
@@ -186,46 +215,44 @@ export default function InteractiveStory() {
       ctx.setLineDash([]);
     }
 
-    // Draw animals on the left
+    // Draw animals on the left (using cached images)
     allAnimals.forEach((animal) => {
-      const img = new Image();
-      img.src = animal.imageUrl;
-      img.onload = () => {
-        // Draw border around animal
-        const isConnected = connections.some((c) => c.animalId === animal.id);
-        ctx.strokeStyle = isConnected ? "#22c55e" : "#e5e7eb";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(animal.x, animal.y, imageSize, imageSize);
+      const img = imageCache.current.get(animal.imageUrl);
+      if (!img) return;
 
-        ctx.drawImage(img, animal.x, animal.y, imageSize, imageSize);
-        
-        // Draw animal name below
-        ctx.fillStyle = "black";
-        ctx.font = "bold 16px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(animal.name, animal.x + imageSize / 2, animal.y + imageSize + 20);
-      };
+      // Draw border around animal
+      const isConnected = connections.some((c) => c.animalId === animal.id);
+      ctx.strokeStyle = isConnected ? "#22c55e" : "#e5e7eb";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(animal.x, animal.y, imageSize, imageSize);
+
+      ctx.drawImage(img, animal.x, animal.y, imageSize, imageSize);
+      
+      // Draw animal name below
+      ctx.fillStyle = "black";
+      ctx.font = "bold 16px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText(animal.name, animal.x + imageSize / 2, animal.y + imageSize + 20);
     });
 
-    // Draw habitats on the right
+    // Draw habitats on the right (using cached images)
     allHabitats.forEach((habitat) => {
-      const img = new Image();
-      img.src = habitat.imageUrl;
-      img.onload = () => {
-        // Draw border around habitat
-        const isConnected = connections.some((c) => c.habitatId === habitat.id);
-        ctx.strokeStyle = isConnected ? "#22c55e" : "#e5e7eb";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(habitat.x, habitat.y, imageSize, imageSize);
+      const img = imageCache.current.get(habitat.imageUrl);
+      if (!img) return;
 
-        ctx.drawImage(img, habitat.x, habitat.y, imageSize, imageSize);
-        
-        // Draw habitat name below
-        ctx.fillStyle = "black";
-        ctx.font = "bold 16px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(habitat.name, habitat.x + imageSize / 2, habitat.y + imageSize + 20);
-      };
+      // Draw border around habitat
+      const isConnected = connections.some((c) => c.habitatId === habitat.id);
+      ctx.strokeStyle = isConnected ? "#22c55e" : "#e5e7eb";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(habitat.x, habitat.y, imageSize, imageSize);
+
+      ctx.drawImage(img, habitat.x, habitat.y, imageSize, imageSize);
+      
+      // Draw habitat name below
+      ctx.fillStyle = "black";
+      ctx.font = "bold 16px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText(habitat.name, habitat.x + imageSize / 2, habitat.y + imageSize + 20);
     });
   };
 
@@ -392,7 +419,7 @@ export default function InteractiveStory() {
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
-              className="border-4 border-primary rounded-xl shadow-2xl cursor-pointer bg-white"
+              className="border-4 border-primary rounded-xl shadow-2xl cursor-pointer"
             />
           </div>
         )}
