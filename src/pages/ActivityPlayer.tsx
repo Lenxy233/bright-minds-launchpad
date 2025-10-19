@@ -87,7 +87,8 @@ export default function ActivityPlayer() {
       } else if (activity?.activity_type === "tap-find") {
         if (String(userAnswer) === item.correct_answer) correct++;
       } else if (activity?.activity_type === "fill-blanks") {
-        if (userAnswer === item.correct_answer) correct++;
+        const correctAnswer = item.content.options?.[0];
+        if (userAnswer === correctAnswer) correct++;
       }
     });
 
@@ -133,7 +134,8 @@ export default function ActivityPlayer() {
     } else if (activity?.activity_type === "tap-find") {
       return String(userAnswer) === item?.correct_answer;
     } else if (activity?.activity_type === "fill-blanks") {
-      return userAnswer === item?.correct_answer;
+      const correctAnswer = item?.content.options?.[0];
+      return userAnswer === correctAnswer;
     }
     return false;
   };
@@ -392,21 +394,34 @@ export default function ActivityPlayer() {
                 {activity.activity_type === "fill-blanks" && (
                   <div className="space-y-6">
                     <div className="text-center text-2xl font-bold text-purple-600 mb-4">
-                      ✏️ Fill in the missing word! 📝
+                      ✏️ Pick the right word! 📝
                     </div>
                     {items.map((item) => (
                       <Card key={item.id} className="border-4 border-purple-200 overflow-hidden animate-fade-in">
-                        <CardContent className="p-6">
-                          <p className="text-2xl font-bold text-center mb-6 text-gray-800">
+                        <div className="bg-gradient-to-r from-green-400 to-blue-400 p-4">
+                          <p className="text-2xl font-bold text-center text-white">
                             {item.content.content}
                           </p>
-                          <input
-                            type="text"
-                            className="w-full p-6 border-4 border-purple-300 rounded-2xl text-center text-2xl font-bold focus:border-pink-400 focus:ring-4 focus:ring-pink-200 transition-all"
-                            placeholder="✏️ Type the word..."
-                            value={userAnswers[item.id] || ""}
-                            onChange={(e) => handleAnswer(item.id, e.target.value.toLowerCase())}
-                          />
+                        </div>
+                        <CardContent className="p-6">
+                          <div className="grid gap-3">
+                            {item.content.options?.map((option: string, idx: number) => (
+                              <Button
+                                key={idx}
+                                size="lg"
+                                variant={userAnswers[item.id] === option ? "default" : "outline"}
+                                onClick={() => handleAnswer(item.id, option)}
+                                className={`text-xl py-6 justify-start font-bold ${
+                                  userAnswers[item.id] === option
+                                    ? "bg-gradient-to-r from-green-400 to-blue-500 scale-105 shadow-lg"
+                                    : "hover:bg-purple-100 border-4"
+                                } transition-all`}
+                              >
+                                <span className="text-2xl mr-3">{["🅰️", "🅱️", "©️", "🅳"][idx]}</span>
+                                {option}
+                              </Button>
+                            ))}
+                          </div>
                         </CardContent>
                       </Card>
                     ))}

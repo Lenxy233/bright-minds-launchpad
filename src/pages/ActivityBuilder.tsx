@@ -79,7 +79,7 @@ export default function ActivityBuilder() {
       content: "",
       match: activityType === "matching" ? "" : undefined,
       isCorrect: activityType === "true-false" ? true : undefined,
-      options: activityType === "quiz" ? ["", "", "", ""] : undefined
+      options: (activityType === "quiz" || activityType === "fill-blanks") ? ["", "", "", ""] : undefined
     };
     setItems([...items, newItem]);
   };
@@ -298,12 +298,35 @@ export default function ActivityBuilder() {
                           </div>
                         )}
 
-                        {(activityType === "drag-drop" || activityType === "tap-find" || activityType === "fill-blanks") && (
+                        {(activityType === "drag-drop" || activityType === "tap-find") && (
                           <Input
                             placeholder="Item text"
                             value={item.content}
                             onChange={(e) => updateItem(item.id, "content", e.target.value)}
                           />
+                        )}
+
+                        {activityType === "fill-blanks" && (
+                          <div className="space-y-2">
+                            <Input
+                              placeholder="Sentence with blank (e.g., The cat is ___)"
+                              value={item.content}
+                              onChange={(e) => updateItem(item.id, "content", e.target.value)}
+                            />
+                            <Label className="text-sm text-muted-foreground">Answer Choices:</Label>
+                            {item.options?.map((option, optIndex) => (
+                              <Input
+                                key={optIndex}
+                                placeholder={`Option ${optIndex + 1}${optIndex === 0 ? ' (correct answer)' : ''}`}
+                                value={option}
+                                onChange={(e) => {
+                                  const newOptions = [...(item.options || [])];
+                                  newOptions[optIndex] = e.target.value;
+                                  updateItem(item.id, "options", newOptions);
+                                }}
+                              />
+                            ))}
+                          </div>
                         )}
 
                         {activityType === "quiz" && (
