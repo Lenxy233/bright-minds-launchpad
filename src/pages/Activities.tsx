@@ -184,6 +184,17 @@ export default function Activities() {
                       ▶️ Play Now!
                     </Button>
                     
+                    {/* Demo story mode button for first activity */}
+                    {activities.indexOf(activity) === 0 && (
+                      <Button
+                        size="lg"
+                        className="w-full text-xl py-6 bg-gradient-to-r from-purple-400 to-pink-500 hover:scale-105 transition-transform shadow-lg"
+                        onClick={() => navigate(`/interactive-story/demo`)}
+                      >
+                        📚 Story Mode!
+                      </Button>
+                    )}
+                    
                     {user && (
                       <div className="flex gap-2">
                         <Button

@@ -38,6 +38,7 @@ import WhereIsThomas from "./pages/WhereIsThomas";
 import Activities from "./pages/Activities";
 import ActivityBuilder from "./pages/ActivityBuilder";
 import ActivityPlayer from "./pages/ActivityPlayer";
+import InteractiveStory from "./pages/InteractiveStory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -107,6 +108,7 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/activity-player/:id" element={<ActivityPlayer />} />
+            <Route path="/interactive-story/:id" element={<InteractiveStory />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
