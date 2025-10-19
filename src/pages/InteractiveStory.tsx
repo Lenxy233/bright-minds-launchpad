@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import backgroundImage from "@/assets/habitats/forest-desert-split.jpg";
 import camelImage from "@/assets/habitats/camel.jpg";
 import elephantImage from "@/assets/habitats/elephant.jpg";
-import { removeBackground, loadImageFromUrl } from "@/lib/backgroundRemoval";
 
 interface Animal {
   id: string;
@@ -53,67 +52,21 @@ export default function InteractiveStory() {
   const [draggedAnimal, setDraggedAnimal] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
-  const [processedImages, setProcessedImages] = useState<Record<string, string>>({});
-  const [isProcessing, setIsProcessing] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const processImages = async () => {
-      setIsProcessing(true);
-      toast.info("Processing animal images...");
-      
-      try {
-        const processed: Record<string, string> = {};
-        
-        for (const animal of allAnimals) {
-          const img = await loadImageFromUrl(animal.imageUrl);
-          const blob = await removeBackground(img);
-          const url = URL.createObjectURL(blob);
-          processed[animal.id] = url;
-        }
-        
-        setProcessedImages(processed);
-        toast.success("Animals ready!");
-      } catch (error) {
-        console.error("Error processing images:", error);
-        toast.error("Using original images");
-        // Fallback to original images
-        const fallback: Record<string, string> = {};
-        allAnimals.forEach(animal => {
-          fallback[animal.id] = animal.imageUrl;
-        });
-        setProcessedImages(fallback);
-      } finally {
-        setIsProcessing(false);
-      }
-    };
-    
-    processImages();
-  }, []);
-
-  useEffect(() => {
-    if (processedImages[animals[0]?.id]) {
-      drawScene();
-    }
-  }, [animals, processedImages]);
+    drawScene();
+  }, [animals]);
 
   const startGame = () => {
-    // Play background music
-    audioRef.current = new Audio();
-    audioRef.current.src = "https://assets.mixkit.co/music/preview/mixkit-playground-fun-7.mp3";
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.3;
-    audioRef.current.play().catch((err) => {
-      console.log("Audio play error:", err);
-      toast.error("Could not play audio. Please check your browser settings.");
-    });
-
-    // Introduction
+    // Introduction speech only (no background music for now)
     setTimeout(() => {
       const intro = new SpeechSynthesisUtterance(
         "Hey kids, let's play a fun game! Where does the elephant live?"
       );
+      intro.rate = 0.9;
+      intro.pitch = 1.1;
       window.speechSynthesis.speak(intro);
     }, 500);
     
@@ -126,13 +79,8 @@ export default function InteractiveStory() {
         audioRef.current.pause();
         audioRef.current = null;
       }
-      Object.values(processedImages).forEach(url => {
-        if (url.startsWith('blob:')) {
-          URL.revokeObjectURL(url);
-        }
-      });
     };
-  }, [processedImages]);
+  }, []);
 
   const drawScene = () => {
     const canvas = canvasRef.current;
@@ -150,34 +98,37 @@ export default function InteractiveStory() {
     bg.onload = () => {
       ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
-      // Draw animals - larger and bolder
+      // Draw animals - larger and bolder, centered in canvas
       animals.forEach((animal) => {
-        const processedUrl = processedImages[animal.id];
-        if (!processedUrl) return;
-        
         const img = new Image();
-        img.src = processedUrl;
+        img.src = animal.imageUrl;
         img.onload = () => {
           if (!animal.placed) {
-            const animalSize = 250; // Much larger!
+            const animalSize = 300; // Very large!
+            
+            // Draw white circle background to make animal stand out
+            ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+            ctx.beginPath();
+            ctx.arc(animal.x + animalSize/2, animal.y + animalSize/2, animalSize/2 + 10, 0, Math.PI * 2);
+            ctx.fill();
             
             // Draw shadow
-            ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
             ctx.beginPath();
-            ctx.ellipse(animal.x + animalSize/2, animal.y + animalSize + 20, animalSize/3, 25, 0, 0, Math.PI * 2);
+            ctx.ellipse(animal.x + animalSize/2, animal.y + animalSize + 30, animalSize/2.5, 30, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw animal (centered on canvas)
+            // Draw animal
             ctx.drawImage(img, animal.x, animal.y, animalSize, animalSize);
             
             // Draw animal name with background - larger text
             const nameWidth = animalSize;
-            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
-            ctx.fillRect(animal.x, animal.y - 50, nameWidth, 45);
+            ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+            ctx.fillRect(animal.x, animal.y - 60, nameWidth, 50);
             ctx.fillStyle = "white";
-            ctx.font = "bold 28px Arial";
+            ctx.font = "bold 32px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(animal.name, animal.x + animalSize/2, animal.y - 15);
+            ctx.fillText(animal.name, animal.x + animalSize/2, animal.y - 18);
           }
         };
       });
@@ -192,7 +143,7 @@ export default function InteractiveStory() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const animalSize = 250;
+    const animalSize = 300;
     const clickedAnimal = animals.find(
       (animal) =>
         !animal.placed &&
@@ -214,7 +165,7 @@ export default function InteractiveStory() {
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
-    const animalSize = 250;
+    const animalSize = 300;
     const x = e.clientX - rect.left - animalSize/2;
     const y = e.clientY - rect.top - animalSize/2;
 
@@ -313,10 +264,6 @@ export default function InteractiveStory() {
 
   const resetGame = () => {
     window.speechSynthesis.cancel();
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
     setCurrentAnimalIndex(0);
     setAnimals([allAnimals[0]]);
     setScore(0);
@@ -340,24 +287,17 @@ export default function InteractiveStory() {
           </div>
         </div>
 
-        {!gameStarted && !isProcessing && (
+        {!gameStarted && (
           <div className="bg-white rounded-lg shadow-2xl p-12 mb-6 text-center">
             <h2 className="text-3xl font-bold mb-4 text-primary">Ready to Play?</h2>
-            <p className="text-xl mb-6 text-gray-700">Click start to begin the fun animal habitat game with sound!</p>
+            <p className="text-xl mb-6 text-gray-700">Click start to begin the fun animal habitat game with voice guidance!</p>
             <Button onClick={startGame} size="lg" className="text-2xl py-6 px-12">
               🎮 Start Game
             </Button>
           </div>
         )}
 
-        {isProcessing && (
-          <div className="bg-white rounded-lg shadow-2xl p-12 mb-6 text-center">
-            <h2 className="text-2xl font-bold mb-4 text-primary">Preparing Animals...</h2>
-            <p className="text-lg text-gray-600">Please wait while we get everything ready!</p>
-          </div>
-        )}
-
-        {gameStarted && !isProcessing && (
+        {gameStarted && (
           <div className="bg-white rounded-lg shadow-2xl p-6 mb-6">
             <p className="text-xl text-center mb-6 font-medium text-gray-700">
               🎯 Listen carefully and drag the animal to where it lives!
