@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
-import backgroundImage from "@/assets/habitats/forest-desert-split.jpg";
-import camelImage from "@/assets/habitats/camel.jpg";
-import elephantImage from "@/assets/habitats/elephant.jpg";
+import backgroundImage from "@/assets/habitats/forest-desert-new.jpg";
+import camelImage from "@/assets/habitats/camel-new.png";
+import elephantImage from "@/assets/habitats/elephant-new.png";
 
 interface Animal {
   id: string;
@@ -60,7 +60,19 @@ export default function InteractiveStory() {
   }, [animals]);
 
   const startGame = () => {
-    // Introduction speech only (no background music for now)
+    // Play upbeat background music
+    try {
+      audioRef.current = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.2;
+      audioRef.current.play().catch((err) => {
+        console.log("Background music couldn't play:", err);
+      });
+    } catch (err) {
+      console.log("Audio error:", err);
+    }
+
+    // Introduction speech
     setTimeout(() => {
       const intro = new SpeechSynthesisUtterance(
         "Hey kids, let's play a fun game! Where does the elephant live?"
@@ -98,37 +110,31 @@ export default function InteractiveStory() {
     bg.onload = () => {
       ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
-      // Draw animals - larger and bolder, centered in canvas
+      // Draw animals - larger and bolder
       animals.forEach((animal) => {
         const img = new Image();
         img.src = animal.imageUrl;
         img.onload = () => {
           if (!animal.placed) {
-            const animalSize = 300; // Very large!
-            
-            // Draw white circle background to make animal stand out
-            ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-            ctx.beginPath();
-            ctx.arc(animal.x + animalSize/2, animal.y + animalSize/2, animalSize/2 + 10, 0, Math.PI * 2);
-            ctx.fill();
+            const animalSize = 350; // Even larger!
             
             // Draw shadow
-            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
             ctx.beginPath();
-            ctx.ellipse(animal.x + animalSize/2, animal.y + animalSize + 30, animalSize/2.5, 30, 0, 0, Math.PI * 2);
+            ctx.ellipse(animal.x + animalSize/2, animal.y + animalSize + 10, animalSize/2.5, 30, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw animal
+            // Draw animal (transparent PNGs look great without extra background)
             ctx.drawImage(img, animal.x, animal.y, animalSize, animalSize);
             
             // Draw animal name with background - larger text
             const nameWidth = animalSize;
             ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
-            ctx.fillRect(animal.x, animal.y - 60, nameWidth, 50);
+            ctx.fillRect(animal.x, animal.y - 65, nameWidth, 55);
             ctx.fillStyle = "white";
-            ctx.font = "bold 32px Arial";
+            ctx.font = "bold 36px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(animal.name, animal.x + animalSize/2, animal.y - 18);
+            ctx.fillText(animal.name, animal.x + animalSize/2, animal.y - 20);
           }
         };
       });
@@ -143,7 +149,7 @@ export default function InteractiveStory() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const animalSize = 300;
+    const animalSize = 350;
     const clickedAnimal = animals.find(
       (animal) =>
         !animal.placed &&
@@ -165,7 +171,7 @@ export default function InteractiveStory() {
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
-    const animalSize = 300;
+    const animalSize = 350;
     const x = e.clientX - rect.left - animalSize/2;
     const y = e.clientY - rect.top - animalSize/2;
 
@@ -264,6 +270,10 @@ export default function InteractiveStory() {
 
   const resetGame = () => {
     window.speechSynthesis.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     setCurrentAnimalIndex(0);
     setAnimals([allAnimals[0]]);
     setScore(0);
