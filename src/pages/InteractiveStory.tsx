@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import horseImage from "@/assets/habitats/horse.png";
 import beeImage from "@/assets/habitats/bee.png";
 import fishImage from "@/assets/habitats/fish.png";
@@ -112,7 +113,38 @@ export default function InteractiveStory() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const imageCache = useRef<Map<string, HTMLImageElement>>(new Map());
   const backgroundImage = useRef<HTMLImageElement | null>(null);
+  const currentAudio = useRef<HTMLAudioElement | null>(null);
   const imageSize = 120;
+
+  // Function to play text using ElevenLabs
+  const speakText = async (text: string) => {
+    try {
+      // Stop any currently playing audio
+      if (currentAudio.current) {
+        currentAudio.current.pause();
+        currentAudio.current = null;
+      }
+
+      const { data, error } = await supabase.functions.invoke('elevenlabs-tts', {
+        body: { text }
+      });
+
+      if (error) throw error;
+
+      if (data?.audioContent) {
+        const audio = new Audio(`data:audio/mpeg;base64,${data.audioContent}`);
+        currentAudio.current = audio;
+        await audio.play();
+      }
+    } catch (error) {
+      console.error('Error playing speech:', error);
+      // Fallback to browser speech if ElevenLabs fails
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.4;
+      utterance.pitch = 2.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   // Preload all images including background
   useEffect(() => {
@@ -172,14 +204,9 @@ export default function InteractiveStory() {
       console.log("Audio error:", err);
     }
 
-    // Introduction speech with child-like voice
+    // Introduction speech with Charlie's voice
     setTimeout(() => {
-      const intro = new SpeechSynthesisUtterance(
-        "Welcome kids! Draw lines to match each animal with its home!"
-      );
-      intro.rate = 1.4;  // Faster, more enthusiastic
-      intro.pitch = 2.0; // Maximum pitch for child voice
-      window.speechSynthesis.speak(intro);
+      speakText("Welcome kids! Draw lines to match each animal with its home!");
     }, 500);
   };
 
@@ -347,34 +374,20 @@ export default function InteractiveStory() {
         });
 
         toast.success(animal.correctMessage);
-
-        const speech = new SpeechSynthesisUtterance(animal.correctMessage);
-        speech.rate = 1.4;  // Enthusiastic speed
-        speech.pitch = 2.0; // Maximum child voice pitch
-        window.speechSynthesis.speak(speech);
+        speakText(animal.correctMessage);
 
         setScore((prev) => prev + 1);
 
         // Check if all animals are matched correctly
         if (connections.length + 1 === allAnimals.length && connections.every((c) => c.isCorrect)) {
           setTimeout(() => {
-            const finalSpeech = new SpeechSynthesisUtterance(
-              "Fantastic! You matched all the animals to their homes!"
-            );
-            finalSpeech.rate = 1.4;  // Enthusiastic speed
-            finalSpeech.pitch = 2.0; // Maximum child voice pitch
-            window.speechSynthesis.speak(finalSpeech);
-            
+            speakText("Fantastic! You matched all the animals to their homes!");
             toast.success("🎉 You completed the game!");
           }, 1500);
         }
       } else {
         toast.error(animal.incorrectMessage);
-        
-        const speech = new SpeechSynthesisUtterance(animal.incorrectMessage);
-        speech.rate = 1.3;  // Slightly slower for emphasis
-        speech.pitch = 2.0; // Maximum child voice pitch
-        window.speechSynthesis.speak(speech);
+        speakText(animal.incorrectMessage);
       }
     }
 
@@ -387,6 +400,10 @@ export default function InteractiveStory() {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
+    }
+    if (currentAudio.current) {
+      currentAudio.current.pause();
+      currentAudio.current = null;
     }
     setConnections([]);
     setScore(0);
