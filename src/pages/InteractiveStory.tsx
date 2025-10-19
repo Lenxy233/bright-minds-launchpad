@@ -17,13 +17,25 @@ interface Animal {
   id: string;
   name: string;
   imageUrl: string;
-  correctHabitat: { x: number; y: number; width: number; height: number };
+  correctHabitatId: string;
   x: number;
   y: number;
-  placed: boolean;
   correctMessage: string;
   incorrectMessage: string;
-  habitatName: string;
+}
+
+interface Habitat {
+  id: string;
+  name: string;
+  imageUrl: string;
+  x: number;
+  y: number;
+}
+
+interface Connection {
+  animalId: string;
+  habitatId: string;
+  isCorrect: boolean;
 }
 
 const allAnimals: Animal[] = [
@@ -31,77 +43,77 @@ const allAnimals: Animal[] = [
     id: "horse",
     name: "Horse",
     imageUrl: horseImage,
-    correctHabitat: { x: 0, y: 0, width: 400, height: 400 },
-    x: 80,
-    y: 570,
-    placed: false,
+    correctHabitatId: "stable",
+    x: 50,
+    y: 80,
     correctMessage: "Great! Horses live in stables!",
-    incorrectMessage: "Not quite! Horses live in stables with hay and shelter.",
-    habitatName: "stable"
+    incorrectMessage: "Not quite! Horses live in stables with hay and shelter."
   },
   {
     id: "bee",
     name: "Bee",
     imageUrl: beeImage,
-    correctHabitat: { x: 400, y: 0, width: 400, height: 400 },
-    x: 300,
-    y: 570,
-    placed: false,
+    correctHabitatId: "beehive",
+    x: 50,
+    y: 200,
     correctMessage: "Amazing! Bees live in beehives!",
-    incorrectMessage: "Try again! Bees make honey in beehives.",
-    habitatName: "beehive"
+    incorrectMessage: "Try again! Bees make honey in beehives."
   },
   {
     id: "fish",
     name: "Fish",
     imageUrl: fishImage,
-    correctHabitat: { x: 800, y: 0, width: 400, height: 400 },
-    x: 520,
-    y: 570,
-    placed: false,
+    correctHabitatId: "ocean",
+    x: 50,
+    y: 320,
     correctMessage: "Perfect! Fish swim in the ocean!",
-    incorrectMessage: "Oops! Fish need water to live in the ocean.",
-    habitatName: "ocean"
+    incorrectMessage: "Oops! Fish need water to live in the ocean."
   },
   {
     id: "bird",
     name: "Bird",
     imageUrl: birdImage,
-    correctHabitat: { x: 0, y: 400, width: 600, height: 400 },
-    x: 740,
-    y: 570,
-    placed: false,
+    correctHabitatId: "nestbox",
+    x: 50,
+    y: 440,
     correctMessage: "Wonderful! Birds nest in bird boxes!",
-    incorrectMessage: "Not there! Birds like cozy nest boxes in trees.",
-    habitatName: "nest box"
+    incorrectMessage: "Not there! Birds like cozy nest boxes in trees."
   },
   {
     id: "dog",
     name: "Dog",
     imageUrl: dogImage,
-    correctHabitat: { x: 600, y: 400, width: 600, height: 400 },
-    x: 960,
-    y: 570,
-    placed: false,
+    correctHabitatId: "doghouse",
+    x: 50,
+    y: 560,
     correctMessage: "Excellent! Dogs sleep in dog houses!",
-    incorrectMessage: "Try somewhere else! Dogs have special houses.",
-    habitatName: "dog house"
+    incorrectMessage: "Try somewhere else! Dogs have special houses."
   }
 ];
 
+const allHabitats: Habitat[] = [
+  { id: "stable", name: "Stable", imageUrl: stableImage, x: 1030, y: 80 },
+  { id: "beehive", name: "Beehive", imageUrl: beehiveImage, x: 1030, y: 200 },
+  { id: "ocean", name: "Ocean", imageUrl: oceanImage, x: 1030, y: 320 },
+  { id: "nestbox", name: "Nest Box", imageUrl: nestboxImage, x: 1030, y: 440 },
+  { id: "doghouse", name: "Dog House", imageUrl: doghouseImage, x: 1030, y: 560 }
+];
+
 export default function InteractiveStory() {
-  const [animals, setAnimals] = useState<Animal[]>(allAnimals);
-  const [draggedAnimal, setDraggedAnimal] = useState<string | null>(null);
+  const [connections, setConnections] = useState<Connection[]>([]);
   const [score, setScore] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
+  const [drawingFrom, setDrawingFrom] = useState<{ id: string; x: number; y: number } | null>(null);
+  const [currentMousePos, setCurrentMousePos] = useState<{ x: number; y: number } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const imageSize = 120;
 
   useEffect(() => {
     if (gameStarted) {
       drawScene();
     }
-  }, [animals, gameStarted]);
+  }, [connections, gameStarted, drawingFrom, currentMousePos]);
 
   useEffect(() => {
     return () => {
@@ -130,7 +142,7 @@ export default function InteractiveStory() {
     // Introduction speech
     setTimeout(() => {
       const intro = new SpeechSynthesisUtterance(
-        "Welcome kids! Let's help all these animals find their homes! Drag each animal to where it lives!"
+        "Welcome kids! Draw lines to match each animal with its home!"
       );
       intro.rate = 0.9;
       intro.pitch = 1.1;
@@ -148,57 +160,71 @@ export default function InteractiveStory() {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw habitat grid (2x3 grid of habitats)
-    const habitats = [
-      { name: "Stable", img: stableImage, x: 0, y: 0, width: 400 },
-      { name: "Beehive", img: beehiveImage, x: 400, y: 0, width: 400 },
-      { name: "Ocean", img: oceanImage, x: 800, y: 0, width: 400 },
-      { name: "Nest Box", img: nestboxImage, x: 0, y: 400, width: 600 },
-      { name: "Dog House", img: doghouseImage, x: 600, y: 400, width: 600 }
-    ];
+    // Draw all connections
+    connections.forEach((connection) => {
+      const animal = allAnimals.find((a) => a.id === connection.animalId);
+      const habitat = allHabitats.find((h) => h.id === connection.habitatId);
+      if (!animal || !habitat) return;
 
-    habitats.forEach(habitat => {
-      const img = new Image();
-      img.src = habitat.img;
-      img.onload = () => {
-        const height = 400;
-        ctx.drawImage(img, habitat.x, habitat.y, habitat.width, height);
-        
-        // Draw habitat labels
-        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-        ctx.fillRect(habitat.x + 10, habitat.y + 10, 150, 40);
-        ctx.fillStyle = "black";
-        ctx.font = "bold 20px Arial";
-        ctx.fillText(habitat.name, habitat.x + 20, habitat.y + 37);
-      };
+      ctx.beginPath();
+      ctx.moveTo(animal.x + imageSize, animal.y + imageSize / 2);
+      ctx.lineTo(habitat.x, habitat.y + imageSize / 2);
+      ctx.strokeStyle = connection.isCorrect ? "#22c55e" : "#ef4444";
+      ctx.lineWidth = 4;
+      ctx.stroke();
     });
 
-    // Draw animals
-    animals.forEach((animal) => {
+    // Draw line being drawn
+    if (drawingFrom && currentMousePos) {
+      ctx.beginPath();
+      ctx.moveTo(drawingFrom.x, drawingFrom.y);
+      ctx.lineTo(currentMousePos.x, currentMousePos.y);
+      ctx.strokeStyle = "#3b82f6";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([5, 5]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Draw animals on the left
+    allAnimals.forEach((animal) => {
       const img = new Image();
       img.src = animal.imageUrl;
       img.onload = () => {
-        if (!animal.placed) {
-          const animalSize = 200;
-          
-          // Draw shadow
-          ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
-          ctx.beginPath();
-          ctx.ellipse(animal.x + animalSize/2, animal.y + animalSize + 10, animalSize/2.5, 30, 0, 0, Math.PI * 2);
-          ctx.fill();
+        // Draw border around animal
+        const isConnected = connections.some((c) => c.animalId === animal.id);
+        ctx.strokeStyle = isConnected ? "#22c55e" : "#e5e7eb";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(animal.x, animal.y, imageSize, imageSize);
 
-          // Draw animal
-          ctx.drawImage(img, animal.x, animal.y, animalSize, animalSize);
-          
-          // Draw animal name
-          const nameWidth = animalSize;
-          ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
-          ctx.fillRect(animal.x, animal.y - 50, nameWidth, 45);
-          ctx.fillStyle = "white";
-          ctx.font = "bold 28px Arial";
-          ctx.textAlign = "center";
-          ctx.fillText(animal.name, animal.x + animalSize/2, animal.y - 15);
-        }
+        ctx.drawImage(img, animal.x, animal.y, imageSize, imageSize);
+        
+        // Draw animal name below
+        ctx.fillStyle = "black";
+        ctx.font = "bold 16px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(animal.name, animal.x + imageSize / 2, animal.y + imageSize + 20);
+      };
+    });
+
+    // Draw habitats on the right
+    allHabitats.forEach((habitat) => {
+      const img = new Image();
+      img.src = habitat.imageUrl;
+      img.onload = () => {
+        // Draw border around habitat
+        const isConnected = connections.some((c) => c.habitatId === habitat.id);
+        ctx.strokeStyle = isConnected ? "#22c55e" : "#e5e7eb";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(habitat.x, habitat.y, imageSize, imageSize);
+
+        ctx.drawImage(img, habitat.x, habitat.y, imageSize, imageSize);
+        
+        // Draw habitat name below
+        ctx.fillStyle = "black";
+        ctx.font = "bold 16px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(habitat.name, habitat.x + imageSize / 2, habitat.y + imageSize + 20);
       };
     });
   };
@@ -211,101 +237,109 @@ export default function InteractiveStory() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const animalSize = 200;
-    const clickedAnimal = animals.find(
+    // Check if clicking on an animal
+    const clickedAnimal = allAnimals.find(
       (animal) =>
-        !animal.placed &&
         x >= animal.x &&
-        x <= animal.x + animalSize &&
+        x <= animal.x + imageSize &&
         y >= animal.y &&
-        y <= animal.y + animalSize
+        y <= animal.y + imageSize
     );
 
-    if (clickedAnimal) {
-      setDraggedAnimal(clickedAnimal.id);
+    if (clickedAnimal && !connections.some((c) => c.animalId === clickedAnimal.id)) {
+      setDrawingFrom({
+        id: clickedAnimal.id,
+        x: clickedAnimal.x + imageSize,
+        y: clickedAnimal.y + imageSize / 2,
+      });
     }
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!draggedAnimal) return;
+    if (!drawingFrom) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
-    const animalSize = 200;
-    const x = e.clientX - rect.left - animalSize/2;
-    const y = e.clientY - rect.top - animalSize/2;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    setAnimals((prevAnimals) =>
-      prevAnimals.map((animal) =>
-        animal.id === draggedAnimal ? { ...animal, x, y } : animal
-      )
-    );
+    setCurrentMousePos({ x, y });
   };
 
-  const handleMouseUp = () => {
-    if (!draggedAnimal) return;
+  const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!drawingFrom) return;
 
-    const animal = animals.find((a) => a.id === draggedAnimal);
-    if (!animal) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const animalSize = 200;
-    const centerX = animal.x + animalSize / 2;
-    const centerY = animal.y + animalSize / 2;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    // Check if animal is in correct habitat
-    const isCorrect =
-      centerX >= animal.correctHabitat.x &&
-      centerX <= animal.correctHabitat.x + animal.correctHabitat.width &&
-      centerY >= animal.correctHabitat.y &&
-      centerY <= animal.correctHabitat.y + animal.correctHabitat.height;
+    // Check if released on a habitat
+    const clickedHabitat = allHabitats.find(
+      (habitat) =>
+        x >= habitat.x &&
+        x <= habitat.x + imageSize &&
+        y >= habitat.y &&
+        y <= habitat.y + imageSize
+    );
 
-    if (isCorrect) {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
+    if (clickedHabitat) {
+      const animal = allAnimals.find((a) => a.id === drawingFrom.id);
+      if (!animal) return;
 
-      toast.success(animal.correctMessage);
+      const isCorrect = animal.correctHabitatId === clickedHabitat.id;
 
-      const speech = new SpeechSynthesisUtterance(animal.correctMessage);
-      speech.rate = 0.9;
-      speech.pitch = 1.1;
-      window.speechSynthesis.speak(speech);
+      // Add connection
+      setConnections((prev) => [
+        ...prev,
+        { animalId: animal.id, habitatId: clickedHabitat.id, isCorrect },
+      ]);
 
-      setScore((prev) => prev + 1);
-      setAnimals((prevAnimals) =>
-        prevAnimals.map((a) =>
-          a.id === draggedAnimal ? { ...a, placed: true } : a
-        )
-      );
+      if (isCorrect) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
 
-      // Check if all animals are placed
-      const allPlaced = animals.every((a) => a.id === draggedAnimal || a.placed);
-      if (allPlaced) {
-        setTimeout(() => {
-          const finalSpeech = new SpeechSynthesisUtterance(
-            "Fantastic! You helped all the animals find their homes!"
-          );
-          finalSpeech.rate = 0.9;
-          finalSpeech.pitch = 1.1;
-          window.speechSynthesis.speak(finalSpeech);
-          
-          toast.success("🎉 You completed the game!");
-        }, 1500);
+        toast.success(animal.correctMessage);
+
+        const speech = new SpeechSynthesisUtterance(animal.correctMessage);
+        speech.rate = 0.9;
+        speech.pitch = 1.1;
+        window.speechSynthesis.speak(speech);
+
+        setScore((prev) => prev + 1);
+
+        // Check if all animals are matched correctly
+        if (connections.length + 1 === allAnimals.length && connections.every((c) => c.isCorrect)) {
+          setTimeout(() => {
+            const finalSpeech = new SpeechSynthesisUtterance(
+              "Fantastic! You matched all the animals to their homes!"
+            );
+            finalSpeech.rate = 0.9;
+            finalSpeech.pitch = 1.1;
+            window.speechSynthesis.speak(finalSpeech);
+            
+            toast.success("🎉 You completed the game!");
+          }, 1500);
+        }
+      } else {
+        toast.error(animal.incorrectMessage);
+        
+        const speech = new SpeechSynthesisUtterance(animal.incorrectMessage);
+        speech.rate = 0.9;
+        speech.pitch = 1.0;
+        window.speechSynthesis.speak(speech);
       }
-    } else {
-      toast.error(animal.incorrectMessage);
-      
-      const speech = new SpeechSynthesisUtterance(animal.incorrectMessage);
-      speech.rate = 0.9;
-      speech.pitch = 1.0;
-      window.speechSynthesis.speak(speech);
     }
 
-    setDraggedAnimal(null);
+    setDrawingFrom(null);
+    setCurrentMousePos(null);
   };
 
   const resetGame = () => {
@@ -314,10 +348,11 @@ export default function InteractiveStory() {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
-    setAnimals(allAnimals.map(a => ({ ...a, placed: false })));
+    setConnections([]);
     setScore(0);
     setGameStarted(false);
-    setDraggedAnimal(null);
+    setDrawingFrom(null);
+    setCurrentMousePos(null);
   };
 
   return (
@@ -328,7 +363,7 @@ export default function InteractiveStory() {
             Match Animals to Their Homes! 🏡
           </h1>
           <p className="text-2xl text-secondary-foreground mb-4">
-            Drag each animal to where it lives
+            Draw lines to match each animal with its home!
           </p>
           <div className="flex justify-center gap-8 items-center">
             <p className="text-3xl font-bold text-primary">Score: {score}/{allAnimals.length}</p>
