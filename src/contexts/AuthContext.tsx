@@ -51,9 +51,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
     try {
-      // TODO: RESTORE PURCHASE REQUIREMENT BEFORE PRODUCTION
-      // Purchase requirement temporarily removed for testing
-      // Original code checked user_purchases table for completed purchase before allowing signup
+      // Verify completed purchase exists before allowing signup
+      const { data: purchase, error: purchaseError } = await supabase
+        .from('user_purchases')
+        .select('id')
+        .eq('email', email)
+        .eq('status', 'completed')
+        .maybeSingle();
+
+      if (purchaseError || !purchase) {
+        toast({
+          title: "Purchase Required",
+          description: "You must complete a purchase before creating an account. Please check your email for purchase confirmation.",
+          variant: "destructive",
+        });
+        return { error: new Error('Purchase required') };
+      }
       
       const redirectUrl = `${window.location.origin}/`;
       

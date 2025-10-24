@@ -8,7 +8,7 @@ const FileManagementCard = () => {
   const [activeTab, setActiveTab] = useState("upload");
 
   const handleUploadComplete = (files: string[]) => {
-    console.log("Files uploaded:", files);
+    
     // Could refresh file lists or show success notifications here
   };
 

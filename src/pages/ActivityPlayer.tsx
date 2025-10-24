@@ -39,8 +39,6 @@ export default function ActivityPlayer() {
 
   useEffect(() => {
     if (items.length > 0) {
-      console.log("Activity items loaded:", items);
-      console.log("First item content:", items[0]?.content);
     }
   }, [items]);
 
@@ -407,7 +405,7 @@ export default function ActivityPlayer() {
                       </div>
                     </div>
                     {items.map((item, questionIndex) => {
-                      console.log("Rendering item:", item.id, "content:", item.content);
+                      
                       const questionText = typeof item.content === 'string' ? item.content : item.content?.content || item.content;
                       const options = item.content?.options || [];
                       
