@@ -52,7 +52,7 @@ const AIStoryCreator = () => {
         });
         
         // Navigate to the story book reader
-        navigate(`/story-book/${data.storyBook.id}`);
+        navigate(`/story-books/${data.storyBook.id}`);
       } else {
         throw new Error("Failed to generate story");
       }
