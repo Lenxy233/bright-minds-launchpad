@@ -10,7 +10,7 @@ import QuickActionsCard from "@/components/dashboard/QuickActionsCard";
 import FileManagementCard from "@/components/dashboard/FileManagementCard";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Puzzle, GraduationCap, Users, Gamepad2 } from "lucide-react";
+import { BookOpen, Puzzle, GraduationCap, Users, Gamepad2, Trophy } from "lucide-react";
 
 interface Purchase {
   id: string;
@@ -137,6 +137,13 @@ const Dashboard = () => {
                   <Gamepad2 className="w-8 h-8" />
                   <span className="font-semibold">Game Builder</span>
                   <span className="text-xs text-gray-500">NEW!</span>
+                </Button>
+              </Link>
+              <Link to="/games">
+                <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-purple-50 text-purple-600 border-2 border-purple-200">
+                  <Trophy className="w-8 h-8" />
+                  <span className="font-semibold">My Games</span>
+                  <span className="text-xs text-gray-500">Library</span>
                 </Button>
               </Link>
               <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-blue-50 text-blue-600 border-2 border-blue-200" disabled>
