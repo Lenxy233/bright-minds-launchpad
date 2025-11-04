@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Trophy, RefreshCw } from "lucide-react";
+import { ArrowLeft, Trophy, RefreshCw, Sparkles } from "lucide-react";
 
 interface Game {
   id: string;
@@ -35,6 +35,8 @@ const GamePlayer = () => {
   const [currentSequenceIndex, setCurrentSequenceIndex] = useState(0);
   const [shuffledItems, setShuffledItems] = useState<any[]>([]);
   const [userOrder, setUserOrder] = useState<any[]>([]);
+  const [draggedItem, setDraggedItem] = useState<any>(null);
+  const [dropZoneHighlight, setDropZoneHighlight] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -78,14 +80,32 @@ const GamePlayer = () => {
     setUserOrder([]);
   };
 
-  const handleItemClick = (item: any) => {
-    if (userOrder.find((i) => i.order === item.order)) {
-      // Already selected, remove it
-      setUserOrder(userOrder.filter((i) => i.order !== item.order));
-    } else {
-      // Add to selection
-      setUserOrder([...userOrder, item]);
+  const handleDragStart = (e: React.DragEvent, item: any) => {
+    setDraggedItem(item);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDropZoneHighlight(true);
+  };
+
+  const handleDragLeave = () => {
+    setDropZoneHighlight(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDropZoneHighlight(false);
+    
+    if (draggedItem && !userOrder.find((i) => i.order === draggedItem.order)) {
+      setUserOrder([...userOrder, draggedItem]);
+      setDraggedItem(null);
     }
+  };
+
+  const handleRemoveFromSequence = (item: any) => {
+    setUserOrder(userOrder.filter((i) => i.order !== item.order));
   };
 
   const checkSequenceAnswer = () => {
@@ -212,68 +232,116 @@ const GamePlayer = () => {
 
           {game.game_type === "sequence" && currentSequence && (
             <>
-              <Card className="border-2 border-blue-200 mb-6">
+              <Card className="border-2 border-blue-200 mb-6 bg-gradient-to-r from-blue-50 to-purple-50">
                 <CardHeader>
-                  <CardTitle className="text-xl">
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    <Sparkles className="w-6 h-6 text-purple-600" />
                     {currentSequence.title}
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-base">
                     Sequence {currentSequenceIndex + 1} of {game.game_data.sequences.length} - 
-                    Click the items in the correct order!
+                    Drag the bricks to arrange them in order!
                   </CardDescription>
                 </CardHeader>
               </Card>
 
-              {/* Selected Order Display */}
-              {userOrder.length > 0 && (
-                <Card className="mb-6 bg-green-50 border-green-200">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Your Order:</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {userOrder.map((item, index) => (
+              {/* Drop Zone */}
+              <Card 
+                className={`mb-6 min-h-[120px] transition-all ${
+                  dropZoneHighlight 
+                    ? "bg-yellow-50 border-yellow-400 border-4 border-dashed" 
+                    : "bg-gradient-to-r from-green-50 to-blue-50 border-green-200 border-2"
+                }`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    🎯 Arrange Your Sequence Here
+                  </CardTitle>
+                  <CardDescription>
+                    {userOrder.length === 0 
+                      ? "Drag bricks here to build your sequence" 
+                      : `${userOrder.length} of ${currentSequence.items.length} bricks placed`}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-3 min-h-[60px]">
+                    {userOrder.map((item, index) => (
+                      <div
+                        key={item.order}
+                        className="relative group animate-scale-in"
+                        onClick={() => handleRemoveFromSequence(item)}
+                      >
+                        <div className="bg-gradient-to-br from-orange-400 to-red-500 text-white rounded-lg px-6 py-8 shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105 border-4 border-orange-600">
+                          <div className="text-center">
+                            <div className="text-4xl font-bold mb-1">{item.order}</div>
+                            <div className="text-xs opacity-90">Position {index + 1}</div>
+                          </div>
+                        </div>
+                        <div className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold">
+                          ✕
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Available Bricks */}
+              <Card className="mb-6 border-2 border-purple-200">
+                <CardHeader>
+                  <CardTitle className="text-lg">🧱 Available Bricks</CardTitle>
+                  <CardDescription>
+                    Drag these numbered bricks to the sequence area above
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
+                    {shuffledItems.map((item) => {
+                      const isPlaced = userOrder.find((i) => i.order === item.order);
+                      return (
                         <div
                           key={item.order}
-                          className="bg-green-100 border-2 border-green-300 rounded-lg px-4 py-2 font-semibold"
+                          draggable={!isPlaced}
+                          onDragStart={(e) => handleDragStart(e, item)}
+                          className={`
+                            transition-all duration-300 cursor-move
+                            ${isPlaced 
+                              ? "opacity-30 cursor-not-allowed" 
+                              : "hover:scale-110 animate-fade-in hover-scale"
+                            }
+                          `}
                         >
-                          {index + 1}. {item.content}
+                          <div className={`
+                            rounded-lg px-4 py-6 shadow-lg text-center
+                            ${isPlaced
+                              ? "bg-gray-300 border-4 border-gray-400"
+                              : "bg-gradient-to-br from-blue-400 to-purple-500 border-4 border-blue-600 hover:shadow-2xl"
+                            }
+                          `}>
+                            <div className="text-white">
+                              <div className="text-3xl font-bold mb-1">{item.order}</div>
+                              <div className="text-xs opacity-80 truncate">
+                                {isPlaced ? "Placed" : "Drag me"}
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Shuffled Items */}
-              <div className="grid gap-4 md:grid-cols-2 mb-6">
-                {shuffledItems.map((item) => {
-                  const isSelected = userOrder.find((i) => i.order === item.order);
-                  return (
-                    <Card
-                      key={item.order}
-                      className={`cursor-pointer transition-all hover:shadow-lg ${
-                        isSelected
-                          ? "bg-green-100 border-green-400 border-2"
-                          : "hover:border-purple-300"
-                      }`}
-                      onClick={() => handleItemClick(item)}
-                    >
-                      <CardContent className="p-6">
-                        <p className="text-lg">{item.content}</p>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
 
               <Button
                 onClick={checkSequenceAnswer}
                 size="lg"
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-xl py-6 animate-pulse"
                 disabled={userOrder.length === 0}
               >
-                Check Answer
+                ✓ Check My Answer!
               </Button>
             </>
           )}
