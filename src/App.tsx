@@ -43,6 +43,7 @@ import InteractiveStory from "./pages/InteractiveStory";
 import NotFound from "./pages/NotFound";
 import AIStoryCreator from "./pages/AIStoryCreator";
 import GameCreator from "./pages/GameCreator";
+import GamePlayer from "./pages/GamePlayer";
 
 const queryClient = new QueryClient();
 
@@ -91,6 +92,7 @@ const App = () => (
             <Route path="/interactive-story/:id" element={<InteractiveStory />} />
             <Route path="/ai-story-creator" element={<AIStoryCreator />} />
             <Route path="/game-creator" element={<GameCreator />} />
+            <Route path="/games/:id" element={<GamePlayer />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
