@@ -48,6 +48,7 @@ const GamePlayer = () => {
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [selectedRight, setSelectedRight] = useState<number | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<number[]>([]);
+  const [matchingPairs, setMatchingPairs] = useState<any[]>([]);
   const [shuffledRightItems, setShuffledRightItems] = useState<any[]>([]);
 
   useEffect(() => {
@@ -72,8 +73,9 @@ const GamePlayer = () => {
       const gameData = data.game_data as any;
       if (data.game_type === "sequence" && gameData.sequences) {
         initializeSequenceGame(gameData.sequences[0]);
-      } else if (data.game_type === "matching" && gameData.pairs) {
-        initializeMatchingGame(gameData.pairs);
+      } else if (data.game_type === "matching" && (gameData.pairs || gameData.items)) {
+        const pairsToUse = gameData.pairs || gameData.items;
+        initializeMatchingGame(pairsToUse);
       }
     } catch (error) {
       console.error("Error fetching game:", error);
@@ -95,6 +97,7 @@ const GamePlayer = () => {
   };
 
   const initializeMatchingGame = (pairs: any[]) => {
+    setMatchingPairs(pairs);
     const rightItems = pairs.map((pair, index) => ({ ...pair, index }));
     const shuffled = [...rightItems].sort(() => Math.random() - 0.5);
     setShuffledRightItems(shuffled);
@@ -120,7 +123,7 @@ const GamePlayer = () => {
   };
 
   const checkMatch = (leftIndex: number, rightIndex: number) => {
-    if (!game?.game_data.pairs) return;
+    if (matchingPairs.length === 0) return;
 
     const rightItem = shuffledRightItems.find(item => item.index === rightIndex);
     
@@ -132,7 +135,7 @@ const GamePlayer = () => {
         description: "Great job!",
       });
 
-      if (matchedPairs.length + 2 === game.game_data.pairs.length * 2) {
+      if (matchedPairs.length + 2 === matchingPairs.length * 2) {
         setTimeout(() => {
           toast({
             title: "Game Complete! 🏆",
@@ -233,8 +236,8 @@ const GamePlayer = () => {
     setCurrentSequenceIndex(0);
     if (game?.game_data.sequences) {
       initializeSequenceGame(game.game_data.sequences[0]);
-    } else if (game?.game_data.pairs) {
-      initializeMatchingGame(game.game_data.pairs);
+    } else if (matchingPairs.length) {
+      initializeMatchingGame(matchingPairs);
     }
   };
 
@@ -420,7 +423,7 @@ const GamePlayer = () => {
             </>
           )}
 
-          {game.game_type === "matching" && game.game_data.pairs && (
+          {game.game_type === "matching" && matchingPairs.length > 0 && (
             <Card className="border-2 border-purple-200">
               <CardHeader>
                 <CardTitle className="text-2xl flex items-center gap-2">
@@ -435,7 +438,7 @@ const GamePlayer = () => {
                 <div className="grid grid-cols-2 gap-8">
                   {/* Left Column */}
                   <div className="space-y-3">
-                    {game.game_data.pairs.map((pair, index) => (
+                    {matchingPairs.map((pair, index) => (
                       <button
                         key={`left-${index}`}
                         onClick={() => handleMatchingClick('left', index)}
@@ -480,7 +483,7 @@ const GamePlayer = () => {
                   </div>
                 </div>
 
-                {matchedPairs.length === game.game_data.pairs.length * 2 && (
+                {matchedPairs.length === matchingPairs.length * 2 && (
                   <div className="mt-6 text-center">
                     <p className="text-2xl font-bold text-green-600 animate-bounce">
                       🎉 All Matched! Congratulations! 🎉
