@@ -9,9 +9,6 @@ interface BundleSelectorProps {
 
 const BundleSelector = ({ request, setRequest }: BundleSelectorProps) => {
   const bundleOptions = [
-    { value: "kids-curriculum", label: "Kids Curriculum Bundle - $19.99" },
-    { value: "video-bundle", label: "Video Bundle - $19.99" },
-    { value: "animation-video", label: "Animation Video Bundle - $19.99" },
     { value: "bma-bundle", label: "BMA Bundle - $39.00" }
   ];
 

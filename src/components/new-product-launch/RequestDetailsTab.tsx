@@ -20,13 +20,7 @@ const RequestDetailsTab = ({
   calculateTotal,
 }: RequestDetailsTabProps) => {
   const getBundlePrice = () => {
-    const bundlePrices: { [key: string]: string } = {
-      "kids-curriculum": "19.99",
-      "video-bundle": "19.99",
-      "animation-video": "19.99",
-      "bma-bundle": "39.00"
-    };
-    return request ? bundlePrices[request] || "19.99" : "19.99";
+    return "39.00";
   };
 
   return (
