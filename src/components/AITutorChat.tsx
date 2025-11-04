@@ -19,10 +19,17 @@ interface AITutorChatProps {
 }
 
 const AITutorChat = ({ storyTitle, storyContent, onClose }: AITutorChatProps) => {
+  const getInitialMessage = () => {
+    if (storyTitle && storyContent) {
+      return "Hi! 👋 I'm your AI tutor! Ask me anything about the story, and I'll help you understand it better. What would you like to know?";
+    }
+    return "Hi! 👋 I'm your AI learning assistant! I can help you with your lessons, answer questions about what you're learning, and explain things in a fun way. What would you like to learn about?";
+  };
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi! 👋 I'm your AI tutor! Ask me anything about the story, and I'll help you understand it better. What would you like to know?"
+      content: getInitialMessage()
     }
   ]);
   const [input, setInput] = useState("");

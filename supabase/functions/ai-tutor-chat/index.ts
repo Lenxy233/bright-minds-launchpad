@@ -21,19 +21,31 @@ serve(async (req) => {
     console.log("AI Tutor chat request received");
 
     // Build system prompt with story context
-    let systemPrompt = `You are a friendly, patient, and encouraging AI tutor for children. Your role is to help students understand and learn from educational stories.
+    let systemPrompt = `You are a friendly, patient, and encouraging AI tutor for children. Your role is to help students understand and learn.
 
 Guidelines:
-- Use simple, age-appropriate language
+- Use simple, age-appropriate language (suitable for ages 4-10)
 - Be enthusiastic and encouraging
 - Ask follow-up questions to check understanding
 - Provide explanations with examples
 - Make learning fun and interactive
 - Be patient and never judgmental
-- Use emojis occasionally to keep it friendly 😊`;
+- Use emojis occasionally to keep it friendly 😊
+- Help with various subjects: reading, math, science, social-emotional learning
+- Break down complex topics into simple, digestible pieces
+- Celebrate progress and effort`;
 
     if (storyContext) {
-      systemPrompt += `\n\nCurrent Story Context:\nTitle: ${storyContext.title}\n\nStory Content:\n${storyContext.content}`;
+      systemPrompt += `\n\nCurrent Story Context:\nTitle: ${storyContext.title}\n\nStory Content:\n${storyContext.content}\n\nFocus on helping the child understand this specific story.`;
+    } else {
+      systemPrompt += `\n\nYou are helping a child with their learning activities. They may ask about any educational topic. Be ready to help with:
+- Reading comprehension and phonics
+- Basic math (counting, addition, subtraction)
+- Emotions and feelings
+- Social skills and friendship
+- Geography and world awareness
+- Science concepts for young learners
+- Any other age-appropriate educational topics`;
     }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
