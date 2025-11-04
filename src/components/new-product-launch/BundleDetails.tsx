@@ -22,7 +22,7 @@ const BundleDetails = () => {
         <div className="bg-white rounded-lg p-4 shadow-sm">
           <h4 className="font-semibold text-purple-700">BMA Bundle</h4>
           <p className="text-gray-600 mt-2">Complete Bright Minds Academy resources</p>
-          <p className="font-bold text-purple-600 mt-2">$39.99</p>
+          <p className="font-bold text-purple-600 mt-2">$39.00</p>
         </div>
       </div>
     </div>

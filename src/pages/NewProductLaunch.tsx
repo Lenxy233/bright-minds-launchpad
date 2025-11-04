@@ -58,8 +58,8 @@ const NewProductLaunch = () => {
             withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           },
           "bma-bundle": { 
-            baseAmount: 3999,
-            basePrice: 39.99,
+            baseAmount: 3900,
+            basePrice: 39.00,
             baseUrl: "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c",
             withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           }
@@ -129,7 +129,7 @@ const NewProductLaunch = () => {
       "kids-curriculum": 19.99,
       "video-bundle": 19.99,
       "animation-video": 19.99,
-      "bma-bundle": 39.99
+      "bma-bundle": 39.00
     };
     const basePrice = request ? bundlePrices[request as keyof typeof bundlePrices] || 19.99 : 19.99;
     const aiPromptsPrice = includeAiPrompts ? 1.99 : 0;
