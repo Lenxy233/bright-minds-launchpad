@@ -185,19 +185,40 @@ Make sure items are educational, age-appropriate, and fun!`;
 
     case "sequence":
       return `${basePrompt}
+
+CRITICAL INSTRUCTIONS FOR NUMBER SEQUENCES:
+- Create simple numbered sequences from 1 to 10
+- Each item should have a number (1-10) as its order
+- Content should be simple, fun descriptions for each number
+- Keep it age-appropriate and engaging
+- Use the topic "${topic}" creatively (e.g., for "animals": "1 playful puppy", "2 happy ducks", etc.)
+
+Return a JSON object with this EXACT structure:
 {
   "sequences": [
     {
-      "title": "Sequence title",
+      "title": "Counting ${topic}",
       "items": [
-        { "order": 1, "content": "first item", "image_prompt": "description" },
-        { "order": 2, "content": "second item", "image_prompt": "description" },
-        // 4-8 items per sequence
+        { "order": 1, "content": "One [item related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 2, "content": "Two [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 3, "content": "Three [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 4, "content": "Four [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 5, "content": "Five [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 6, "content": "Six [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 7, "content": "Seven [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 8, "content": "Eight [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 9, "content": "Nine [items related to ${topic}]", "image_prompt": "child-friendly illustration" },
+        { "order": 10, "content": "Ten [items related to ${topic}]", "image_prompt": "child-friendly illustration" }
       ]
-    },
-    // 3-5 sequences depending on difficulty
+    }
   ]
-}`;
+}
+
+IMPORTANT: 
+- Always include exactly 10 items numbered 1-10
+- Make content fun and match the topic
+- Keep descriptions short (under 10 words)
+- Use number words (One, Two, Three, etc.) in the content`;
 
     default:
       return basePrompt;

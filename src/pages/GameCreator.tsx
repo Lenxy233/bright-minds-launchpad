@@ -170,10 +170,13 @@ const GameCreator = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, topic: e.target.value })
                     }
-                    placeholder="e.g., Animals, Numbers, Colors, Shapes"
+                    placeholder="e.g., Animals, Fruits, Toys, Vehicles"
                     required
                     maxLength={100}
                   />
+                  <p className="text-xs text-muted-foreground">
+                    💡 Tip: The game will create 10 numbered bricks (1-10) based on your topic. Example: "Animals" → "1 puppy, 2 cats, 3 birds..."
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -255,14 +258,19 @@ const GameCreator = () => {
 
           <Card className="mt-6 border-2 border-blue-200 bg-blue-50/50">
             <CardHeader>
-              <CardTitle className="text-lg">💡 Tips for Great Games</CardTitle>
+              <CardTitle className="text-lg">💡 Tips for Great Sequence Games</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm text-muted-foreground">
-              <p>• Choose a topic that matches the child's interests</p>
-              <p>• Start with easier difficulty and increase gradually</p>
-              <p>• Matching games are great for vocabulary building</p>
-              <p>• Quiz games help reinforce learning concepts</p>
-              <p>• Memory games improve concentration and recall</p>
+              <p>• <strong>Choose engaging topics:</strong> Animals, fruits, vehicles, toys work great!</p>
+              <p>• <strong>Be specific:</strong> "Farm animals" is better than just "animals"</p>
+              <p>• <strong>Age-appropriate:</strong> Simpler topics for 3-5 years, more complex for 6-8 years</p>
+              <p>• <strong>How it works:</strong> Kids drag numbered bricks (1-10) into the correct sequence</p>
+              <p>• <strong>Example topics:</strong></p>
+              <ul className="ml-4 space-y-1">
+                <li>→ "Jungle animals" (1 lion, 2 monkeys, 3 parrots...)</li>
+                <li>→ "Healthy foods" (1 apple, 2 bananas, 3 carrots...)</li>
+                <li>→ "Building blocks" (1 red block, 2 blue blocks...)</li>
+              </ul>
             </CardContent>
           </Card>
         </div>
