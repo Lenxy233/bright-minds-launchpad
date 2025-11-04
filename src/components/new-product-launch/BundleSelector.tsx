@@ -12,7 +12,7 @@ const BundleSelector = ({ request, setRequest }: BundleSelectorProps) => {
     { value: "kids-curriculum", label: "Kids Curriculum Bundle - $19.99" },
     { value: "video-bundle", label: "Video Bundle - $19.99" },
     { value: "animation-video", label: "Animation Video Bundle - $19.99" },
-    { value: "bma-bundle", label: "BMA Bundle - $19.99" }
+    { value: "bma-bundle", label: "BMA Bundle - $39.99" }
   ];
 
   return (

@@ -2,16 +2,17 @@
 interface OrderSummaryProps {
   includeAiPrompts: boolean;
   calculateTotal: () => string;
+  bundlePrice: string;
 }
 
-const OrderSummary = ({ includeAiPrompts, calculateTotal }: OrderSummaryProps) => {
+const OrderSummary = ({ includeAiPrompts, calculateTotal, bundlePrice }: OrderSummaryProps) => {
   return (
     <div className="bg-white rounded-lg p-6 border-2 border-purple-200 shadow-sm">
       <h3 className="text-lg font-bold text-purple-800 mb-3">Order Summary</h3>
       <div className="space-y-2">
         <div className="flex justify-between text-sm">
           <span>Bundle Price:</span>
-          <span>$19.99</span>
+          <span>${bundlePrice}</span>
         </div>
         {includeAiPrompts && (
           <div className="flex justify-between text-sm text-orange-600">

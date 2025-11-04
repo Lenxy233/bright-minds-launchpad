@@ -19,11 +19,25 @@ const RequestDetailsTab = ({
   setIncludeAiPrompts,
   calculateTotal,
 }: RequestDetailsTabProps) => {
+  const getBundlePrice = () => {
+    const bundlePrices: { [key: string]: string } = {
+      "kids-curriculum": "19.99",
+      "video-bundle": "19.99",
+      "animation-video": "19.99",
+      "bma-bundle": "39.99"
+    };
+    return request ? bundlePrices[request] || "19.99" : "19.99";
+  };
+
   return (
     <div className="space-y-6">
       <BundleSelector request={request} setRequest={setRequest} />
       <AiPromptsAddon includeAiPrompts={includeAiPrompts} setIncludeAiPrompts={setIncludeAiPrompts} />
-      <OrderSummary includeAiPrompts={includeAiPrompts} calculateTotal={calculateTotal} />
+      <OrderSummary 
+        includeAiPrompts={includeAiPrompts} 
+        calculateTotal={calculateTotal}
+        bundlePrice={getBundlePrice()}
+      />
       <BundleDetails />
     </div>
   );

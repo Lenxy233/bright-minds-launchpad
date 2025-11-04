@@ -40,22 +40,26 @@ const NewProductLaunch = () => {
       if (user) {
         const bundleDetails = {
           "kids-curriculum": { 
-            baseAmount: 1999, 
+            baseAmount: 1999,
+            basePrice: 19.99,
             baseUrl: "https://buy.stripe.com/eVqdR9a7H3kb2sk8H5gMw08",
             withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           },
           "video-bundle": { 
-            baseAmount: 1999, 
+            baseAmount: 1999,
+            basePrice: 19.99,
             baseUrl: "https://buy.stripe.com/7sY5kDfs1dYP1og0azgMw09",
             withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           },
           "animation-video": { 
-            baseAmount: 1999, 
+            baseAmount: 1999,
+            basePrice: 19.99,
             baseUrl: "https://buy.stripe.com/dRmeVd0x7f2Td6Y1eDgMw0a",
             withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           },
           "bma-bundle": { 
-            baseAmount: 1999, 
+            baseAmount: 3999,
+            basePrice: 39.99,
             baseUrl: "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c",
             withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           }
@@ -121,7 +125,13 @@ const NewProductLaunch = () => {
   };
 
   const calculateTotal = () => {
-    const basePrice = 19.99;
+    const bundlePrices = {
+      "kids-curriculum": 19.99,
+      "video-bundle": 19.99,
+      "animation-video": 19.99,
+      "bma-bundle": 39.99
+    };
+    const basePrice = request ? bundlePrices[request as keyof typeof bundlePrices] || 19.99 : 19.99;
     const aiPromptsPrice = includeAiPrompts ? 1.99 : 0;
     return (basePrice + aiPromptsPrice).toFixed(2);
   };
