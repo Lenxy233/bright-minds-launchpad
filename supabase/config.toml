@@ -5,3 +5,6 @@ verify_jwt = true
 
 [functions.ai-tutor-chat]
 verify_jwt = false
+
+[functions.generate-game]
+verify_jwt = false

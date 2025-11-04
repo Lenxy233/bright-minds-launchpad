@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle } from "lucide-react";
+import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle, Gamepad2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -141,6 +141,19 @@ const LearningApp = () => {
                   <CardTitle>Puzzles</CardTitle>
                   <CardDescription>
                     Count, match, and solve fun puzzles. Learn while playing!
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card 
+                className="border-2 border-orange-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => navigate('/game-creator')}
+              >
+                <CardHeader>
+                  <Gamepad2 className="w-12 h-12 text-orange-600 mb-4" />
+                  <CardTitle>AI Game Creator</CardTitle>
+                  <CardDescription>
+                    Create custom learning games with AI. Make learning fun and personalized!
                   </CardDescription>
                 </CardHeader>
               </Card>
