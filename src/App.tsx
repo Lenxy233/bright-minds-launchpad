@@ -54,11 +54,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/dashboard" element={
-              <ProtectedRoute requirePurchase={true}>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/new-product-launch" element={<NewProductLaunch />} />
             <Route path="/learning-app" element={<LearningApp />} />
             <Route path="/story-books" element={<StoryBooks />} />
