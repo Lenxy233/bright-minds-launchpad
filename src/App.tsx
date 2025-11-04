@@ -40,6 +40,7 @@ import ActivityBuilder from "./pages/ActivityBuilder";
 import ActivityPlayer from "./pages/ActivityPlayer";
 import InteractiveStory from "./pages/InteractiveStory";
 import NotFound from "./pages/NotFound";
+import AIStoryCreator from "./pages/AIStoryCreator";
 
 const queryClient = new QueryClient();
 
@@ -201,6 +202,11 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/interactive-story/:id" element={<InteractiveStory />} />
+            <Route path="/ai-story-creator" element={
+              <ProtectedRoute requirePurchase={true}>
+                <AIStoryCreator />
+              </ProtectedRoute>
+            } />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />

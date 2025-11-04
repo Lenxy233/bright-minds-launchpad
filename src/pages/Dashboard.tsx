@@ -1,7 +1,6 @@
-
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -9,6 +8,9 @@ import ProfileCard from "@/components/dashboard/ProfileCard";
 import PurchasesCard from "@/components/dashboard/PurchasesCard";
 import QuickActionsCard from "@/components/dashboard/QuickActionsCard";
 import FileManagementCard from "@/components/dashboard/FileManagementCard";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { BookOpen, Puzzle, GraduationCap, Users } from "lucide-react";
 
 interface Purchase {
   id: string;
@@ -106,10 +108,48 @@ const Dashboard = () => {
           <PurchasesCard purchases={purchases} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <QuickActionsCard />
           <FileManagementCard />
         </div>
+
+        {/* AI Content Creator Section */}
+        <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
+          <CardHeader>
+            <CardTitle className="text-2xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              🤖 AI Content Creator (NEW!)
+            </CardTitle>
+            <CardDescription>
+              Create custom educational content with AI - stories, games, quizzes, and live tutoring
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Link to="/ai-story-creator">
+                <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-purple-50 text-purple-600 border-2 border-purple-200">
+                  <BookOpen className="w-8 h-8" />
+                  <span className="font-semibold">Story Creator</span>
+                  <span className="text-xs text-gray-500">AI + Images</span>
+                </Button>
+              </Link>
+              <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-pink-50 text-pink-600 border-2 border-pink-200" disabled>
+                <Puzzle className="w-8 h-8" />
+                <span className="font-semibold">Game Builder</span>
+                <span className="text-xs text-gray-500">Coming Soon</span>
+              </Button>
+              <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-blue-50 text-blue-600 border-2 border-blue-200" disabled>
+                <GraduationCap className="w-8 h-8" />
+                <span className="font-semibold">Quiz Maker</span>
+                <span className="text-xs text-gray-500">Coming Soon</span>
+              </Button>
+              <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-green-50 text-green-600 border-2 border-green-200" disabled>
+                <Users className="w-8 h-8" />
+                <span className="font-semibold">AI Tutor</span>
+                <span className="text-xs text-gray-500">Coming Soon</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
