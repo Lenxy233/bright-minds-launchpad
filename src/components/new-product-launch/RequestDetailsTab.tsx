@@ -1,6 +1,5 @@
 
 import BundleSelector from "./BundleSelector";
-import AiPromptsAddon from "./AiPromptsAddon";
 import OrderSummary from "./OrderSummary";
 import BundleDetails from "./BundleDetails";
 
@@ -26,9 +25,8 @@ const RequestDetailsTab = ({
   return (
     <div className="space-y-6">
       <BundleSelector request={request} setRequest={setRequest} />
-      <AiPromptsAddon includeAiPrompts={includeAiPrompts} setIncludeAiPrompts={setIncludeAiPrompts} />
       <OrderSummary 
-        includeAiPrompts={includeAiPrompts} 
+        includeAiPrompts={false} 
         calculateTotal={calculateTotal}
         bundlePrice={getBundlePrice()}
       />

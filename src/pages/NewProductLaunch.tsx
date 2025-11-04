@@ -50,8 +50,8 @@ const NewProductLaunch = () => {
         const bundle = bundleDetails[request as keyof typeof bundleDetails];
         
         if (bundle) {
-          const totalAmount = bundle.baseAmount + (includeAiPrompts ? 199 : 0);
-          const checkoutUrl = includeAiPrompts ? bundle.withPromptsUrl : bundle.baseUrl;
+          const totalAmount = bundle.baseAmount;
+          const checkoutUrl = bundle.baseUrl;
 
           // Create pending purchase record
           const { error } = await supabase
@@ -62,7 +62,7 @@ const NewProductLaunch = () => {
               bundle_type: request,
               amount: totalAmount,
               status: 'pending',
-              includes_ai_prompts: includeAiPrompts
+              includes_ai_prompts: false
             });
 
           if (error) {
@@ -74,16 +74,8 @@ const NewProductLaunch = () => {
         }
       } else {
         // For non-authenticated users, redirect directly
-        const urls = {
-          "bma-bundle": includeAiPrompts 
-            ? "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
-            : "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c"
-        };
-
-        const url = urls[request as keyof typeof urls];
-        if (url) {
-          window.open(url, "_blank");
-        }
+        const url = "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c";
+        window.open(url, "_blank");
       }
     } catch (error) {
       console.error('Error processing purchase:', error);
@@ -98,9 +90,7 @@ const NewProductLaunch = () => {
   };
 
   const calculateTotal = () => {
-    const basePrice = 39.00;
-    const aiPromptsPrice = includeAiPrompts ? 1.99 : 0;
-    return (basePrice + aiPromptsPrice).toFixed(2);
+    return "39.00";
   };
 
   return (
