@@ -22,6 +22,12 @@ interface Game {
         image_prompt: string;
       }>;
     }>;
+    pairs?: Array<{
+      left: string;
+      right: string;
+      left_image_prompt?: string;
+      right_image_prompt?: string;
+    }>;
   };
 }
 
@@ -37,6 +43,12 @@ const GamePlayer = () => {
   const [userOrder, setUserOrder] = useState<any[]>([]);
   const [draggedItem, setDraggedItem] = useState<any>(null);
   const [dropZoneHighlight, setDropZoneHighlight] = useState(false);
+  
+  // Matching game state
+  const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
+  const [selectedRight, setSelectedRight] = useState<number | null>(null);
+  const [matchedPairs, setMatchedPairs] = useState<number[]>([]);
+  const [shuffledRightItems, setShuffledRightItems] = useState<any[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -60,6 +72,8 @@ const GamePlayer = () => {
       const gameData = data.game_data as any;
       if (data.game_type === "sequence" && gameData.sequences) {
         initializeSequenceGame(gameData.sequences[0]);
+      } else if (data.game_type === "matching" && gameData.pairs) {
+        initializeMatchingGame(gameData.pairs);
       }
     } catch (error) {
       console.error("Error fetching game:", error);
@@ -78,6 +92,64 @@ const GamePlayer = () => {
     const shuffled = items.sort(() => Math.random() - 0.5);
     setShuffledItems(shuffled);
     setUserOrder([]);
+  };
+
+  const initializeMatchingGame = (pairs: any[]) => {
+    const rightItems = pairs.map((pair, index) => ({ ...pair, index }));
+    const shuffled = [...rightItems].sort(() => Math.random() - 0.5);
+    setShuffledRightItems(shuffled);
+    setMatchedPairs([]);
+    setSelectedLeft(null);
+    setSelectedRight(null);
+  };
+
+  const handleMatchingClick = (side: 'left' | 'right', index: number) => {
+    if (matchedPairs.includes(index)) return;
+
+    if (side === 'left') {
+      setSelectedLeft(index);
+      if (selectedRight !== null) {
+        checkMatch(index, selectedRight);
+      }
+    } else {
+      setSelectedRight(index);
+      if (selectedLeft !== null) {
+        checkMatch(selectedLeft, index);
+      }
+    }
+  };
+
+  const checkMatch = (leftIndex: number, rightIndex: number) => {
+    if (!game?.game_data.pairs) return;
+
+    const rightItem = shuffledRightItems.find(item => item.index === rightIndex);
+    
+    if (rightItem && leftIndex === rightItem.index) {
+      setMatchedPairs([...matchedPairs, leftIndex, rightIndex]);
+      setScore(score + 10);
+      toast({
+        title: "Match! 🎉",
+        description: "Great job!",
+      });
+
+      if (matchedPairs.length + 2 === game.game_data.pairs.length * 2) {
+        setTimeout(() => {
+          toast({
+            title: "Game Complete! 🏆",
+            description: `Final Score: ${score + 10}`,
+          });
+        }, 500);
+      }
+    } else {
+      toast({
+        title: "Try Again",
+        description: "That's not a match!",
+        variant: "destructive",
+      });
+    }
+
+    setSelectedLeft(null);
+    setSelectedRight(null);
   };
 
   const handleDragStart = (e: React.DragEvent, item: any) => {
@@ -161,6 +233,8 @@ const GamePlayer = () => {
     setCurrentSequenceIndex(0);
     if (game?.game_data.sequences) {
       initializeSequenceGame(game.game_data.sequences[0]);
+    } else if (game?.game_data.pairs) {
+      initializeMatchingGame(game.game_data.pairs);
     }
   };
 
@@ -344,6 +418,77 @@ const GamePlayer = () => {
                 ✓ Check My Answer!
               </Button>
             </>
+          )}
+
+          {game.game_type === "matching" && game.game_data.pairs && (
+            <Card className="border-2 border-purple-200">
+              <CardHeader>
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <Sparkles className="w-6 h-6 text-purple-600" />
+                  Match the Pairs!
+                </CardTitle>
+                <CardDescription className="text-base">
+                  Click on items from each column to match them together
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-8">
+                  {/* Left Column */}
+                  <div className="space-y-3">
+                    {game.game_data.pairs.map((pair, index) => (
+                      <button
+                        key={`left-${index}`}
+                        onClick={() => handleMatchingClick('left', index)}
+                        disabled={matchedPairs.includes(index)}
+                        className={`
+                          w-full p-4 rounded-lg text-left font-medium transition-all
+                          ${matchedPairs.includes(index) 
+                            ? 'bg-green-100 border-2 border-green-400 text-green-800' 
+                            : selectedLeft === index
+                            ? 'bg-blue-200 border-2 border-blue-500 text-blue-900'
+                            : 'bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300 hover:border-purple-500 hover:scale-105'
+                          }
+                          disabled:cursor-not-allowed
+                        `}
+                      >
+                        {pair.left}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Right Column */}
+                  <div className="space-y-3">
+                    {shuffledRightItems.map((pair, displayIndex) => (
+                      <button
+                        key={`right-${displayIndex}`}
+                        onClick={() => handleMatchingClick('right', pair.index)}
+                        disabled={matchedPairs.includes(pair.index)}
+                        className={`
+                          w-full p-4 rounded-lg text-left font-medium transition-all
+                          ${matchedPairs.includes(pair.index) 
+                            ? 'bg-green-100 border-2 border-green-400 text-green-800' 
+                            : selectedRight === pair.index
+                            ? 'bg-blue-200 border-2 border-blue-500 text-blue-900'
+                            : 'bg-gradient-to-r from-blue-100 to-purple-100 border-2 border-blue-300 hover:border-blue-500 hover:scale-105'
+                          }
+                          disabled:cursor-not-allowed
+                        `}
+                      >
+                        {pair.right}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {matchedPairs.length === game.game_data.pairs.length * 2 && (
+                  <div className="mt-6 text-center">
+                    <p className="text-2xl font-bold text-green-600 animate-bounce">
+                      🎉 All Matched! Congratulations! 🎉
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           )}
         </div>
       </main>
