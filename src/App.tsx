@@ -54,60 +54,152 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={
-              <ProtectedRoute>
+              <ProtectedRoute requirePurchase={true}>
                 <Dashboard />
               </ProtectedRoute>
             } />
             <Route path="/new-product-launch" element={<NewProductLaunch />} />
-            <Route path="/learning-app" element={<LearningApp />} />
-            <Route path="/story-books" element={<StoryBooks />} />
-            <Route path="/story-books/:id" element={<StoryBookReader />} />
+            <Route path="/learning-app" element={
+              <ProtectedRoute requirePurchase={true}>
+                <LearningApp />
+              </ProtectedRoute>
+            } />
+            <Route path="/story-books" element={
+              <ProtectedRoute requirePurchase={true}>
+                <StoryBooks />
+              </ProtectedRoute>
+            } />
+            <Route path="/story-books/:id" element={
+              <ProtectedRoute requirePurchase={true}>
+                <StoryBookReader />
+              </ProtectedRoute>
+            } />
             <Route path="/story-books/upload" element={
-              <ProtectedRoute>
+              <ProtectedRoute requirePurchase={true}>
                 <StoryBookUpload />
               </ProtectedRoute>
             } />
             <Route path="/story-books/batch-upload" element={
-              <ProtectedRoute>
+              <ProtectedRoute requirePurchase={true}>
                 <BatchStoryUpload />
               </ProtectedRoute>
             } />
             <Route path="/parent-dashboard" element={
-              <ProtectedRoute>
+              <ProtectedRoute requirePurchase={true}>
                 <ParentDashboard />
               </ProtectedRoute>
             } />
-            <Route path="/puzzle" element={<Puzzle />} />
+            <Route path="/puzzle" element={
+              <ProtectedRoute requirePurchase={true}>
+                <Puzzle />
+              </ProtectedRoute>
+            } />
             <Route path="/puzzle-admin" element={<PuzzleAdmin />} />
-            <Route path="/scissors-cutting" element={<ScissorsCutting />} />
-            <Route path="/alphabet-tracing" element={<AlphabetTracing />} />
-            <Route path="/alphabet-az-tracing" element={<AlphabetAZTracing />} />
-            <Route path="/numbers-tracing" element={<NumbersTracing />} />
-            <Route path="/fruit-drawing" element={<FruitDrawing />} />
-            <Route path="/alphabet-recognition" element={<AlphabetRecognition />} />
-            <Route path="/number-practice" element={<NumberPractice />} />
-            <Route path="/counting-worksheets" element={<CountingWorksheets />} />
-            <Route path="/addition-dots" element={<AdditionWithDots />} />
-            <Route path="/subtraction-numberline" element={<SubtractionNumberLine />} />
-            <Route path="/clock-faces" element={<ClockFaces />} />
-            <Route path="/poems" element={<Poems />} />
-          <Route path="/feelings-emotions" element={<FeelingsEmotions />} />
-          <Route path="/emotion-matching" element={<EmotionMatching />} />
-          <Route path="/emotion-scenarios" element={<EmotionScenarios />} />
-          <Route path="/friendship-activities" element={<FriendshipActivities />} />
-          <Route path="/where-is-thomas" element={<WhereIsThomas />} />
-            <Route path="/activities" element={<Activities />} />
+            <Route path="/scissors-cutting" element={
+              <ProtectedRoute requirePurchase={true}>
+                <ScissorsCutting />
+              </ProtectedRoute>
+            } />
+            <Route path="/alphabet-tracing" element={
+              <ProtectedRoute requirePurchase={true}>
+                <AlphabetTracing />
+              </ProtectedRoute>
+            } />
+            <Route path="/alphabet-az-tracing" element={
+              <ProtectedRoute requirePurchase={true}>
+                <AlphabetAZTracing />
+              </ProtectedRoute>
+            } />
+            <Route path="/numbers-tracing" element={
+              <ProtectedRoute requirePurchase={true}>
+                <NumbersTracing />
+              </ProtectedRoute>
+            } />
+            <Route path="/fruit-drawing" element={
+              <ProtectedRoute requirePurchase={true}>
+                <FruitDrawing />
+              </ProtectedRoute>
+            } />
+            <Route path="/alphabet-recognition" element={
+              <ProtectedRoute requirePurchase={true}>
+                <AlphabetRecognition />
+              </ProtectedRoute>
+            } />
+            <Route path="/number-practice" element={
+              <ProtectedRoute requirePurchase={true}>
+                <NumberPractice />
+              </ProtectedRoute>
+            } />
+            <Route path="/counting-worksheets" element={
+              <ProtectedRoute requirePurchase={true}>
+                <CountingWorksheets />
+              </ProtectedRoute>
+            } />
+            <Route path="/addition-dots" element={
+              <ProtectedRoute requirePurchase={true}>
+                <AdditionWithDots />
+              </ProtectedRoute>
+            } />
+            <Route path="/subtraction-numberline" element={
+              <ProtectedRoute requirePurchase={true}>
+                <SubtractionNumberLine />
+              </ProtectedRoute>
+            } />
+            <Route path="/clock-faces" element={
+              <ProtectedRoute requirePurchase={true}>
+                <ClockFaces />
+              </ProtectedRoute>
+            } />
+            <Route path="/poems" element={
+              <ProtectedRoute requirePurchase={true}>
+                <Poems />
+              </ProtectedRoute>
+            } />
+          <Route path="/feelings-emotions" element={
+            <ProtectedRoute requirePurchase={true}>
+              <FeelingsEmotions />
+            </ProtectedRoute>
+          } />
+          <Route path="/emotion-matching" element={
+            <ProtectedRoute requirePurchase={true}>
+              <EmotionMatching />
+            </ProtectedRoute>
+          } />
+          <Route path="/emotion-scenarios" element={
+            <ProtectedRoute requirePurchase={true}>
+              <EmotionScenarios />
+            </ProtectedRoute>
+          } />
+          <Route path="/friendship-activities" element={
+            <ProtectedRoute requirePurchase={true}>
+              <FriendshipActivities />
+            </ProtectedRoute>
+          } />
+          <Route path="/where-is-thomas" element={
+            <ProtectedRoute requirePurchase={true}>
+              <WhereIsThomas />
+            </ProtectedRoute>
+          } />
+            <Route path="/activities" element={
+              <ProtectedRoute requirePurchase={true}>
+                <Activities />
+              </ProtectedRoute>
+            } />
             <Route path="/activity-builder" element={
-              <ProtectedRoute>
+              <ProtectedRoute requirePurchase={true}>
                 <ActivityBuilder />
               </ProtectedRoute>
             } />
             <Route path="/activity-builder/:id" element={
-              <ProtectedRoute>
+              <ProtectedRoute requirePurchase={true}>
                 <ActivityBuilder />
               </ProtectedRoute>
             } />
-            <Route path="/activity-player/:id" element={<ActivityPlayer />} />
+            <Route path="/activity-player/:id" element={
+              <ProtectedRoute requirePurchase={true}>
+                <ActivityPlayer />
+              </ProtectedRoute>
+            } />
             <Route path="/interactive-story/:id" element={<InteractiveStory />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
