@@ -132,6 +132,129 @@ export type Database = {
           },
         ]
       }
+      ai_generated_games: {
+        Row: {
+          age_range: string
+          created_at: string
+          description: string | null
+          difficulty: string
+          game_data: Json
+          game_type: string
+          id: string
+          is_published: boolean | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age_range: string
+          created_at?: string
+          description?: string | null
+          difficulty: string
+          game_data: Json
+          game_type: string
+          id?: string
+          is_published?: boolean | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age_range?: string
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          game_data?: Json
+          game_type?: string
+          id?: string
+          is_published?: boolean | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_generated_quizzes: {
+        Row: {
+          age_range: string
+          created_at: string
+          description: string | null
+          difficulty: string
+          id: string
+          is_published: boolean | null
+          questions: Json
+          title: string
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age_range: string
+          created_at?: string
+          description?: string | null
+          difficulty: string
+          id?: string
+          is_published?: boolean | null
+          questions: Json
+          title: string
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age_range?: string
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          id?: string
+          is_published?: boolean | null
+          questions?: Json
+          title?: string
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_story_generator_config: {
+        Row: {
+          age_range: string
+          created_at: string
+          generated_story_id: string | null
+          id: string
+          illustration_style: string | null
+          lesson_focus: string | null
+          num_pages: number | null
+          theme: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age_range: string
+          created_at?: string
+          generated_story_id?: string | null
+          id?: string
+          illustration_style?: string | null
+          lesson_focus?: string | null
+          num_pages?: number | null
+          theme: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age_range?: string
+          created_at?: string
+          generated_story_id?: string | null
+          id?: string
+          illustration_style?: string | null
+          lesson_focus?: string | null
+          num_pages?: number | null
+          theme?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bundle_links: {
         Row: {
           bundle_type: string
@@ -457,6 +580,119 @@ export type Database = {
             columns: ["story_book_id"]
             isOneToOne: false
             referencedRelation: "story_books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_progress: {
+        Row: {
+          completed: boolean | null
+          content_id: string
+          content_type: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          score: number | null
+          student_name: string
+          time_spent: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          content_id: string
+          content_type: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          score?: number | null
+          student_name: string
+          time_spent?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          score?: number | null
+          student_name?: string
+          time_spent?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      tutor_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          student_name: string | null
+          subject: string | null
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          student_name?: string | null
+          subject?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          student_name?: string | null
+          subject?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      tutor_messages: {
+        Row: {
+          audio_url: string | null
+          content: string
+          conversation_id: string
+          created_at: string
+          has_audio: boolean | null
+          id: string
+          role: string
+        }
+        Insert: {
+          audio_url?: string | null
+          content: string
+          conversation_id: string
+          created_at?: string
+          has_audio?: boolean | null
+          id?: string
+          role: string
+        }
+        Update: {
+          audio_url?: string | null
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          has_audio?: boolean | null
+          id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tutor_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "tutor_conversations"
             referencedColumns: ["id"]
           },
         ]
