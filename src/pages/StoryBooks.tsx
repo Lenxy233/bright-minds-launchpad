@@ -222,13 +222,17 @@ const StoryBooks = () => {
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       )}
-                      {book.cover_image_url && (
+                      {book.cover_image_url ? (
                         <div className="aspect-[3/4] overflow-hidden rounded-t-lg">
                           <img
                             src={book.cover_image_url}
                             alt={book.title}
                             className="w-full h-full object-cover"
                           />
+                        </div>
+                      ) : (
+                        <div className="aspect-[3/4] overflow-hidden rounded-t-lg bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 flex items-center justify-center">
+                          <BookOpen className="w-20 h-20 text-purple-400" />
                         </div>
                       )}
                       <CardHeader>

@@ -77,7 +77,42 @@ Return ONLY the JSON array, no additional text.`;
 
     console.log(`Generated ${storyPages.length} story pages`);
 
-    // Step 2: Generate images for each page
+    // Step 2: Generate cover image
+    console.log("Generating cover image for the story");
+    const coverPrompt = `Create a captivating cover image for a children's story book about "${theme}". Style: ${illustrationStyle}, bright and inviting, professional children's book cover, title-friendly design with space for text, high quality.`;
+    
+    let coverImageUrl = null;
+    try {
+      const coverResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-image",
+          messages: [
+            {
+              role: "user",
+              content: coverPrompt
+            }
+          ],
+          modalities: ["image", "text"]
+        }),
+      });
+
+      if (coverResponse.ok) {
+        const coverData = await coverResponse.json();
+        coverImageUrl = coverData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        console.log("Cover image generated successfully");
+      } else {
+        console.error("Cover image generation failed");
+      }
+    } catch (error) {
+      console.error("Error generating cover image:", error);
+    }
+
+    // Step 3: Generate images for each page
     const pagesWithImages = [];
     
     for (const page of storyPages) {
@@ -124,7 +159,7 @@ Return ONLY the JSON array, no additional text.`;
       console.log(`Page ${page.page_number} image generated successfully`);
     }
 
-    // Step 3: Create story in database
+    // Step 4: Create story in database
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -145,6 +180,7 @@ Return ONLY the JSON array, no additional text.`;
         title: storyTitle,
         description: `Educational story about ${theme} for ${ageRange}`,
         category: lessonFocus || theme,
+        cover_image_url: coverImageUrl,
         created_by: user.id
       })
       .select()
