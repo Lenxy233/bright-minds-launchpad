@@ -18,13 +18,13 @@ You now have access to create your own fully-branded educational platform with A
 
 ### 🔗 Access Your Template
 
-**Project Link:** [INSERT YOUR LOVABLE PROJECT URL HERE]
+**Project Link:** https://lovable.dev/projects/bf8e9fbe-f2be-4015-982e-07ef00c36842
 
 **Important:** Click the **"Remix"** button in the top right to create your own copy. This is required - don't edit the original!
 
 ### 📁 Additional Resources
 
-**Google Drive Folder:** [INSERT YOUR GOOGLE DRIVE SHARE LINK HERE]
+**Google Drive Folder:** https://drive.google.com/drive/folders/1GOEDB6ErOi4166UvQcbtcnRRl1dVOKyc?usp=drive_link
 
 This folder contains:
 - ✅ Editable worksheet templates (Word, PowerPoint, etc.)
