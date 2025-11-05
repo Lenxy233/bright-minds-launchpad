@@ -22,6 +22,18 @@ You now have access to create your own fully-branded educational platform with A
 
 **Important:** Click the **"Remix"** button in the top right to create your own copy. This is required - don't edit the original!
 
+### 📁 Additional Resources
+
+**Google Drive Folder:** [INSERT YOUR GOOGLE DRIVE SHARE LINK HERE]
+
+This folder contains:
+- ✅ Editable worksheet templates (Word, PowerPoint, etc.)
+- ✅ High-resolution source files
+- ✅ Additional content not included in the web platform
+- ✅ Bonus resources and templates
+
+**Access:** View-only access is automatically granted. Download what you need!
+
 ### 📋 Setup Steps (5 minutes)
 
 1. **Remix the Project** - Creates your own editable copy
@@ -103,11 +115,41 @@ A: Upgrade to a paid Lovable plan and follow their custom domain setup guide.
 
 ---
 
+## Setting Up Google Drive Sharing (Before First Sale)
+
+### Step 1: Organize Your Files
+1. Create a new Google Drive folder: "Bright Minds Academy - Buyer Resources"
+2. Upload all additional documents:
+   - Editable Word/PowerPoint templates
+   - PDF source files
+   - Any formats not in the web platform
+   - Bonus content or resources
+3. Organize into subfolders by category (optional but recommended)
+
+### Step 2: Configure Sharing Settings
+1. Right-click the main folder → Share
+2. Under "General access" → Click "Restricted"
+3. Change to **"Anyone with the link"**
+4. Set permission to **"Viewer"** (prevents editing)
+5. Click "Copy link"
+6. Save this link - you'll use it in every delivery email
+
+### Step 3: Test Access
+1. Open the link in an incognito/private browser window
+2. Verify you can view and download files without logging in
+3. Make sure no sensitive/personal files are included
+
+### Step 4: Update Delivery Email
+1. Paste the Google Drive link in the email template above (line 27)
+2. Replace `[INSERT YOUR GOOGLE DRIVE SHARE LINK HERE]` with your actual link
+
 ## Checklist for You Before Delivery
 
 - [ ] Make sure your Lovable project is set to "Public" or "Unlisted" so they can remix it
 - [ ] Test the remix process yourself to ensure it works
-- [ ] Update any placeholder text with your actual links/info
+- [ ] **Set up Google Drive folder with "Anyone with the link" (Viewer) access**
+- [ ] **Test Google Drive link in incognito mode to verify access**
+- [ ] Update any placeholder text with your actual links/info (Lovable URL + Drive link)
 - [ ] Consider recording a quick video walkthrough (optional but helpful)
 - [ ] Prepare to answer questions about Lovable (most buyers won't know it)
 

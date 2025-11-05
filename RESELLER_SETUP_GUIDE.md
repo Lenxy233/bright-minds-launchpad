@@ -36,7 +36,12 @@
 2. Your platform goes live at: `yourname.lovable.app`
 3. That's it! Your platform is now online 🎉
 
-### ✅ Step 4: Test Everything (1 min)
+### ✅ Step 4: Access Additional Resources (1 min)
+1. Check your purchase email for the **Google Drive link**
+2. Download any editable templates or bonus files you need
+3. These are yours to use and customize however you like
+
+### ✅ Step 5: Test Everything (1 min)
 1. Visit your live site
 2. Try the AI Story Generator
 3. Try the AI Game Creator
