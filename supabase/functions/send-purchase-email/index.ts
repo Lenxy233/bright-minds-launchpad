@@ -93,6 +93,44 @@ const handler = async (req: Request): Promise<Response> => {
             </p>
           </div>
 
+          <div style="background: linear-gradient(135deg, #e0f2fe, #ddd6fe); padding: 25px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="color: #1e293b; margin-bottom: 15px;">📦 Your Resources Are Ready!</h3>
+            
+            <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+              <h4 style="color: #7c3aed; margin-bottom: 10px;">🎨 Lovable Project Template</h4>
+              <p style="margin-bottom: 15px; color: #475569;">
+                Access your complete interactive learning platform template. Click "Remix" to create your own copy and customize it!
+              </p>
+              <a href="https://lovable.dev/projects/bf8e9fbe-f2be-4015-982e-07ef00c36842" 
+                 style="background: #7c3aed; 
+                        color: white; 
+                        padding: 12px 24px; 
+                        text-decoration: none; 
+                        border-radius: 6px; 
+                        font-weight: bold; 
+                        display: inline-block;">
+                Open Project & Remix →
+              </a>
+            </div>
+
+            <div style="background: white; padding: 20px; border-radius: 8px;">
+              <h4 style="color: #ec4899; margin-bottom: 10px;">📁 Google Drive Resources</h4>
+              <p style="margin-bottom: 15px; color: #475569;">
+                Download all editable worksheets, templates, and additional materials from your shared drive folder.
+              </p>
+              <a href="https://drive.google.com/drive/folders/1GOEDB6ErOi4166UvQcbtcnRRl1dVOKyc?usp=drive_link" 
+                 style="background: #ec4899; 
+                        color: white; 
+                        padding: 12px 24px; 
+                        text-decoration: none; 
+                        border-radius: 6px; 
+                        font-weight: bold; 
+                        display: inline-block;">
+                Access Drive Folder →
+              </a>
+            </div>
+          </div>
+
           <div style="border-top: 2px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b;">
             <p>Remember to use the email address <strong>${email}</strong> when creating your account.</p>
             <p style="margin-top: 20px;">Have questions? Reply to this email and we'll help you get started!</p>
