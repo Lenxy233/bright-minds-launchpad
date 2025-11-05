@@ -255,6 +255,51 @@ export type Database = {
         }
         Relationships: []
       }
+      branding_settings: {
+        Row: {
+          contact_email: string | null
+          created_at: string
+          custom_domain: string | null
+          id: string
+          logo_url: string | null
+          platform_name: string
+          primary_color: string | null
+          secondary_color: string | null
+          social_links: Json | null
+          tagline: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contact_email?: string | null
+          created_at?: string
+          custom_domain?: string | null
+          id?: string
+          logo_url?: string | null
+          platform_name?: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          social_links?: Json | null
+          tagline?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contact_email?: string | null
+          created_at?: string
+          custom_domain?: string | null
+          id?: string
+          logo_url?: string | null
+          platform_name?: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          social_links?: Json | null
+          tagline?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       bundle_links: {
         Row: {
           bundle_type: string
