@@ -260,10 +260,17 @@ export type Database = {
           contact_email: string | null
           created_at: string
           custom_domain: string | null
+          enable_reselling: boolean | null
           id: string
           logo_url: string | null
           platform_name: string
           primary_color: string | null
+          reseller_bundle_price: number | null
+          reseller_currency: string | null
+          reseller_stripe_publishable_key: string | null
+          reseller_stripe_secret_key: string | null
+          reseller_support_email: string | null
+          reseller_terms_url: string | null
           secondary_color: string | null
           social_links: Json | null
           tagline: string | null
@@ -274,10 +281,17 @@ export type Database = {
           contact_email?: string | null
           created_at?: string
           custom_domain?: string | null
+          enable_reselling?: boolean | null
           id?: string
           logo_url?: string | null
           platform_name?: string
           primary_color?: string | null
+          reseller_bundle_price?: number | null
+          reseller_currency?: string | null
+          reseller_stripe_publishable_key?: string | null
+          reseller_stripe_secret_key?: string | null
+          reseller_support_email?: string | null
+          reseller_terms_url?: string | null
           secondary_color?: string | null
           social_links?: Json | null
           tagline?: string | null
@@ -288,10 +302,17 @@ export type Database = {
           contact_email?: string | null
           created_at?: string
           custom_domain?: string | null
+          enable_reselling?: boolean | null
           id?: string
           logo_url?: string | null
           platform_name?: string
           primary_color?: string | null
+          reseller_bundle_price?: number | null
+          reseller_currency?: string | null
+          reseller_stripe_publishable_key?: string | null
+          reseller_stripe_secret_key?: string | null
+          reseller_support_email?: string | null
+          reseller_terms_url?: string | null
           secondary_color?: string | null
           social_links?: Json | null
           tagline?: string | null
