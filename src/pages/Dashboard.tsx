@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { usePurchaseVerification } from "@/hooks/usePurchaseVerification";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import PurchasesCard from "@/components/dashboard/PurchasesCard";
@@ -10,7 +11,7 @@ import QuickActionsCard from "@/components/dashboard/QuickActionsCard";
 import FileManagementCard from "@/components/dashboard/FileManagementCard";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Puzzle, GraduationCap, Users, Gamepad2, Trophy } from "lucide-react";
+import { BookOpen, Puzzle, GraduationCap, Users, Gamepad2, Trophy, Palette } from "lucide-react";
 
 interface Purchase {
   id: string;
@@ -29,6 +30,7 @@ interface Profile {
 
 const Dashboard = () => {
   const { user, signOut, loading } = useAuth();
+  const { hasValidPurchase } = usePurchaseVerification();
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loadingData, setLoadingData] = useState(true);
@@ -112,6 +114,29 @@ const Dashboard = () => {
           <QuickActionsCard />
           <FileManagementCard />
         </div>
+
+        {/* White-Label Settings (Only for BMA Bundle purchasers) */}
+        {hasValidPurchase && (
+          <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50 mb-6">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <Palette className="w-6 h-6 text-purple-600" />
+                White-Label Settings
+              </CardTitle>
+              <CardDescription>
+                Customize your platform branding and add your own domain
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link to="/white-label-admin">
+                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                  <Palette className="w-4 h-4 mr-2" />
+                  Manage Branding & Domain
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
 
         {/* AI Content Creator Section */}
         <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">

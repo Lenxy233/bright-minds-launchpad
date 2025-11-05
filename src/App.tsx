@@ -45,6 +45,7 @@ import AIStoryCreator from "./pages/AIStoryCreator";
 import GameCreator from "./pages/GameCreator";
 import GamePlayer from "./pages/GamePlayer";
 import GamesLibrary from "./pages/GamesLibrary";
+import WhiteLabelAdmin from "./pages/WhiteLabelAdmin";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,7 @@ const App = () => (
             <Route path="/game-creator" element={<GameCreator />} />
             <Route path="/games/:id" element={<GamePlayer />} />
             <Route path="/games" element={<GamesLibrary />} />
+            <Route path="/white-label-admin" element={<WhiteLabelAdmin />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />

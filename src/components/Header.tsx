@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useBrandingSettings } from "@/hooks/useBrandingSettings";
 
 interface HeaderProps {
   onPurchase: () => void;
@@ -10,6 +11,10 @@ interface HeaderProps {
 
 const Header = ({ onPurchase }: HeaderProps) => {
   const { user } = useAuth();
+  const { settings } = useBrandingSettings();
+  
+  const platformName = settings?.platform_name || "Bright Minds Academy";
+  const logoUrl = settings?.logo_url || "/lovable-uploads/69fc66c6-3b7b-4fa2-9348-5adcf71e90ee.png";
 
   const scrollToProducts = () => {
     const productsSection = document.querySelector('#products-section');
@@ -24,13 +29,13 @@ const Header = ({ onPurchase }: HeaderProps) => {
         <div className="flex items-center space-x-2">
           <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-r from-pink-300 to-purple-300 rounded-full p-1 shadow-lg">
             <img 
-              src="/lovable-uploads/69fc66c6-3b7b-4fa2-9348-5adcf71e90ee.png" 
-              alt="Bright Minds Academy Logo" 
+              src={logoUrl}
+              alt={`${platformName} Logo`}
               className="w-8 h-8 object-contain"
             />
           </div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 via-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent">
-            Bright Minds Academy
+            {platformName}
           </h1>
           <Sparkles className="w-6 h-6 text-yellow-500 animate-pulse" />
         </div>
