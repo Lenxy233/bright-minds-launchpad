@@ -38,14 +38,12 @@ const NewProductLaunch = () => {
     try {
       // If user is logged in, save purchase record before redirecting
       if (user) {
-        // TODO: Replace with your own Stripe payment links
-        // Get your payment links from: https://dashboard.stripe.com/payment-links
         const bundleDetails = {
           "bma-bundle": { 
             baseAmount: 3900,
             basePrice: 39.00,
-            baseUrl: "YOUR_STRIPE_PAYMENT_LINK_HERE", // Replace with your Stripe link
-            withPromptsUrl: "YOUR_STRIPE_PAYMENT_LINK_WITH_ADDON_HERE" // Replace with your Stripe link
+            baseUrl: "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c",
+            withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
           }
         };
 
@@ -76,10 +74,8 @@ const NewProductLaunch = () => {
         }
       } else {
         // For non-authenticated users, redirect directly
-        // TODO: Replace with your own Stripe payment link
-        const url = "YOUR_STRIPE_PAYMENT_LINK_HERE";
-        alert("Please configure your Stripe payment link in src/pages/NewProductLaunch.tsx");
-        // window.open(url, "_blank");
+        const url = "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c";
+        window.open(url, "_blank");
       }
     } catch (error) {
       console.error('Error processing purchase:', error);
