@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useRewards } from "@/hooks/useRewards";
-import { CheckCircle2, XCircle, Award } from "lucide-react";
+import { CheckCircle2, XCircle, Award, Plus } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface QuizQuestion {
+  id?: string;
   question: string;
   options: string[];
   correctAnswer: number;
@@ -22,81 +26,6 @@ interface VideoLesson {
   quiz: QuizQuestion[];
 }
 
-const videoLessons: VideoLesson[] = [
-  {
-    id: "counting-basics",
-    title: "Counting 1-10",
-    description: "Learn to count from 1 to 10 with fun animations!",
-    videoUrl: "https://www.youtube.com/embed/DR-cfDsHCGA",
-    duration: "5 min",
-    quiz: [
-      {
-        question: "What comes after number 5?",
-        options: ["4", "6", "7", "8"],
-        correctAnswer: 1
-      },
-      {
-        question: "How many fingers do you have on one hand?",
-        options: ["3", "4", "5", "6"],
-        correctAnswer: 2
-      },
-      {
-        question: "What is 2 + 3?",
-        options: ["4", "5", "6", "7"],
-        correctAnswer: 1
-      }
-    ]
-  },
-  {
-    id: "alphabet-song",
-    title: "ABC Song",
-    description: "Sing along and learn the alphabet!",
-    videoUrl: "https://www.youtube.com/embed/75p-N9YKqNo",
-    duration: "3 min",
-    quiz: [
-      {
-        question: "What is the first letter of the alphabet?",
-        options: ["B", "A", "C", "D"],
-        correctAnswer: 1
-      },
-      {
-        question: "Which letter comes after M?",
-        options: ["L", "N", "O", "P"],
-        correctAnswer: 1
-      },
-      {
-        question: "How many letters are in the alphabet?",
-        options: ["24", "25", "26", "27"],
-        correctAnswer: 2
-      }
-    ]
-  },
-  {
-    id: "colors-shapes",
-    title: "Colors & Shapes",
-    description: "Discover colors and shapes around us!",
-    videoUrl: "https://www.youtube.com/embed/oAQubtm-IPg",
-    duration: "6 min",
-    quiz: [
-      {
-        question: "What color is the sun?",
-        options: ["Blue", "Green", "Yellow", "Red"],
-        correctAnswer: 2
-      },
-      {
-        question: "How many sides does a triangle have?",
-        options: ["2", "3", "4", "5"],
-        correctAnswer: 1
-      },
-      {
-        question: "What shape is a ball?",
-        options: ["Square", "Triangle", "Circle", "Rectangle"],
-        correctAnswer: 2
-      }
-    ]
-  }
-];
-
 const VideoLearning = () => {
   const [selectedLesson, setSelectedLesson] = useState<VideoLesson | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -105,7 +34,12 @@ const VideoLearning = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [kidProfile, setKidProfile] = useState<any>(null);
+  const [videoLessons, setVideoLessons] = useState<VideoLesson[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { awardPoints } = useRewards();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Load kid profile from session storage
@@ -113,7 +47,75 @@ const VideoLearning = () => {
     if (savedProfile) {
       setKidProfile(JSON.parse(savedProfile));
     }
+
+    // Check if user is logged in (admin)
+    checkAuth();
+    
+    // Load video lessons
+    loadVideoLessons();
   }, []);
+
+  const checkAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setIsAdmin(!!user);
+  };
+
+  const loadVideoLessons = async () => {
+    try {
+      const { data: lessons, error: lessonsError } = await supabase
+        .from('video_lessons')
+        .select('*')
+        .eq('is_published', true)
+        .order('order_index', { ascending: true });
+
+      if (lessonsError) throw lessonsError;
+
+      if (!lessons || lessons.length === 0) {
+        setVideoLessons([]);
+        return;
+      }
+
+      // Load quiz questions for each lesson
+      const lessonsWithQuiz = await Promise.all(
+        lessons.map(async (lesson) => {
+          const { data: questions, error: questionsError } = await supabase
+            .from('quiz_questions')
+            .select('*')
+            .eq('video_lesson_id', lesson.id)
+            .order('order_index', { ascending: true });
+
+          if (questionsError) {
+            console.error('Error loading quiz questions:', questionsError);
+          }
+
+          return {
+            id: lesson.id,
+            title: lesson.title,
+            description: lesson.description || '',
+            videoUrl: lesson.video_url,
+            duration: lesson.duration || '',
+            quiz: (questions || []).map(q => ({
+              id: q.id,
+              question: q.question,
+              options: q.options as string[],
+              correctAnswer: q.correct_answer
+            }))
+          };
+        })
+      );
+
+      setVideoLessons(lessonsWithQuiz);
+    } catch (error: any) {
+      console.error('Error loading video lessons:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load video lessons",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleStartQuiz = () => {
     setShowQuiz(true);
@@ -276,6 +278,14 @@ const VideoLearning = () => {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8 flex items-center justify-center">
+        <p className="text-xl text-muted-foreground">Loading video lessons...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8">
       <div className="container mx-auto max-w-6xl">
@@ -286,27 +296,49 @@ const VideoLearning = () => {
           <p className="text-xl text-muted-foreground">
             Watch videos and test your knowledge with fun quizzes!
           </p>
+          {isAdmin && (
+            <Button 
+              onClick={() => navigate('/video-learning-admin')}
+              className="mt-4"
+              size="lg"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Upload New Video
+            </Button>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videoLessons.map((lesson) => (
-            <Card key={lesson.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedLesson(lesson)}>
-              <div className="aspect-video w-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-background/80 flex items-center justify-center">
-                  <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-primary border-b-8 border-b-transparent ml-1" />
+        {videoLessons.length === 0 ? (
+          <Card className="p-12 text-center">
+            <p className="text-xl text-muted-foreground mb-4">No video lessons available yet.</p>
+            {isAdmin && (
+              <Button onClick={() => navigate('/video-learning-admin')} size="lg">
+                <Plus className="w-4 h-4 mr-2" />
+                Upload Your First Video
+              </Button>
+            )}
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {videoLessons.map((lesson) => (
+              <Card key={lesson.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedLesson(lesson)}>
+                <div className="aspect-video w-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-background/80 flex items-center justify-center">
+                    <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-primary border-b-8 border-b-transparent ml-1" />
+                  </div>
                 </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">{lesson.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{lesson.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">{lesson.duration}</span>
-                  <span className="text-xs text-muted-foreground">{lesson.quiz.length} quiz questions</span>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">{lesson.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{lesson.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">{lesson.duration}</span>
+                    <span className="text-xs text-muted-foreground">{lesson.quiz.length} quiz questions</span>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
