@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,8 +18,11 @@ interface QuizQuestion {
 
 const VideoLearningAdmin = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const editId = searchParams.get('edit');
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(!!editId);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
@@ -30,6 +33,55 @@ const VideoLearningAdmin = () => {
   const [questions, setQuestions] = useState<QuizQuestion[]>([
     { question: "", options: ["", "", "", ""], correctAnswer: 0 }
   ]);
+
+  useEffect(() => {
+    if (editId) {
+      loadVideoLesson(editId);
+    }
+  }, [editId]);
+
+  const loadVideoLesson = async (id: string) => {
+    try {
+      const { data: lesson, error: lessonError } = await supabase
+        .from('video_lessons')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (lessonError) throw lessonError;
+
+      setTitle(lesson.title);
+      setDescription(lesson.description || "");
+      setDuration(lesson.duration || "");
+      setVideoUrl(lesson.video_url);
+      setIsPublished(lesson.is_published);
+
+      const { data: quizQuestions, error: quizError } = await supabase
+        .from('quiz_questions')
+        .select('*')
+        .eq('video_lesson_id', id)
+        .order('order_index', { ascending: true });
+
+      if (quizError) throw quizError;
+
+      if (quizQuestions && quizQuestions.length > 0) {
+        setQuestions(quizQuestions.map(q => ({
+          question: q.question,
+          options: q.options as string[],
+          correctAnswer: q.correct_answer
+        })));
+      }
+    } catch (error: any) {
+      console.error('Error loading video lesson:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load video lesson",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addQuestion = () => {
     setQuestions([...questions, { question: "", options: ["", "", "", ""], correctAnswer: 0 }]);
@@ -153,28 +205,60 @@ const VideoLearningAdmin = () => {
         throw new Error("Please provide either a video file or URL");
       }
 
-      console.log("Inserting video lesson:", { title, video_url: finalVideoUrl });
+      console.log(editId ? "Updating video lesson" : "Inserting video lesson:", { title, video_url: finalVideoUrl });
       
-      const { data: lesson, error: lessonError } = await supabase
-        .from('video_lessons')
-        .insert({
-          title,
-          description,
-          video_url: finalVideoUrl,
-          duration,
-          is_published: isPublished,
-          created_by: user.id,
-          thumbnail_url: thumbnailUrl
-        })
-        .select()
-        .single();
+      let lesson;
+      if (editId) {
+        // Update existing lesson
+        const { data: updatedLesson, error: lessonError } = await supabase
+          .from('video_lessons')
+          .update({
+            title,
+            description,
+            video_url: finalVideoUrl,
+            duration,
+            is_published: isPublished,
+            thumbnail_url: thumbnailUrl
+          })
+          .eq('id', editId)
+          .select()
+          .single();
 
-      if (lessonError) {
-        console.error("Lesson insert error:", lessonError);
-        throw lessonError;
+        if (lessonError) {
+          console.error("Lesson update error:", lessonError);
+          throw lessonError;
+        }
+        lesson = updatedLesson;
+
+        // Delete existing quiz questions
+        await supabase
+          .from('quiz_questions')
+          .delete()
+          .eq('video_lesson_id', editId);
+      } else {
+        // Create new lesson
+        const { data: newLesson, error: lessonError } = await supabase
+          .from('video_lessons')
+          .insert({
+            title,
+            description,
+            video_url: finalVideoUrl,
+            duration,
+            is_published: isPublished,
+            created_by: user.id,
+            thumbnail_url: thumbnailUrl
+          })
+          .select()
+          .single();
+
+        if (lessonError) {
+          console.error("Lesson insert error:", lessonError);
+          throw lessonError;
+        }
+        lesson = newLesson;
       }
       
-      console.log("Video lesson created:", lesson.id);
+      console.log("Video lesson processed:", lesson.id);
 
       const questionsToInsert = questions
         .filter(q => q.question.trim())
@@ -196,7 +280,9 @@ const VideoLearningAdmin = () => {
 
       toast({
         title: "Success!",
-        description: isPublished
+        description: editId
+          ? "Video lesson updated successfully"
+          : isPublished
           ? "Video lesson created and published"
           : "Video lesson saved as draft (not visible in library)",
       });
@@ -214,6 +300,14 @@ const VideoLearningAdmin = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8 flex items-center justify-center">
+        <p className="text-xl text-muted-foreground">Loading video lesson...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8">
       <div className="container mx-auto max-w-4xl">
@@ -224,7 +318,7 @@ const VideoLearningAdmin = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Upload Video Lesson</CardTitle>
+            <CardTitle>{editId ? 'Edit Video Lesson' : 'Upload Video Lesson'}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -357,7 +451,7 @@ const VideoLearningAdmin = () => {
 
               <Button type="submit" disabled={uploading} className="w-full" size="lg">
                 <Upload className="w-4 h-4 mr-2" />
-                {uploading ? "Uploading..." : "Create Video Lesson"}
+                {uploading ? (editId ? "Updating..." : "Uploading...") : (editId ? "Update Video Lesson" : "Create Video Lesson")}
               </Button>
             </form>
           </CardContent>

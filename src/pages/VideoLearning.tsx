@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useRewards } from "@/hooks/useRewards";
-import { CheckCircle2, XCircle, Award, Plus } from "lucide-react";
+import { CheckCircle2, XCircle, Award, Plus, Pencil, Trash2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -168,6 +168,40 @@ const VideoLearning = () => {
     setShowQuiz(false);
   };
 
+  const handleDelete = async (lessonId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (!confirm('Are you sure you want to delete this video lesson?')) return;
+
+    try {
+      const { error } = await supabase
+        .from('video_lessons')
+        .delete()
+        .eq('id', lessonId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Video lesson deleted successfully"
+      });
+
+      loadVideoLessons();
+    } catch (error: any) {
+      console.error('Error deleting video lesson:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete video lesson",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleEdit = (lessonId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/video-learning-admin?edit=${lessonId}`);
+  };
+
   if (selectedLesson && showQuiz) {
     const question = selectedLesson.quiz[currentQuestion];
     const progress = ((currentQuestion + 1) / selectedLesson.quiz.length) * 100;
@@ -323,7 +357,25 @@ const VideoLearning = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {videoLessons.map((lesson) => (
-              <Card key={lesson.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedLesson(lesson)}>
+              <Card key={lesson.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group relative" onClick={() => setSelectedLesson(lesson)}>
+                {isAdmin && (
+                  <div className="absolute top-2 right-2 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      onClick={(e) => handleEdit(lesson.id, e)}
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={(e) => handleDelete(lesson.id, e)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
                 <div className="aspect-video w-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center relative">
                   {lesson.thumbnailUrl ? (
                     <img 
