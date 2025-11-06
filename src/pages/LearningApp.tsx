@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle, Gamepad2, Sparkles, MessageCircle } from "lucide-react";
+import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle, Gamepad2, Sparkles, MessageCircle, PlaySquare } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -203,6 +203,19 @@ const LearningApp = () => {
                   <CardTitle>AI Tutor</CardTitle>
                   <CardDescription>
                     Ask questions and get help with any topic! Your friendly learning assistant.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card 
+                className="border-2 border-red-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => navigate('/video-learning')}
+              >
+                <CardHeader>
+                  <PlaySquare className="w-12 h-12 text-red-600 mb-4" />
+                  <CardTitle>Video Learning</CardTitle>
+                  <CardDescription>
+                    Watch educational videos and take quizzes! Learn by watching and testing your knowledge.
                   </CardDescription>
                 </CardHeader>
               </Card>

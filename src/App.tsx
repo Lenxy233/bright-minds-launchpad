@@ -47,6 +47,7 @@ import GamePlayer from "./pages/GamePlayer";
 import GamesLibrary from "./pages/GamesLibrary";
 import WhiteLabelAdmin from "./pages/WhiteLabelAdmin";
 import PLRLicense from "./pages/PLRLicense";
+import VideoLearning from "./pages/VideoLearning";
 
 const queryClient = new QueryClient();
 
@@ -99,6 +100,7 @@ const App = () => (
             <Route path="/games" element={<GamesLibrary />} />
             <Route path="/white-label-admin" element={<WhiteLabelAdmin />} />
             <Route path="/plr-license" element={<PLRLicense />} />
+            <Route path="/video-learning" element={<VideoLearning />} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
