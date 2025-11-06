@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { Upload, Plus, Trash2, Save, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Switch } from "@/components/ui/switch";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { ArrowLeft, Upload, Plus, Trash2 } from "lucide-react";
 
 interface QuizQuestion {
   question: string;
@@ -17,46 +17,53 @@ interface QuizQuestion {
 }
 
 const VideoLearningAdmin = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [uploading, setUploading] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
   const [isPublished, setIsPublished] = useState(false);
-  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([
+  const [questions, setQuestions] = useState<QuizQuestion[]>([
     { question: "", options: ["", "", "", ""], correctAnswer: 0 }
   ]);
-  const [uploading, setUploading] = useState(false);
-  const { toast } = useToast();
-  const navigate = useNavigate();
 
-  const handleVideoUpload = async () => {
-    if (!videoFile) {
+  const addQuestion = () => {
+    setQuestions([...questions, { question: "", options: ["", "", "", ""], correctAnswer: 0 }]);
+  };
+
+  const removeQuestion = (index: number) => {
+    setQuestions(questions.filter((_, i) => i !== index));
+  };
+
+  const updateQuestion = (index: number, field: keyof QuizQuestion, value: any) => {
+    const updated = [...questions];
+    updated[index] = { ...updated[index], [field]: value };
+    setQuestions(updated);
+  };
+
+  const updateOption = (questionIndex: number, optionIndex: number, value: string) => {
+    const updated = [...questions];
+    updated[questionIndex].options[optionIndex] = value;
+    setQuestions(updated);
+  };
+
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 50 * 1024 * 1024) {
       toast({
-        title: "No file selected",
-        description: "Please select a video file to upload",
+        title: "File too large",
+        description: "Video must be less than 50MB",
         variant: "destructive"
       });
-      return null;
+      return;
     }
 
-    const fileExt = videoFile.name.split('.').pop();
-    const fileName = `${Math.random()}.${fileExt}`;
-    const filePath = `${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('videos')
-      .upload(filePath, videoFile);
-
-    if (uploadError) {
-      throw uploadError;
-    }
-
-    const { data: { publicUrl } } = supabase.storage
-      .from('videos')
-      .getPublicUrl(filePath);
-
-    return publicUrl;
+    setVideoFile(file);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,58 +72,56 @@ const VideoLearningAdmin = () => {
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        toast({
-          title: "Authentication required",
-          description: "Please log in to upload videos",
-          variant: "destructive"
-        });
-        return;
-      }
+      if (!user) throw new Error("Not authenticated");
 
       let finalVideoUrl = videoUrl;
-      
-      // If a file was selected, upload it
+
       if (videoFile) {
-        finalVideoUrl = await handleVideoUpload() || "";
+        const fileExt = videoFile.name.split('.').pop();
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('videos')
+          .upload(fileName, videoFile);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('videos')
+          .getPublicUrl(fileName);
+        
+        finalVideoUrl = publicUrl;
       }
 
       if (!finalVideoUrl) {
-        toast({
-          title: "Video required",
-          description: "Please provide a video URL or upload a video file",
-          variant: "destructive"
-        });
-        return;
+        throw new Error("Please provide either a video file or URL");
       }
 
-      // Insert video lesson
-      const { data: videoLesson, error: videoError } = await supabase
+      const { data: lesson, error: lessonError } = await supabase
         .from('video_lessons')
         .insert({
           title,
           description,
           video_url: finalVideoUrl,
           duration,
-          created_by: user.id,
-          is_published: isPublished
+          is_published: isPublished,
+          created_by: user.id
         })
         .select()
         .single();
 
-      if (videoError) throw videoError;
+      if (lessonError) throw lessonError;
 
-      // Insert quiz questions
-      const validQuestions = quizQuestions.filter(q => q.question.trim() !== '');
-      if (validQuestions.length > 0) {
-        const questionsToInsert = validQuestions.map((q, index) => ({
-          video_lesson_id: videoLesson.id,
+      const questionsToInsert = questions
+        .filter(q => q.question.trim())
+        .map((q, index) => ({
+          video_lesson_id: lesson.id,
           question: q.question,
           options: q.options,
           correct_answer: q.correctAnswer,
           order_index: index
         }));
 
+      if (questionsToInsert.length > 0) {
         const { error: quizError } = await supabase
           .from('quiz_questions')
           .insert(questionsToInsert);
@@ -129,20 +134,11 @@ const VideoLearningAdmin = () => {
         description: "Video lesson created successfully"
       });
 
-      // Reset form
-      setTitle("");
-      setDescription("");
-      setDuration("");
-      setVideoFile(null);
-      setVideoUrl("");
-      setIsPublished(false);
-      setQuizQuestions([{ question: "", options: ["", "", "", ""], correctAnswer: 0 }]);
-
+      navigate('/video-learning');
     } catch (error: any) {
-      console.error('Error creating video lesson:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to create video lesson",
+        description: error.message,
         variant: "destructive"
       });
     } finally {
@@ -150,37 +146,17 @@ const VideoLearningAdmin = () => {
     }
   };
 
-  const addQuestion = () => {
-    setQuizQuestions([...quizQuestions, { question: "", options: ["", "", "", ""], correctAnswer: 0 }]);
-  };
-
-  const removeQuestion = (index: number) => {
-    setQuizQuestions(quizQuestions.filter((_, i) => i !== index));
-  };
-
-  const updateQuestion = (index: number, field: keyof QuizQuestion, value: any) => {
-    const updated = [...quizQuestions];
-    updated[index] = { ...updated[index], [field]: value };
-    setQuizQuestions(updated);
-  };
-
-  const updateOption = (questionIndex: number, optionIndex: number, value: string) => {
-    const updated = [...quizQuestions];
-    updated[questionIndex].options[optionIndex] = value;
-    setQuizQuestions(updated);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8">
       <div className="container mx-auto max-w-4xl">
-        <Button onClick={() => navigate(-1)} variant="outline" className="mb-6">
+        <Button onClick={() => navigate('/video-learning')} variant="outline" className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
+          Back to Video Learning
         </Button>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl">Upload Video Lesson</CardTitle>
+            <CardTitle>Upload Video Lesson</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -191,7 +167,6 @@ const VideoLearningAdmin = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  placeholder="e.g., Counting 1-10"
                 />
               </div>
 
@@ -201,45 +176,38 @@ const VideoLearningAdmin = () => {
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Brief description of the video lesson"
                   rows={3}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="duration">Duration</Label>
+                <Label htmlFor="duration">Duration (e.g., "5 min")</Label>
                 <Input
                   id="duration"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  placeholder="e.g., 5 min"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="videoFile">Upload Video File</Label>
+                <Label htmlFor="video-file">Upload Video File (max 50MB)</Label>
                 <Input
-                  id="videoFile"
+                  id="video-file"
                   type="file"
                   accept="video/*"
-                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                  onChange={handleVideoUpload}
                 />
-                <p className="text-sm text-muted-foreground">
-                  Max file size: 50MB. Supported formats: MP4, WebM, OGG
-                </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="videoUrl">Or Enter Video URL</Label>
+                <Label htmlFor="video-url">Or Video URL (YouTube embed URL)</Label>
                 <Input
-                  id="videoUrl"
+                  id="video-url"
+                  type="url"
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
-                  placeholder="https://youtube.com/embed/..."
+                  placeholder="https://www.youtube.com/embed/..."
                 />
-                <p className="text-sm text-muted-foreground">
-                  Use YouTube embed URL or direct video URL
-                </p>
               </div>
 
               <div className="flex items-center space-x-2">
@@ -260,12 +228,12 @@ const VideoLearningAdmin = () => {
                   </Button>
                 </div>
 
-                {quizQuestions.map((question, qIndex) => (
+                {questions.map((q, qIndex) => (
                   <Card key={qIndex} className="p-4">
                     <div className="space-y-4">
                       <div className="flex items-start justify-between">
                         <Label>Question {qIndex + 1}</Label>
-                        {quizQuestions.length > 1 && (
+                        {questions.length > 1 && (
                           <Button
                             type="button"
                             onClick={() => removeQuestion(qIndex)}
@@ -278,31 +246,31 @@ const VideoLearningAdmin = () => {
                       </div>
                       
                       <Input
-                        value={question.question}
+                        value={q.question}
                         onChange={(e) => updateQuestion(qIndex, 'question', e.target.value)}
-                        placeholder="Enter your question"
+                        placeholder="Enter question"
                       />
 
                       <div className="space-y-2">
-                        <Label className="text-sm">Options</Label>
-                        {question.options.map((option, oIndex) => (
+                        <Label>Options</Label>
+                        {q.options.map((option, oIndex) => (
                           <div key={oIndex} className="flex items-center gap-2">
-                            <input
-                              type="radio"
-                              name={`correct-${qIndex}`}
-                              checked={question.correctAnswer === oIndex}
-                              onChange={() => updateQuestion(qIndex, 'correctAnswer', oIndex)}
-                            />
                             <Input
                               value={option}
                               onChange={(e) => updateOption(qIndex, oIndex, e.target.value)}
                               placeholder={`Option ${oIndex + 1}`}
                             />
+                            <Switch
+                              checked={q.correctAnswer === oIndex}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  updateQuestion(qIndex, 'correctAnswer', oIndex);
+                                }
+                              }}
+                            />
+                            <Label className="text-sm">Correct</Label>
                           </div>
                         ))}
-                        <p className="text-xs text-muted-foreground">
-                          Select the radio button for the correct answer
-                        </p>
                       </div>
                     </div>
                   </Card>
@@ -310,7 +278,7 @@ const VideoLearningAdmin = () => {
               </div>
 
               <Button type="submit" disabled={uploading} className="w-full" size="lg">
-                <Save className="w-4 h-4 mr-2" />
+                <Upload className="w-4 h-4 mr-2" />
                 {uploading ? "Uploading..." : "Create Video Lesson"}
               </Button>
             </form>
