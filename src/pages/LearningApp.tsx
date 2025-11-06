@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle, Gamepad2, Sparkles, MessageCircle, PlaySquare } from "lucide-react";
+import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle, Gamepad2, Sparkles, MessageCircle, PlaySquare, Settings } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import KindergartenCurriculumSection from "@/components/KindergartenCurriculumSection";
 import RewardsDisplay from "@/components/RewardsDisplay";
 import AITutorChat from "@/components/AITutorChat";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LearningApp = () => {
   const [isKidLogin, setIsKidLogin] = useState(false);
@@ -20,6 +21,7 @@ const LearningApp = () => {
   const [showAITutor, setShowAITutor] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleKidLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,9 +83,17 @@ const LearningApp = () => {
                 Kids Learning Platform
               </h1>
             </div>
-            <Button onClick={fetchParentAccess} variant="outline">
-              Parent/Teacher Login
-            </Button>
+            <div className="flex items-center gap-2">
+              {user && (
+                <Button onClick={() => navigate('/curriculum-lesson-admin')} variant="outline" size="sm">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Manage Lessons
+                </Button>
+              )}
+              <Button onClick={fetchParentAccess} variant="outline">
+                Parent/Teacher Login
+              </Button>
+            </div>
           </div>
         </div>
       </header>
