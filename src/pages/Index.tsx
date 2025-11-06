@@ -16,7 +16,10 @@ import { ArrowRight, Sparkles } from "lucide-react";
 
 const Index = () => {
   const handlePurchase = () => {
-    window.open("https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c", "_blank");
+    // TODO: Replace with your own Stripe payment link
+    // Get your payment link from: https://dashboard.stripe.com/payment-links
+    // Example: window.open("https://buy.stripe.com/YOUR_PAYMENT_LINK", "_blank");
+    alert("Please configure your Stripe payment link in src/pages/Index.tsx");
   };
 
   return (
