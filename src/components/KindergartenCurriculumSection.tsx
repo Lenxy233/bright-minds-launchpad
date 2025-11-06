@@ -1,10 +1,28 @@
 import { BookOpen, Palette, Music, Calculator, Globe, Heart, ChevronRight, Plane, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const KindergartenCurriculumSection = () => {
   const navigate = useNavigate();
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [customLessons, setCustomLessons] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchCustomLessons();
+  }, []);
+
+  const fetchCustomLessons = async () => {
+    const { data } = await supabase
+      .from("curriculum_lessons")
+      .select("*")
+      .eq("is_published", true)
+      .order("order_index", { ascending: true });
+    
+    if (data) {
+      setCustomLessons(data);
+    }
+  };
   
   const curriculumAreas = [
     {
@@ -157,6 +175,21 @@ const KindergartenCurriculumSection = () => {
                           <ChevronRight className="w-4 h-4 text-primary" />
                         </button>
                       ))}
+                      {customLessons
+                        .filter(lesson => lesson.category === area.title)
+                        .map((lesson) => (
+                          <button
+                            key={lesson.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/curriculum-lesson/${lesson.id}`);
+                            }}
+                            className="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-primary/10 transition-colors text-left bg-accent/5"
+                          >
+                            <span className="text-gray-700">{lesson.title}</span>
+                            <ChevronRight className="w-4 h-4 text-primary" />
+                          </button>
+                        ))}
                     </div>
                   </div>
                 )}

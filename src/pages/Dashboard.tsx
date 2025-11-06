@@ -171,6 +171,13 @@ const Dashboard = () => {
                   <span className="text-xs text-gray-500">Library</span>
                 </Button>
               </Link>
+              <Link to="/curriculum-lesson-admin">
+                <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-green-50 text-green-600 border-2 border-green-200">
+                  <GraduationCap className="w-8 h-8" />
+                  <span className="font-semibold">Curriculum Lessons</span>
+                  <span className="text-xs text-gray-500">NEW!</span>
+                </Button>
+              </Link>
               <Button className="w-full h-24 flex-col gap-2 bg-white hover:bg-blue-50 text-blue-600 border-2 border-blue-200" disabled>
                 <GraduationCap className="w-8 h-8" />
                 <span className="font-semibold">Quiz Maker</span>
