@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.generate-game]
 verify_jwt = false
+
+[functions.generate-lesson-content]
+verify_jwt = false

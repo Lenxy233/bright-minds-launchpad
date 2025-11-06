@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Plus, Trash2, Pencil } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Pencil, Sparkles } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface Lesson {
   id: string;
@@ -46,6 +47,15 @@ const CurriculumLessonAdmin = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [showAiDialog, setShowAiDialog] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  
+  const [aiFormData, setAiFormData] = useState({
+    topic: "",
+    category: "",
+    contentType: "",
+    ageRange: "4-6 years"
+  });
   
   const [formData, setFormData] = useState({
     title: "",
@@ -151,6 +161,67 @@ const CurriculumLessonAdmin = () => {
     fetchLessons();
   };
 
+  const handleAiGenerate = async () => {
+    if (!aiFormData.topic || !aiFormData.category || !aiFormData.contentType) {
+      toast({ title: "Please fill in all fields", variant: "destructive" });
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-lesson-content", {
+        body: aiFormData
+      });
+
+      if (error) {
+        if (error.message.includes("429")) {
+          toast({ 
+            title: "Rate limit exceeded", 
+            description: "Please try again later.",
+            variant: "destructive" 
+          });
+        } else if (error.message.includes("402")) {
+          toast({ 
+            title: "Payment required", 
+            description: "Please add credits to your workspace.",
+            variant: "destructive" 
+          });
+        } else {
+          throw error;
+        }
+        return;
+      }
+
+      // Parse the AI-generated content and populate the form
+      const generatedContent = data.content;
+      
+      setFormData({
+        title: `${aiFormData.topic} - ${aiFormData.category}`,
+        description: `AI-generated lesson about ${aiFormData.topic}`,
+        category: aiFormData.category,
+        content_type: aiFormData.contentType,
+        content_data: { 
+          text: generatedContent,
+          instructions: generatedContent 
+        },
+        is_published: false
+      });
+
+      setShowAiDialog(false);
+      setIsCreating(true);
+      toast({ title: "Lesson content generated! Review and save." });
+    } catch (error) {
+      console.error("Error generating lesson:", error);
+      toast({ 
+        title: "Failed to generate lesson", 
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8">
       <div className="container mx-auto max-w-6xl">
@@ -168,11 +239,98 @@ const CurriculumLessonAdmin = () => {
 
         {!isCreating ? (
           <>
-            <div className="mb-6">
-              <Button onClick={() => setIsCreating(true)} className="w-full md:w-auto">
+            <div className="mb-6 flex gap-2 flex-wrap">
+              <Button onClick={() => setIsCreating(true)} className="flex-1 md:flex-none">
                 <Plus className="w-4 h-4 mr-2" />
                 Create New Lesson
               </Button>
+              
+              <Dialog open={showAiDialog} onOpenChange={setShowAiDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="flex-1 md:flex-none">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    AI Generate Lesson
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Generate Lesson with AI</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div>
+                      <Label htmlFor="ai-topic">Lesson Topic *</Label>
+                      <Input
+                        id="ai-topic"
+                        value={aiFormData.topic}
+                        onChange={(e) => setAiFormData({ ...aiFormData, topic: e.target.value })}
+                        placeholder="e.g., Animal Sounds, Counting to 10"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="ai-category">Category *</Label>
+                      <Select 
+                        value={aiFormData.category} 
+                        onValueChange={(value) => setAiFormData({ ...aiFormData, category: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CATEGORIES.map((cat) => (
+                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="ai-content-type">Content Type *</Label>
+                      <Select 
+                        value={aiFormData.contentType} 
+                        onValueChange={(value) => setAiFormData({ ...aiFormData, contentType: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select content type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CONTENT_TYPES.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="ai-age-range">Age Range</Label>
+                      <Input
+                        id="ai-age-range"
+                        value={aiFormData.ageRange}
+                        onChange={(e) => setAiFormData({ ...aiFormData, ageRange: e.target.value })}
+                        placeholder="e.g., 4-6 years"
+                      />
+                    </div>
+
+                    <Button 
+                      onClick={handleAiGenerate} 
+                      disabled={isGenerating}
+                      className="w-full"
+                    >
+                      {isGenerating ? (
+                        <>
+                          <Sparkles className="w-4 h-4 mr-2 animate-pulse" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Generate Lesson
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
 
             <div className="grid gap-4">
