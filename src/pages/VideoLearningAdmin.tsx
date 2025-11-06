@@ -71,19 +71,36 @@ const VideoLearningAdmin = () => {
     setUploading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError) {
+        console.error("Auth error:", authError);
+        throw new Error("Authentication error: " + authError.message);
+      }
+      
+      if (!user) {
+        console.error("No user found");
+        throw new Error("You must be logged in to upload videos");
+      }
+
+      console.log("User authenticated:", user.id);
 
       let finalVideoUrl = videoUrl;
 
       if (videoFile) {
+        console.log("Uploading video file:", videoFile.name);
         const fileExt = videoFile.name.split('.').pop();
         const fileName = `${crypto.randomUUID()}.${fileExt}`;
         const { error: uploadError } = await supabase.storage
           .from('videos')
           .upload(fileName, videoFile);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error("Storage upload error:", uploadError);
+          throw uploadError;
+        }
+        
+        console.log("Video uploaded successfully:", fileName);
 
         const { data: { publicUrl } } = supabase.storage
           .from('videos')
@@ -96,6 +113,8 @@ const VideoLearningAdmin = () => {
         throw new Error("Please provide either a video file or URL");
       }
 
+      console.log("Inserting video lesson:", { title, video_url: finalVideoUrl });
+      
       const { data: lesson, error: lessonError } = await supabase
         .from('video_lessons')
         .insert({
@@ -109,7 +128,12 @@ const VideoLearningAdmin = () => {
         .select()
         .single();
 
-      if (lessonError) throw lessonError;
+      if (lessonError) {
+        console.error("Lesson insert error:", lessonError);
+        throw lessonError;
+      }
+      
+      console.log("Video lesson created:", lesson.id);
 
       const questionsToInsert = questions
         .filter(q => q.question.trim())
@@ -136,9 +160,10 @@ const VideoLearningAdmin = () => {
 
       navigate('/video-learning');
     } catch (error: any) {
+      console.error("Upload error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to upload video",
         variant: "destructive"
       });
     } finally {
