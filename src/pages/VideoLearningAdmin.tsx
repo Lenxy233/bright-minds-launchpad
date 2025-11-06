@@ -25,7 +25,7 @@ const VideoLearningAdmin = () => {
   const [duration, setDuration] = useState("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
-  const [isPublished, setIsPublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(true);
   const [questions, setQuestions] = useState<QuizQuestion[]>([
     { question: "", options: ["", "", "", ""], correctAnswer: 0 }
   ]);
@@ -155,7 +155,9 @@ const VideoLearningAdmin = () => {
 
       toast({
         title: "Success!",
-        description: "Video lesson created successfully"
+        description: isPublished
+          ? "Video lesson created and published"
+          : "Video lesson saved as draft (not visible in library)",
       });
 
       navigate('/video-learning');
