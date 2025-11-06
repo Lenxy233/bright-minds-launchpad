@@ -22,6 +22,7 @@ interface VideoLesson {
   title: string;
   description: string;
   videoUrl: string;
+  thumbnailUrl?: string;
   duration: string;
   quiz: QuizQuestion[];
 }
@@ -93,6 +94,7 @@ const VideoLearning = () => {
             title: lesson.title,
             description: lesson.description || '',
             videoUrl: lesson.video_url,
+            thumbnailUrl: lesson.thumbnail_url,
             duration: lesson.duration || '',
             quiz: (questions || []).map(q => ({
               id: q.id,
@@ -322,10 +324,18 @@ const VideoLearning = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {videoLessons.map((lesson) => (
               <Card key={lesson.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedLesson(lesson)}>
-                <div className="aspect-video w-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-background/80 flex items-center justify-center">
-                    <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-primary border-b-8 border-b-transparent ml-1" />
-                  </div>
+                <div className="aspect-video w-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center relative">
+                  {lesson.thumbnailUrl ? (
+                    <img 
+                      src={lesson.thumbnailUrl} 
+                      alt={lesson.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-background/80 flex items-center justify-center">
+                      <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-primary border-b-8 border-b-transparent ml-1" />
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2">{lesson.title}</h3>

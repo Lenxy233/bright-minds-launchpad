@@ -24,6 +24,7 @@ const VideoLearningAdmin = () => {
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
   const [isPublished, setIsPublished] = useState(true);
   const [questions, setQuestions] = useState<QuizQuestion[]>([
@@ -66,6 +67,22 @@ const VideoLearningAdmin = () => {
     setVideoFile(file);
   };
 
+  const handleThumbnailUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Thumbnail must be less than 5MB",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setThumbnailFile(file);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
@@ -86,6 +103,29 @@ const VideoLearningAdmin = () => {
       console.log("User authenticated:", user.id);
 
       let finalVideoUrl = videoUrl;
+      let thumbnailUrl = null;
+
+      // Upload thumbnail if provided
+      if (thumbnailFile) {
+        console.log("Uploading thumbnail:", thumbnailFile.name);
+        const fileExt = thumbnailFile.name.split('.').pop();
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
+        const { error: thumbError } = await supabase.storage
+          .from('videos')
+          .upload(fileName, thumbnailFile);
+
+        if (thumbError) {
+          console.error("Thumbnail upload error:", thumbError);
+          throw thumbError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('videos')
+          .getPublicUrl(fileName);
+        
+        thumbnailUrl = publicUrl;
+        console.log("Thumbnail uploaded:", thumbnailUrl);
+      }
 
       if (videoFile) {
         console.log("Uploading video file:", videoFile.name);
@@ -123,7 +163,8 @@ const VideoLearningAdmin = () => {
           video_url: finalVideoUrl,
           duration,
           is_published: isPublished,
-          created_by: user.id
+          created_by: user.id,
+          thumbnail_url: thumbnailUrl
         })
         .select()
         .single();
@@ -223,6 +264,16 @@ const VideoLearningAdmin = () => {
                   type="file"
                   accept="video/*"
                   onChange={handleVideoUpload}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="thumbnail">Thumbnail Image (optional, max 5MB)</Label>
+                <Input
+                  id="thumbnail"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleThumbnailUpload}
                 />
               </div>
 
