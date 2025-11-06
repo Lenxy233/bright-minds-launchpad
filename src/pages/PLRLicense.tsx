@@ -226,6 +226,26 @@ const PLRLicense = () => {
             </div>
           </section>
 
+          {/* Access Resources Section */}
+          <section className="mb-8 print:mb-10 bg-gradient-to-r from-primary/10 to-pink-500/10 p-6 rounded-lg border border-primary/20">
+            <h2 className="text-2xl font-bold mb-4 text-primary">📦 Access Your Resources</h2>
+            <div className="bg-card p-4 rounded-lg mb-4">
+              <h3 className="font-semibold mb-2">Google Drive Folder - Downloadable Content</h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                All your educational resources with full PLR rights are available in your shared Google Drive folder.
+              </p>
+              <a 
+                href="https://drive.google.com/drive/folders/1GOEDB6ErOi4166UvQcbtcnRRl1dVOKyc?usp=drive_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors print:text-primary print:bg-transparent print:border print:border-primary"
+              >
+                <FileDown className="w-4 h-4" />
+                Access Drive Folder
+              </a>
+            </div>
+          </section>
+
           {/* Summary */}
           <section className="mb-8 print:mb-10 bg-muted/50 p-6 rounded-lg print:bg-gray-50">
             <h2 className="text-2xl font-bold mb-4 text-primary">Quick Summary</h2>
