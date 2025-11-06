@@ -300,9 +300,9 @@ const VideoLearning = () => {
               />
             </div>
             <div className="p-6">
-              <h1 className="text-3xl font-bold mb-2">{selectedLesson.title}</h1>
-              <p className="text-muted-foreground mb-4">{selectedLesson.description}</p>
-              <p className="text-sm text-muted-foreground mb-6">Duration: {selectedLesson.duration}</p>
+              <h1 className="text-3xl font-bold mb-2 text-foreground">{selectedLesson.title}</h1>
+              <p className="text-foreground/80 mb-4">{selectedLesson.description}</p>
+              <p className="text-sm text-foreground/70 mb-6">Duration: {selectedLesson.duration}</p>
               
               <Button onClick={handleStartQuiz} size="lg" className="w-full">
                 Take the Quiz ({selectedLesson.quiz.length} questions)
@@ -317,7 +317,7 @@ const VideoLearning = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8 flex items-center justify-center">
-        <p className="text-xl text-muted-foreground">Loading video lessons...</p>
+        <p className="text-xl text-foreground/80">Loading video lessons...</p>
       </div>
     );
   }
@@ -329,7 +329,7 @@ const VideoLearning = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Video Learning
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-foreground/80">
             Watch videos and test your knowledge with fun quizzes!
           </p>
           {isAdmin && (
@@ -346,7 +346,7 @@ const VideoLearning = () => {
 
         {videoLessons.length === 0 ? (
           <Card className="p-12 text-center">
-            <p className="text-xl text-muted-foreground mb-4">No video lessons available yet.</p>
+            <p className="text-xl text-foreground/80 mb-4">No video lessons available yet.</p>
             {isAdmin && (
               <Button onClick={() => navigate('/video-learning-admin')} size="lg">
                 <Plus className="w-4 h-4 mr-2" />
@@ -390,11 +390,11 @@ const VideoLearning = () => {
                   )}
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{lesson.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{lesson.description}</p>
+                  <h3 className="text-xl font-bold mb-2 text-foreground">{lesson.title}</h3>
+                  <p className="text-sm text-foreground/70 mb-4">{lesson.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">{lesson.duration}</span>
-                    <span className="text-xs text-muted-foreground">{lesson.quiz.length} quiz questions</span>
+                    <span className="text-xs text-foreground/60">{lesson.duration}</span>
+                    <span className="text-xs text-foreground/60">{lesson.quiz.length} quiz questions</span>
                   </div>
                 </div>
               </Card>
