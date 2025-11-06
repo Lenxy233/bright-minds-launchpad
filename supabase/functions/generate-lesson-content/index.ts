@@ -18,20 +18,37 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const systemPrompt = `You are an expert kindergarten curriculum designer. Create engaging, age-appropriate educational content for young children (ages 4-6). Focus on making learning fun, interactive, and easy to understand.`;
+    const systemPrompt = `You are an expert kindergarten curriculum designer specializing in creating practical, activity-based lessons for ages 4-6. Focus on hands-on learning with clear, simple steps. For math lessons, include specific numbers, counting activities, and visual aids. Keep language simple and child-friendly.`;
 
-    const userPrompt = `Create a ${contentType} lesson for the "${category}" curriculum area about "${topic}".
+    const contentTypeGuidance = contentType === 'Video' 
+      ? 'Create a lesson plan for a video activity. Include what children should do while watching and after.'
+      : contentType === 'Image'
+      ? 'Create a worksheet or visual activity. Describe what should be drawn/shown and how children interact with it.'
+      : 'Create a hands-on activity with clear, numbered steps.';
 
-Age Range: ${ageRange || "4-6 years"}
+    const userPrompt = `Create a practical kindergarten ${contentType} lesson about "${topic}" for ${category}.
 
-Please generate:
-1. A catchy lesson title
-2. A brief description (2-3 sentences)
-3. Detailed instructions or content for the lesson (5-8 steps or paragraphs)
-4. Learning objectives
-5. Materials needed (if applicable)
+Age: ${ageRange || "4-6 years"}
 
-Make it engaging, educational, and appropriate for kindergarten students.`;
+${contentTypeGuidance}
+
+Generate EXACTLY in this format:
+
+TITLE: [Short, catchy title - max 6 words]
+
+DESCRIPTION: [One sentence explaining what children will learn]
+
+CONTENT:
+[For Math: Include specific numbers, counting exercises, visual descriptions]
+[Write 5-8 clear, simple steps that a teacher or parent can follow]
+[Each step should be one sentence, starting with an action word]
+[Example: "1. Place 5 blocks in front of the child"]
+
+LEARNING GOALS: [2-3 specific skills children will practice]
+
+MATERIALS: [Simple list of items needed]
+
+Keep it practical, specific, and activity-based. Avoid lengthy explanations or stories.`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -73,8 +90,24 @@ Make it engaging, educational, and appropriate for kindergarten students.`;
       throw new Error("No content generated");
     }
 
+    // Parse the structured response
+    const titleMatch = generatedContent.match(/TITLE:\s*(.+)/i);
+    const descMatch = generatedContent.match(/DESCRIPTION:\s*(.+)/i);
+    const contentMatch = generatedContent.match(/CONTENT:\s*([\s\S]+?)(?=LEARNING GOALS:|$)/i);
+    const goalsMatch = generatedContent.match(/LEARNING GOALS:\s*([\s\S]+?)(?=MATERIALS:|$)/i);
+    const materialsMatch = generatedContent.match(/MATERIALS:\s*([\s\S]+?)$/i);
+
+    const parsedContent = {
+      title: titleMatch?.[1]?.trim() || "Untitled Lesson",
+      description: descMatch?.[1]?.trim() || "",
+      content: contentMatch?.[1]?.trim() || generatedContent,
+      learningGoals: goalsMatch?.[1]?.trim() || "",
+      materials: materialsMatch?.[1]?.trim() || "",
+      rawContent: generatedContent
+    };
+
     return new Response(
-      JSON.stringify({ content: generatedContent }),
+      JSON.stringify(parsedContent),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {

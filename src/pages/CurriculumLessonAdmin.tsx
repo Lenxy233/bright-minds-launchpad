@@ -182,8 +182,8 @@ const CurriculumLessonAdmin = () => {
           });
         } else if (error.message.includes("402")) {
           toast({ 
-            title: "Payment required", 
-            description: "Please add credits to your workspace.",
+            title: "Lovable AI credits needed", 
+            description: "Add credits in Settings → Workspace → Usage",
             variant: "destructive" 
           });
         } else {
@@ -192,29 +192,43 @@ const CurriculumLessonAdmin = () => {
         return;
       }
 
-      // Parse the AI-generated content and populate the form
-      const generatedContent = data.content;
+      // Parse the structured AI response
+      const parsedData = data || {};
+      const lessonTitle = parsedData.title || `${aiFormData.topic} - ${aiFormData.category}`;
+      const lessonDesc = parsedData.description || `Learn about ${aiFormData.topic}`;
       
+      // Format the full content with all sections
+      let formattedContent = parsedData.content || parsedData.rawContent || '';
+      
+      if (parsedData.learningGoals) {
+        formattedContent += `\n\n**Learning Goals:**\n${parsedData.learningGoals}`;
+      }
+      
+      if (parsedData.materials) {
+        formattedContent += `\n\n**Materials Needed:**\n${parsedData.materials}`;
+      }
+      
+      // Pre-fill the form
       setFormData({
-        title: `${aiFormData.topic} - ${aiFormData.category}`,
-        description: `AI-generated lesson about ${aiFormData.topic}`,
+        title: lessonTitle,
+        description: lessonDesc,
         category: aiFormData.category,
         content_type: aiFormData.contentType,
         content_data: { 
-          text: generatedContent,
-          instructions: generatedContent 
+          text: formattedContent,
+          instructions: formattedContent 
         },
         is_published: false
       });
 
       setShowAiDialog(false);
       setIsCreating(true);
-      toast({ title: "Lesson content generated! Review and save." });
+      toast({ title: "AI lesson created! Review and save." });
     } catch (error) {
       console.error("Error generating lesson:", error);
       toast({ 
         title: "Failed to generate lesson", 
-        description: error instanceof Error ? error.message : "Unknown error",
+        description: error instanceof Error ? error.message : "Check console for details",
         variant: "destructive" 
       });
     } finally {
