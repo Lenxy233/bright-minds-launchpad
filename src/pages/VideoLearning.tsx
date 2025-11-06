@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useRewards } from "@/hooks/useRewards";
-import { CheckCircle2, XCircle, Award, Plus, Pencil, Trash2 } from "lucide-react";
+import { CheckCircle2, XCircle, Award, Plus, Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -325,6 +325,15 @@ const VideoLearning = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 p-4 md:p-8">
       <div className="container mx-auto max-w-6xl">
+        <Button 
+          onClick={() => navigate(-1)} 
+          variant="ghost" 
+          className="mb-6"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back
+        </Button>
+        
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Video Learning
