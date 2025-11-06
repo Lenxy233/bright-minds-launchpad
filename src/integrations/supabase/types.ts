@@ -464,6 +464,141 @@ export type Database = {
         }
         Relationships: []
       }
+      kid_activity_log: {
+        Row: {
+          activity_id: string
+          activity_type: string
+          completed_at: string | null
+          id: string
+          kid_id: string
+          points_earned: number
+        }
+        Insert: {
+          activity_id: string
+          activity_type: string
+          completed_at?: string | null
+          id?: string
+          kid_id: string
+          points_earned?: number
+        }
+        Update: {
+          activity_id?: string
+          activity_type?: string
+          completed_at?: string | null
+          id?: string
+          kid_id?: string
+          points_earned?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kid_activity_log_kid_id_fkey"
+            columns: ["kid_id"]
+            isOneToOne: false
+            referencedRelation: "kid_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kid_badges: {
+        Row: {
+          badge_description: string | null
+          badge_icon: string | null
+          badge_name: string
+          earned_at: string | null
+          id: string
+          kid_id: string
+        }
+        Insert: {
+          badge_description?: string | null
+          badge_icon?: string | null
+          badge_name: string
+          earned_at?: string | null
+          id?: string
+          kid_id: string
+        }
+        Update: {
+          badge_description?: string | null
+          badge_icon?: string | null
+          badge_name?: string
+          earned_at?: string | null
+          id?: string
+          kid_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kid_badges_kid_id_fkey"
+            columns: ["kid_id"]
+            isOneToOne: false
+            referencedRelation: "kid_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kid_points: {
+        Row: {
+          id: string
+          kid_id: string
+          level: number
+          total_points: number
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          kid_id: string
+          level?: number
+          total_points?: number
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          kid_id?: string
+          level?: number
+          total_points?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kid_points_kid_id_fkey"
+            columns: ["kid_id"]
+            isOneToOne: true
+            referencedRelation: "kid_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kid_profiles: {
+        Row: {
+          age: number | null
+          avatar_url: string | null
+          created_at: string | null
+          id: string
+          parent_id: string | null
+          pin: string
+          updated_at: string | null
+          username: string
+        }
+        Insert: {
+          age?: number | null
+          avatar_url?: string | null
+          created_at?: string | null
+          id?: string
+          parent_id?: string | null
+          pin: string
+          updated_at?: string | null
+          username: string
+        }
+        Update: {
+          age?: number | null
+          avatar_url?: string | null
+          created_at?: string | null
+          id?: string
+          parent_id?: string | null
+          pin?: string
+          updated_at?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -813,7 +948,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      award_points: {
+        Args: {
+          p_activity_id: string
+          p_activity_type: string
+          p_kid_id: string
+          p_points?: number
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

@@ -3,17 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle, Gamepad2 } from "lucide-react";
+import { GraduationCap, Users, BookOpen, Trophy, Star, ArrowLeft, Puzzle, Gamepad2, Sparkles, MessageCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import KindergartenCurriculumSection from "@/components/KindergartenCurriculumSection";
+import RewardsDisplay from "@/components/RewardsDisplay";
+import AITutorChat from "@/components/AITutorChat";
 
 const LearningApp = () => {
   const [isKidLogin, setIsKidLogin] = useState(false);
   const [username, setUsername] = useState("");
   const [pin, setPin] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [kidProfile, setKidProfile] = useState<any>(null);
+  const [showAITutor, setShowAITutor] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -41,9 +45,9 @@ const LearningApp = () => {
           title: "Welcome back!",
           description: `Hi ${username}! Let's learn!`,
         });
-        // Store the kid profile in session storage
+        // Store the kid profile in session and state
         sessionStorage.setItem('kidProfile', JSON.stringify(data));
-        // TODO: Navigate to kid dashboard when it's built
+        setKidProfile(data);
       }
     } catch (error) {
       toast({
@@ -86,7 +90,26 @@ const LearningApp = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12">
-        {!isKidLogin ? (
+        {kidProfile && (
+          <div className="mb-8 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-bold">Welcome back, {kidProfile.username}! 🎉</h2>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setKidProfile(null);
+                  setIsKidLogin(false);
+                  sessionStorage.removeItem('kidProfile');
+                }}
+              >
+                Logout
+              </Button>
+            </div>
+            <RewardsDisplay kidId={kidProfile.id} />
+          </div>
+        )}
+        
+        {!isKidLogin && !kidProfile ? (
           <>
             {/* Hero Section */}
             <section className="text-center mb-16">
@@ -118,7 +141,7 @@ const LearningApp = () => {
             </section>
 
             {/* Features Grid */}
-            <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               <Card 
                 className="border-2 border-purple-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
                 onClick={() => navigate('/story-books')}
@@ -128,6 +151,19 @@ const LearningApp = () => {
                   <CardTitle>Story Books</CardTitle>
                   <CardDescription>
                     Read along with audio narration. Interactive stories that come alive!
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card 
+                className="border-2 border-pink-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => navigate('/ai-story-creator')}
+              >
+                <CardHeader>
+                  <Sparkles className="w-12 h-12 text-pink-600 mb-4" />
+                  <CardTitle>AI Story Creator</CardTitle>
+                  <CardDescription>
+                    Create your own custom stories with AI! Pick themes, lessons, and watch magic happen.
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -158,22 +194,25 @@ const LearningApp = () => {
                 </CardHeader>
               </Card>
 
-              <Card className="border-2 border-pink-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow">
+              <Card 
+                className="border-2 border-blue-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => setShowAITutor(true)}
+              >
                 <CardHeader>
-                  <Trophy className="w-12 h-12 text-pink-600 mb-4" />
-                  <CardTitle>Earn Rewards</CardTitle>
+                  <MessageCircle className="w-12 h-12 text-blue-600 mb-4" />
+                  <CardTitle>AI Tutor</CardTitle>
                   <CardDescription>
-                    Collect stars, unlock badges, and track your progress. Every worksheet is a new achievement!
+                    Ask questions and get help with any topic! Your friendly learning assistant.
                   </CardDescription>
                 </CardHeader>
               </Card>
 
-              <Card className="border-2 border-blue-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow">
+              <Card className="border-2 border-yellow-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow">
                 <CardHeader>
-                  <Users className="w-12 h-12 text-blue-600 mb-4" />
-                  <CardTitle>Parent Dashboard</CardTitle>
+                  <Trophy className="w-12 h-12 text-yellow-600 mb-4" />
+                  <CardTitle>Earn Rewards</CardTitle>
                   <CardDescription>
-                    Parents and teachers can monitor progress, assign activities, and celebrate achievements.
+                    Collect stars, unlock badges, and track your progress. Every activity is a new achievement!
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -258,6 +297,15 @@ const LearningApp = () => {
           </div>
         )}
       </main>
+
+      {/* AI Tutor Overlay */}
+      {showAITutor && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-2xl h-[600px] bg-white rounded-lg shadow-2xl">
+            <AITutorChat onClose={() => setShowAITutor(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
