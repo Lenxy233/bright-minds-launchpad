@@ -57,8 +57,16 @@ const VideoLearning = () => {
   }, []);
 
   const checkAuth = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    setIsAdmin(!!user);
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error('Auth check error:', error);
+      }
+      setIsAdmin(!!user);
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setIsAdmin(false);
+    }
   };
 
   const loadVideoLessons = async () => {
