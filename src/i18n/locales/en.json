@@ -188,7 +188,68 @@
     "instant": "✨ Instant access to everything • Works on any device • Cancel anytime",
     "allTitle": "🌟 Everything Included in Your Platform",
     "trustTitle": "🎉 Join 10,000+ Happy Parents & Teachers!",
-    "trustSubtitle": "Start your child's learning journey today with instant access to all resources"
+    "trustSubtitle": "Start your child's learning journey today with instant access to all resources",
+    "grid": {
+      "story": {
+        "title": "🎨 AI Story Creator",
+        "description": "Kids create personalized stories with AI! Choose characters, settings, and themes.",
+        "f1": "Custom character creation",
+        "f2": "Instant AI illustrations",
+        "f3": "Save & share stories"
+      },
+      "tutor": {
+        "title": "🤖 AI Learning Tutor",
+        "description": "24/7 AI assistant for homework help and learning support.",
+        "f1": "Instant answers to questions",
+        "f2": "Personalized explanations",
+        "f3": "Subject matter expertise"
+      },
+      "games": {
+        "title": "🎮 AI Game Creator",
+        "description": "Generate custom educational games with AI instantly!",
+        "f1": "Custom quiz games",
+        "f2": "Matching activities",
+        "f3": "Skill-based puzzles"
+      },
+      "stories": {
+        "title": "📚 Interactive Stories",
+        "description": "Read along with audio narration and interactive elements.",
+        "f1": "200+ illustrated stories",
+        "f2": "Audio narration",
+        "f3": "Interactive animations"
+      },
+      "creative": {
+        "title": "🎨 Creative Activities",
+        "description": "Digital art, drawing, and coloring activities for kids.",
+        "f1": "Drawing tools",
+        "f2": "Coloring pages",
+        "f3": "Art projects"
+      },
+      "curriculum": {
+        "title": "📊 Curriculum Lessons",
+        "description": "Structured learning path with comprehensive lessons.",
+        "f1": "Grade-aligned content",
+        "f2": "Progress tracking",
+        "f3": "Assessment tools"
+      }
+    },
+    "main": {
+      "story": {
+        "b1": "Choose themes and characters",
+        "b2": "AI generates unique stories",
+        "b3": "Illustrated with AI art"
+      },
+      "tutor": {
+        "b1": "Ask any learning question",
+        "b2": "Get instant explanations",
+        "b3": "Available 24/7"
+      },
+      "game": {
+        "b1": "Create custom games",
+        "b2": "Any topic or subject",
+        "b3": "Instant generation"
+      }
+    }
   },
   "curriculum": {
     "title": "🎓 Kindergarten Curriculum Resources",

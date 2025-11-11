@@ -6,22 +6,14 @@ import en from './locales/en.json';
 import es from './locales/es.json';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
-import it from './locales/it.json';
 import pt from './locales/pt.json';
-import ja from './locales/ja.json';
-import ko from './locales/ko.json';
-import zh from './locales/zh.json';
 
 const resources = {
   en: { translation: en },
   es: { translation: es },
   fr: { translation: fr },
   de: { translation: de },
-  it: { translation: it },
   pt: { translation: pt },
-  ja: { translation: ja },
-  ko: { translation: ko },
-  zh: { translation: zh },
 };
 
 // Initialize i18n asynchronously to avoid interfering with React initialization

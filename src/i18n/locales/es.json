@@ -188,7 +188,68 @@
     "instant": "✨ Acceso instantáneo a todo • Funciona en cualquier dispositivo • Cancela en cualquier momento",
     "allTitle": "🌟 Todo Incluido en Tu Plataforma",
     "trustTitle": "🎉 ¡Únete a más de 10,000 Padres y Maestros Felices!",
-    "trustSubtitle": "Comienza el viaje de aprendizaje de tu hijo hoy con acceso instantáneo a todos los recursos"
+    "trustSubtitle": "Comienza el viaje de aprendizaje de tu hijo hoy con acceso instantáneo a todos los recursos",
+    "grid": {
+      "story": {
+        "title": "🎨 Creador de Historias con IA",
+        "description": "¡Los niños crean historias personalizadas con IA! Elige personajes, escenarios y temas.",
+        "f1": "Creación de personajes personalizada",
+        "f2": "Ilustraciones instantáneas con IA",
+        "f3": "Guarda y comparte historias"
+      },
+      "tutor": {
+        "title": "🤖 Tutor de Aprendizaje con IA",
+        "description": "Asistente de IA 24/7 para ayuda con tareas y apoyo de aprendizaje.",
+        "f1": "Respuestas instantáneas a preguntas",
+        "f2": "Explicaciones personalizadas",
+        "f3": "Experiencia en materias"
+      },
+      "games": {
+        "title": "🎮 Creador de Juegos con IA",
+        "description": "¡Genera juegos educativos personalizados con IA al instante!",
+        "f1": "Juegos de preguntas personalizados",
+        "f2": "Actividades de emparejamiento",
+        "f3": "Rompecabezas basados en habilidades"
+      },
+      "stories": {
+        "title": "📚 Historias Interactivas",
+        "description": "Lee junto con narración de audio y elementos interactivos.",
+        "f1": "Más de 200 historias ilustradas",
+        "f2": "Narración de audio",
+        "f3": "Animaciones interactivas"
+      },
+      "creative": {
+        "title": "🎨 Actividades Creativas",
+        "description": "Arte digital, dibujo y actividades de coloreo para niños.",
+        "f1": "Herramientas de dibujo",
+        "f2": "Páginas para colorear",
+        "f3": "Proyectos de arte"
+      },
+      "curriculum": {
+        "title": "📊 Lecciones de Currículo",
+        "description": "Ruta de aprendizaje estructurada con lecciones completas.",
+        "f1": "Contenido alineado por grado",
+        "f2": "Seguimiento de progreso",
+        "f3": "Herramientas de evaluación"
+      }
+    },
+    "main": {
+      "story": {
+        "b1": "Elige temas y personajes",
+        "b2": "La IA genera historias únicas",
+        "b3": "Ilustrado con arte de IA"
+      },
+      "tutor": {
+        "b1": "Haz cualquier pregunta de aprendizaje",
+        "b2": "Obtén explicaciones instantáneas",
+        "b3": "Disponible 24/7"
+      },
+      "game": {
+        "b1": "Crea juegos personalizados",
+        "b2": "Cualquier tema o materia",
+        "b3": "Generación instantánea"
+      }
+    }
   },
   "curriculum": {
     "title": "🎓 Recursos del Currículo de Kindergarten",

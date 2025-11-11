@@ -2,10 +2,26 @@
   "hero": {
     "title": "Verwandeln Sie das Lernen Ihres Kindes mit Spaßigen Bildungsaktivitäten!",
     "subtitle": "Sofort herunterladen und zusehen, wie Ihre Kinder mit unseren fesselnden Aktivitäten und Unterrichtsplänen lernen und Spaß haben.",
-    "cta": "Holen Sie sich Ihr Bundle Jetzt - Nur 19,99$!"
+    "cta": "Holen Sie sich Ihr Bundle Jetzt - Nur 19,99$!",
+    "creativityBadge": "🎨 Kreativität Entfesselt! ✨",
+    "perfectTitle": "🎯 Perfekt Für",
+    "perfectTeachersTitle": "👩‍🏫 Lehrer",
+    "perfectTeachersDesc": "Erstellen Sie ansprechende Unterrichtsmaterialien und ergänzende Ressourcen",
+    "perfectParentsTitle": "👨‍👩‍👧‍👦 Eltern",
+    "perfectParentsDesc": "Unterstützen Sie die Lernreise Ihres Kindes zu Hause mit Spaßaktivitäten",
+    "perfectSellersTitle": "📚 Buchhändler",
+    "perfectSellersDesc": "Erweitern Sie Ihr Inventar mit digitalen Bildungsprodukten",
+    "statsInstant": "⚡ Sofortiger Download",
+    "statsUsers": "👥 10.000+ Nutzer",
+    "statsPlr": "💰 PLR-Rechte",
+    "statsBundle": "🎁 Komplettes Bundle"
   },
   "products": {
     "title": "Wählen Sie Ihr Perfektes Bundle",
+    "subtitle": "✨ Alles, was Sie brauchen, um Ihr Bildungsprodukte-Geschäft zu starten! 🚀",
+    "sneakPeekTitle": "🌟 Vorschau auf den Paketinhalt 🎀",
+    "sneakPeekSubtitle": "Werfen Sie einen Blick auf die erstaunlichen Inhalte und Designs, die Ihre Kunden lieben werden! 💕",
+    "plusMore": "🎨 <strong>Plus Hunderte mehr</strong> Aktivitäten, Geschichten, Spiele und Bildungsmaterialien! 🌈",
     "kidsBundle": {
       "title": "Kinder-Lehrplan Bundle",
       "description": "Komplette Bildungsaktivitäten und Unterrichtspläne für Alter 3-12",
@@ -20,16 +36,47 @@
       "title": "Animations-Video Bundle",
       "description": "Fesselnde animierte Videos für kreatives Lernen",
       "price": "19,99$"
+    },
+    "items": {
+      "stories": "200 Fertige Illustrierte Geschichten",
+      "storiesDesc": "Professionell erstellte Geschichten bereit zum Veröffentlichen",
+      "riddles": "50+ Gehirnstärkende Rätsel",
+      "riddlesDesc": "Ansprechende Puzzles zur Förderung des kritischen Denkens",
+      "puzzles": "10+ Interaktive Puzzles",
+      "puzzlesDesc": "Spaßige digitale Puzzles zum Lernen",
+      "videos": "Animierte Videos",
+      "videosDesc": "Hochwertige Bildungsvideos",
+      "template": "Erstellen-Sie-Ihr-Eigenes-Buch-Vorlage",
+      "templateDesc": "Anpassbare Vorlagen zum Erstellen einzigartiger Bücher",
+      "curriculum": "Kindergarten-Lehrplan-Ressourcen",
+      "curriculumDesc": "Komplette Lehrplanmaterialien für Frühschüler",
+      "aiPrompts": "600 KI-Prompts für ChatGPT & MidJourney",
+      "aiPromptsDesc": "KI-gestützte Tools zur Content-Erstellung",
+      "games": "10+ No-Code-Online-Spiele",
+      "gamesDesc": "Sofort einsatzbereite Bildungsspiele",
+      "science": "40+ Einfache Heimexperimente",
+      "scienceDesc": "Praktische Lernaktivitäten",
+      "youtube": "Bearbeitbare Animierte YouTube-Videos",
+      "youtubeDesc": "Kinderfreundliche Inhalte für YouTube-Kanäle",
+      "robotics": "Einführung in die Robotik",
+      "roboticsDesc": "STEM-Bildungsressourcen",
+      "plr": "PLR-Rechte Enthalten",
+      "plrDesc": "Kommerzielle Lizenz zum Verkauf von Produkten"
     }
   },
   "benefits": {
-    "title": "Warum Eltern Unsere Bundles Lieben",
-    "instant": "Sofortiger Download",
-    "instantDesc": "Sofortiger Zugang zu allen Materialien",
-    "quality": "Hochwertige Inhalte",
-    "qualityDesc": "Professionell gestaltete Bildungsmaterialien",
-    "support": "Lebenslanger Support",
-    "supportDesc": "Hilfe, wann immer Sie sie brauchen"
+    "title": "🌟 Warum Bright Minds Academy Wählen? 🎯",
+    "subtitle": "🚀 Verwandeln Sie Ihre Leidenschaft für Bildung in ein profitables Geschäft! 💰",
+    "items": [
+      "💰 Starten Sie Ihr Eigenes Geschäft - Verkaufen Sie auf Amazon, Etsy oder Ihrer eigenen Website!",
+      "📚 Fertige Inhalte - Keine Erstellungszeit erforderlich, einfach umbenennen und verkaufen",
+      "🎨 Volle PLR-Rechte - Vollständiges Eigentum zum Anpassen und Weiterverkaufen",
+      "💻 Digitale Produkte - Keine Lagerbestände, Versand oder Gemeinkosten",
+      "🌍 Globaler Markt - Erreichen Sie Kunden weltweit mit Sofortdownloads",
+      "⚡ Schneller Start - Bringen Sie Ihr Geschäft in Tagen statt Monaten zum Laufen"
+    ],
+    "startSellingOn": "Beginnen Sie mit dem Verkauf auf:",
+    "morePlatforms": "...und vielen weiteren Plattformen!"
   },
   "faq": {
     "title": "Häufig Gestellte Fragen",
@@ -46,8 +93,8 @@
     "hoursAgo": "Stunden her"
   },
   "cta": {
-    "title": "Bereit, das Lernen Ihres Kindes zu Verwandeln?",
-    "subtitle": "Schließen Sie sich Tausenden von Eltern an, die bereits die Freude an spaßigen, bildenden Aktivitäten entdeckt haben.",
+    "title": "🚀 Bereit, Ihr Bildungsimperium zu Starten? 🌟",
+    "subtitle": "🎉 Schließen Sie sich Tausenden erfolgreichen Unternehmern an, die ihre Bildungsmarken mit unserem bewährten System gestartet haben! 💫",
     "button": "Holen Sie sich Ihr Bundle Jetzt - 19,99$"
   },
   "footer": {
@@ -58,12 +105,16 @@
     "contact": "Kontaktieren Sie Uns",
     "rights": "Alle Rechte vorbehalten."
   },
+  "header": {
+    "getStarted": "Jetzt Starten"
+  },
   "auth": {
     "signIn": "Anmelden",
     "signUp": "Registrieren",
     "email": "E-Mail",
     "password": "Passwort",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "kidsLearning": "Kinder Lernen"
   },
   "common": {
     "loading": "Laden...",
@@ -71,5 +122,227 @@
     "retry": "Erneut Versuchen",
     "back": "Zurück",
     "home": "Startseite"
+  },
+  "reviews": {
+    "title": "💖 Was Unsere Erstaunlichen Kunden Sagen 🌟",
+    "subtitle": "🎉 Schließen Sie sich Tausenden erfolgreichen Pädagogen und Unternehmern an! 🚀",
+    "rating": "✨ 4,9/5 aus 10.000+ Bewertungen 🎯"
+  },
+  "video": {
+    "title": "🎬 Sehen Sie Unsere Bildungsprodukte in Aktion! 🌟",
+    "subtitle": "Sehen Sie, wie unser erstaunliches Bildungspaket das Lernen transformieren kann! 🚀",
+    "clickPlay": "🔊 <strong>Klicken Sie zum Abspielen mit Ton</strong> und entdecken Sie die Magie unserer Bildungsressourcen! ✨"
+  },
+  "amazonKdp": {
+    "title": "📚 Amazon KDP Fertige Bücher 🌟",
+    "subtitle": "Professionelle Kinderbuchdesigns bereit zur sofortigen Veröffentlichung auf Amazon KDP! 🚀",
+    "heading": "🎨 Professionelle Buchumschlag-Designs",
+    "quality": "Hochwertige, auffällige Designs, die auf dem Marktplatz herausstechen! ✨",
+    "badge": "📚 Veröffentlichungsbereite Designs 🌟",
+    "perfect": "💡 <strong>Perfekt für Amazon KDP-Verkäufer</strong>, die hochwertige Kinderbücher veröffentlichen möchten! 📖"
+  },
+  "science": {
+    "title": "🧪 Erstaunliche Wissenschaftsexperimente zu Hause! 🔬",
+    "subtitle": "Verwandeln Sie Ihre Küche in ein magisches Wissenschaftslabor mit 40+ einfachen Experimenten! ✨",
+    "slimeHeading": "Hausgemachter Schleim & Mehr! 🌟",
+    "slimeDesc": "Sehen Sie, wie die Augen Ihres Kindes leuchten, während sie farbenfrohen Schleim erstellen, ausbrechende Vulkane und magische farbwechselnde Tränke mit einfachen Haushaltszutaten! 🎨",
+    "experiments": "40+ Experimente",
+    "experimentsSafe": "Einfach & Sicher",
+    "stem": "STEM-Lernen",
+    "stemFun": "Praktischer Spaß",
+    "discoverTitle": "Was Sie Entdecken Werden:",
+    "discover1": "Erstellen Sie Regenbogenschleim mit verschiedenen Texturen",
+    "discover2": "Lassen Sie Vulkane mit sicheren Zutaten ausbrechen",
+    "discover3": "Mischen Sie magische farbwechselnde Tränke",
+    "discover4": "Lernen Sie echte Wissenschaft während Sie Spaß haben!",
+    "ctaTitle": "🚀 Bereit, Ihr Wissenschaftsabenteuer zu Starten? 🚀",
+    "ctaSubtitle": "Schließen Sie sich Tausenden von Familien an, die bereits Spaß mit Wissenschaft zu Hause haben!",
+    "ctaButton": "Sofortigen Zugang Jetzt Erhalten! ✨"
+  },
+  "platform": {
+    "badge": "Live-Plattform-Vorschau",
+    "title": "Sehen Sie die Magie in Aktion! ✨",
+    "subtitle": "Erhalten Sie sofortigen Zugang zu unserer interaktiven Kinder-Lernplattform mit Hunderten ansprechender Aktivitäten",
+    "aiTitle": "🚀 KI-gestützte Content-Erstellungsplattform",
+    "aiSubtitle": "Erstellen Sie unbegrenzt personalisierte Inhalte mit KI! Generieren Sie Geschichten, erhalten Sie Nachhilfe und erstellen Sie benutzerdefinierte Spiele - alles angetrieben von modernster KI-Technologie.",
+    "storyTitle": "🎨 KI-Geschichtenersteller",
+    "storyDesc": "Kinder erstellen personalisierte Geschichten mit KI! Wählen Sie Charaktere, Szenarien und Themen - die KI generiert sofort einzigartige illustrierte Geschichten.",
+    "tutorTitle": "🤖 KI-Lern-Tutor",
+    "tutorDesc": "24/7 KI-Assistent, der bei Hausaufgaben hilft, Konzepte erklärt und personalisierte Lernunterstützung für jedes Kind bietet.",
+    "gameTitle": "🎮 KI-Spieleersteller",
+    "gameDesc": "Generieren Sie sofort benutzerdefinierte Bildungsspiele mit KI! Erstellen Sie Quiz-Spiele, Matching-Aktivitäten und Puzzles, die auf jedes Thema oder Fähigkeitsniveau zugeschnitten sind.",
+    "moreTitle": "Und noch viel mehr:",
+    "storyBooks": "Interaktive Geschichtenbücher",
+    "storyBooksDesc": "Audio-Erzählung & Animationen",
+    "drawing": "Zeichnen & Ausmalen",
+    "drawingDesc": "Digitale Kunstaktivitäten",
+    "curriculum": "Lehrplan-Lektionen",
+    "curriculumDesc": "Strukturierter Lernpfad",
+    "parentDash": "Eltern-Dashboard",
+    "parentDashDesc": "Fortschritt & Erfolge verfolgen",
+    "worksheets": "Druckbare Arbeitsblätter",
+    "worksheetsDesc": "200+ herunterladbare Aktivitäten",
+    "multiLang": "Mehrsprachig",
+    "multiLangDesc": "In Ihrer Sprache lernen",
+    "ctaButton": "🎯 Vollständigen Plattformzugang Erhalten - Nur 39$",
+    "instant": "✨ Sofortiger Zugang zu allem • Funktioniert auf jedem Gerät • Jederzeit kündbar",
+    "allTitle": "🌟 Alles in Ihrer Plattform Enthalten",
+    "trustTitle": "🎉 Schließen Sie sich 10.000+ glücklichen Eltern & Lehrern an!",
+    "trustSubtitle": "Beginnen Sie noch heute die Lernreise Ihres Kindes mit sofortigem Zugang zu allen Ressourcen",
+    "grid": {
+      "story": {
+        "title": "🎨 KI-Geschichtenersteller",
+        "description": "Kinder erstellen personalisierte Geschichten mit KI! Wählen Sie Charaktere, Szenarien und Themen.",
+        "f1": "Benutzerdefinierte Charaktererstellung",
+        "f2": "Sofortige KI-Illustrationen",
+        "f3": "Geschichten speichern & teilen"
+      },
+      "tutor": {
+        "title": "🤖 KI-Lern-Tutor",
+        "description": "24/7 KI-Assistent für Hausaufgabenhilfe und Lernunterstützung.",
+        "f1": "Sofortige Antworten auf Fragen",
+        "f2": "Personalisierte Erklärungen",
+        "f3": "Fachkompetenz"
+      },
+      "games": {
+        "title": "🎮 KI-Spieleersteller",
+        "description": "Generieren Sie sofort benutzerdefinierte Bildungsspiele mit KI!",
+        "f1": "Benutzerdefinierte Quiz-Spiele",
+        "f2": "Matching-Aktivitäten",
+        "f3": "Fähigkeitsbasierte Puzzles"
+      },
+      "stories": {
+        "title": "📚 Interaktive Geschichten",
+        "description": "Lesen Sie mit Audio-Erzählung und interaktiven Elementen.",
+        "f1": "200+ illustrierte Geschichten",
+        "f2": "Audio-Erzählung",
+        "f3": "Interaktive Animationen"
+      },
+      "creative": {
+        "title": "🎨 Kreative Aktivitäten",
+        "description": "Digitale Kunst, Zeichen- und Ausmalaktivitäten für Kinder.",
+        "f1": "Zeichenwerkzeuge",
+        "f2": "Ausmalseiten",
+        "f3": "Kunstprojekte"
+      },
+      "curriculum": {
+        "title": "📊 Lehrplan-Lektionen",
+        "description": "Strukturierter Lernpfad mit umfassenden Lektionen.",
+        "f1": "Nach Klassen ausgerichtete Inhalte",
+        "f2": "Fortschrittsverfolgung",
+        "f3": "Bewertungstools"
+      }
+    },
+    "main": {
+      "story": {
+        "b1": "Themen und Charaktere wählen",
+        "b2": "KI generiert einzigartige Geschichten",
+        "b3": "Illustriert mit KI-Kunst"
+      },
+      "tutor": {
+        "b1": "Stellen Sie jede Lernfrage",
+        "b2": "Erhalten Sie sofortige Erklärungen",
+        "b3": "24/7 verfügbar"
+      },
+      "game": {
+        "b1": "Benutzerdefinierte Spiele erstellen",
+        "b2": "Jedes Thema oder Fach",
+        "b3": "Sofortige Generierung"
+      }
+    }
+  },
+  "curriculum": {
+    "title": "🎓 Kindergarten-Lehrplan-Ressourcen",
+    "subtitle": "Umfassende Lernmaterialien, die alle wesentlichen Bereiche der Kindergartenentwicklung abdecken",
+    "footer": "✨ Alle Ressourcen sind druckbar, einfach zu verwenden und auf Kindergartenstandards ausgerichtet"
+  },
+  "floatingButton": {
+    "text": "🎯 Sofortigen Zugang Jetzt Erhalten ✨"
+  },
+  "faqSection": {
+    "title": "🤔 Häufig Gestellte Fragen 💭",
+    "subtitle": "Alles, was Sie über das Bright Minds Academy Bundle wissen müssen! ✨",
+    "questions": [
+      {
+        "question": "🎨 In welchen Formaten sind die Dateien?",
+        "answer": "Alle Materialien kommen im benutzerfreundlichen PDF-Format, perfekt zum Drucken oder zur digitalen Nutzung. Einige Artikel enthalten auch bearbeitbare Formate zur Anpassung!"
+      },
+      {
+        "question": "💰 Kann ich diese Produkte wirklich verkaufen?",
+        "answer": "Absolut! Sie erhalten volle PLR (Private Label Rights), was bedeutet, dass Sie diese Produkte umbenennen, modifizieren und als Ihre eigenen verkaufen können. Bauen Sie Ihr Bildungsimperium auf!"
+      },
+      {
+        "question": "📚 Ist dies für absolute Anfänger geeignet?",
+        "answer": "Ja! Alles ist sofort einsatzbereit. Keine besonderen Fähigkeiten erforderlich - einfach herunterladen, umbenennen (oder so verwenden wie es ist) und mit dem Verkauf beginnen!"
+      },
+      {
+        "question": "⚡ Wie schnell kann ich auf alles zugreifen?",
+        "answer": "Sofort! Nach dem Kauf erhalten Sie sofortigen Zugang zum Herunterladen aller Materialien. Starten Sie noch heute Ihr Geschäft!"
+      },
+      {
+        "question": "🌍 Kann ich in mehreren Sprachen verkaufen?",
+        "answer": "Ja! Der visuelle Inhalt funktioniert global, und Sie können Textmaterialien in jede gewünschte Sprache übersetzen!"
+      },
+      {
+        "question": "💻 Brauche ich eine Website zum Verkaufen?",
+        "answer": "Nicht erforderlich! Sie können auf Plattformen wie Amazon KDP, Etsy, Gumroad oder Teachers Pay Teachers verkaufen. Aber eine eigene Website bietet Ihnen noch mehr Möglichkeiten!"
+      }
+    ],
+    "stillQuestions": "Haben Sie noch Fragen? 🤗",
+    "supportText": "Unser freundliches Support-Team ist hier, um Ihnen zum Erfolg zu verhelfen!",
+    "contactSupport": "Support Kontaktieren ✨"
+  },
+  "footerSection": {
+    "tagline": "🌟 Die nächste Generation durch innovative Bildungsprodukte stärken 🎨",
+    "privacyPolicy": "Datenschutzrichtlinie",
+    "dataProtection": "Datenschutzrichtlinie",
+    "termsConditions": "Allgemeine Geschäftsbedingungen",
+    "copyright": "© 2024 Bright Minds Academy. Alle Rechte vorbehalten. ✨"
+  },
+  "learningApp": {
+    "back": "Zurück zur Hauptseite",
+    "title": "Kinder-Lernplattform",
+    "manageLessons": "Lektionen Verwalten",
+    "parentLogin": "Eltern/Lehrer-Anmeldung",
+    "welcomeBack": "Willkommen zurück, {{name}}! 🎉",
+    "logout": "Abmelden",
+    "heroTitle": "Spaßiges Lernen für Helle Köpfe!",
+    "heroSubtitle": "Eine sichere, bunte Welt, in der Kinder Arbeitsblätter erkunden, Abzeichen verdienen und in ihrem eigenen Tempo lernen.",
+    "kidLogin": "Kinder-Anmeldung",
+    "parentAccess": "Eltern/Lehrer-Zugang",
+    "cardStoryBooksTitle": "Geschichtenbücher",
+    "cardStoryBooksDesc": "Lesen Sie mit Audio-Erzählung. Interaktive Geschichten, die zum Leben erwachen!",
+    "cardAiStoryTitle": "KI-Geschichtenersteller",
+    "cardAiStoryDesc": "Erstellen Sie Ihre eigenen benutzerdefinierten Geschichten mit KI! Wählen Sie Themen, Lektionen und beobachten Sie die Magie!",
+    "cardPuzzlesTitle": "Puzzles",
+    "cardPuzzlesDesc": "Zählen, zuordnen und lustige Puzzles lösen. Lernen Sie beim Spielen!",
+    "cardGamesLibTitle": "Spielebibliothek",
+    "cardGamesLibDesc": "Spielen Sie lustige Lernspiele! Quiz-Spiele, Matching-Aktivitäten und mehr.",
+    "cardCreateAiGameTitle": "KI-Spiel Erstellen",
+    "cardCreateAiGameDesc": "Erstellen Sie benutzerdefinierte Lernspiele mit KI. Erstellen Sie Ihre eigenen Bildungsaktivitäten!",
+    "cardAiTutorTitle": "KI-Tutor",
+    "cardAiTutorDesc": "Stellen Sie Fragen und erhalten Sie Hilfe zu jedem Thema! Ihr freundlicher Lernassistent.",
+    "cardVideoTitle": "Video-Lernen",
+    "cardVideoDesc": "Sehen Sie sich Bildungsvideos an und nehmen Sie an Quiz teil! Lernen Sie durch Zuschauen und Testen Ihres Wissens.",
+    "cardRewardsTitle": "Belohnungen Verdienen",
+    "cardRewardsDesc": "Sammeln Sie Sterne, schalten Sie Abzeichen frei und verfolgen Sie Ihren Fortschritt. Jede Aktivität ist eine neue Leistung!",
+    "ctaTitle": "Bereit, Mit dem Lernen zu Beginnen?",
+    "ctaSubtitle": "Schließen Sie sich Tausenden von Kindern auf ihrer Lernreise an!",
+    "ctaButton": "Jetzt Loslegen",
+    "formWelcome": "Willkommen Zurück!",
+    "formSubtitle": "Geben Sie Ihren Benutzernamen und PIN ein, um weiter zu lernen",
+    "formUsername": "Benutzername",
+    "formPin": "PIN (4 Ziffern)",
+    "formPlaceholderUsername": "Ihr Benutzername",
+    "formPlaceholderPin": "••••",
+    "formLogin": "Lernen Beginnen!",
+    "formLoggingIn": "Anmeldung läuft...",
+    "formBack": "Zurück",
+    "toastLoginFailedTitle": "Anmeldung Fehlgeschlagen",
+    "toastLoginFailedDesc": "Ungültiger Benutzername oder PIN. Bitte versuchen Sie es erneut.",
+    "toastWelcomeTitle": "Willkommen zurück!",
+    "toastWelcomeDesc": "Hallo {{name}}! Lass uns lernen!",
+    "toastErrorTitle": "Fehler",
+    "toastErrorDesc": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut."
   }
 }

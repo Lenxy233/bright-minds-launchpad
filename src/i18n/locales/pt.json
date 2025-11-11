@@ -188,7 +188,68 @@
     "instant": "✨ Acesso instantâneo a tudo • Funciona em qualquer dispositivo • Cancele a qualquer momento",
     "allTitle": "🌟 Tudo Incluído na Sua Plataforma",
     "trustTitle": "🎉 Junte-se a Mais de 10.000 Pais e Professores Felizes!",
-    "trustSubtitle": "Comece a jornada de aprendizado do seu filho hoje com acesso instantâneo a todos os recursos"
+    "trustSubtitle": "Comece a jornada de aprendizado do seu filho hoje com acesso instantâneo a todos os recursos",
+    "grid": {
+      "story": {
+        "title": "🎨 Criador de Histórias IA",
+        "description": "As crianças criam histórias personalizadas com IA! Escolha personagens, cenários e temas.",
+        "f1": "Criação de personagens personalizada",
+        "f2": "Ilustrações instantâneas com IA",
+        "f3": "Salvar e compartilhar histórias"
+      },
+      "tutor": {
+        "title": "🤖 Tutor de Aprendizado IA",
+        "description": "Assistente IA 24/7 para ajuda com lição de casa e suporte de aprendizado.",
+        "f1": "Respostas instantâneas para perguntas",
+        "f2": "Explicações personalizadas",
+        "f3": "Expertise em matérias"
+      },
+      "games": {
+        "title": "🎮 Criador de Jogos IA",
+        "description": "Gere jogos educacionais personalizados instantaneamente com IA!",
+        "f1": "Jogos de quiz personalizados",
+        "f2": "Atividades de correspondência",
+        "f3": "Quebra-cabeças baseados em habilidades"
+      },
+      "stories": {
+        "title": "📚 Histórias Interativas",
+        "description": "Leia junto com narração de áudio e elementos interativos.",
+        "f1": "Mais de 200 histórias ilustradas",
+        "f2": "Narração de áudio",
+        "f3": "Animações interativas"
+      },
+      "creative": {
+        "title": "🎨 Atividades Criativas",
+        "description": "Arte digital, desenho e atividades de colorir para crianças.",
+        "f1": "Ferramentas de desenho",
+        "f2": "Páginas para colorir",
+        "f3": "Projetos de arte"
+      },
+      "curriculum": {
+        "title": "📊 Lições de Currículo",
+        "description": "Caminho de aprendizado estruturado com lições completas.",
+        "f1": "Conteúdo alinhado por série",
+        "f2": "Acompanhamento de progresso",
+        "f3": "Ferramentas de avaliação"
+      }
+    },
+    "main": {
+      "story": {
+        "b1": "Escolha temas e personagens",
+        "b2": "A IA gera histórias únicas",
+        "b3": "Ilustrado com arte de IA"
+      },
+      "tutor": {
+        "b1": "Faça qualquer pergunta de aprendizado",
+        "b2": "Obtenha explicações instantâneas",
+        "b3": "Disponível 24/7"
+      },
+      "game": {
+        "b1": "Crie jogos personalizados",
+        "b2": "Qualquer tópico ou matéria",
+        "b3": "Geração instantânea"
+      }
+    }
   },
   "curriculum": {
     "title": "🎓 Recursos de Currículo Infantil",
