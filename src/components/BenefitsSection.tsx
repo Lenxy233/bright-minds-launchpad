@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 
 const BenefitsSection = () => {
   const { t } = useTranslation();
-  const benefits = (t('benefits.items', { returnObjects: true }) as string[]) || [];
+  const benefitsRaw = t('benefits.items', { returnObjects: true }) as unknown;
+  const benefits = Array.isArray(benefitsRaw) ? (benefitsRaw as string[]) : [];
 
   const platforms = [
     { name: "Amazon", image: "/lovable-uploads/39ffc0e5-e1bf-4850-9007-9b5ea749c08e.png" },

@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next";
 
 const FAQSection = () => {
   const { t } = useTranslation();
-  const questions = (t('faqSection.questions', { returnObjects: true }) as Array<{ question: string; answer: string }>) || [];
+  const questionsRaw = t('faqSection.questions', { returnObjects: true }) as unknown;
+  const questions = Array.isArray(questionsRaw) ? (questionsRaw as Array<{ question: string; answer: string }>) : [];
   
   const icons = [
     <Sparkles className="w-5 h-5 text-purple-600" />,
