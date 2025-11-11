@@ -56,6 +56,22 @@ const VideoLearning = () => {
     loadVideoLessons();
   }, []);
 
+  // Keep isAdmin in sync with auth state
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAdmin(!!session?.user);
+    });
+
+    // Also set initial state from existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAdmin(!!session?.user);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const checkAuth = async () => {
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
