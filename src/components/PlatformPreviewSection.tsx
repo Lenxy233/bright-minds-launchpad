@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, BookOpen, Brain, Gamepad2, Sparkles, Users, Palette, Music, Globe } from "lucide-react";
+import { ArrowRight, Sparkles, Wand2, MessageCircle, Gamepad2, BookOpen, Palette, Brain } from "lucide-react";
 
 interface PlatformPreviewSectionProps {
   onPurchase: () => void;
@@ -9,52 +9,40 @@ interface PlatformPreviewSectionProps {
 const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => {
   const platformFeatures = [
     {
-      icon: BookOpen,
-      title: "Alphabet & Letter Recognition",
-      image: "/lovable-uploads/012a16e7-1d39-4676-911a-d55fc31ccf4c.png",
-      description: "Interactive letter tracing and recognition activities"
+      icon: Wand2,
+      title: "AI Story Generator",
+      description: "Create personalized stories with AI - kids choose characters, themes, and watch their imagination come to life!",
+      features: ["Custom story creation", "AI-powered illustrations", "Interactive storytelling"]
     },
     {
-      icon: Brain,
-      title: "Numbers & Math Practice",
-      image: "/lovable-uploads/0cc9d733-7771-46ef-97e1-3c3208a21a21.png",
-      description: "Counting, addition, subtraction with visual aids"
-    },
-    {
-      icon: Palette,
-      title: "Creative Arts & Drawing",
-      image: "/lovable-uploads/5a15895f-5d6a-416c-8430-ed2e5d95e0a5.png",
-      description: "Coloring, drawing, and artistic activities"
-    },
-    {
-      icon: Users,
-      title: "Emotions & Social Skills",
-      image: "/lovable-uploads/5d136223-da36-45ba-9203-4822b9d6d04c.png",
-      description: "Understanding feelings and building friendships"
+      icon: MessageCircle,
+      title: "AI Learning Tutor",
+      description: "24/7 AI assistant that helps with homework, answers questions, and provides personalized learning support.",
+      features: ["Instant homework help", "Explains concepts clearly", "Adapts to learning pace"]
     },
     {
       icon: Gamepad2,
-      title: "Interactive Puzzles & Games",
-      image: "/lovable-uploads/65f507f9-c4c2-46d8-94c8-ecc830938f3d.png",
-      description: "Engaging puzzles and educational games"
+      title: "Educational Games",
+      description: "Fun interactive games teaching alphabet, numbers, emotions, geography, and more through play.",
+      features: ["Drag-and-drop activities", "Puzzle challenges", "Progress tracking"]
     },
     {
-      icon: Globe,
-      title: "Geography & World Learning",
-      image: "/lovable-uploads/69fc66c6-3b7b-4fa2-9348-5adcf71e90ee.png",
-      description: "Explore countries and famous landmarks"
+      icon: BookOpen,
+      title: "Interactive Stories",
+      description: "Engaging story books with audio narration, animations, and interactive elements for immersive reading.",
+      features: ["Audio narration", "Animated pages", "Reading comprehension"]
     },
     {
-      icon: Music,
-      title: "Story Books & Reading",
-      image: "/lovable-uploads/6d9ca897-8497-44f2-bd2a-09c3cc1eb7d9.png",
-      description: "Interactive stories with audio narration"
+      icon: Palette,
+      title: "Creative Activities",
+      description: "Drawing, coloring, and art activities that encourage creativity and fine motor skills development.",
+      features: ["Digital coloring", "Drawing canvas", "Creative challenges"]
     },
     {
       icon: Brain,
-      title: "Science Activities",
-      image: "/lovable-uploads/7713de76-ba70-4aed-9824-4d21f12d9617.png",
-      description: "Hands-on experiments and nature exploration"
+      title: "Curriculum Lessons",
+      description: "Structured lessons covering kindergarten curriculum - math, language, science, and social skills.",
+      features: ["Age-appropriate content", "Step-by-step lessons", "Parent dashboard"]
     }
   ];
 
@@ -75,93 +63,145 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
           </p>
         </div>
 
-        {/* Main Preview Card */}
+        {/* Hero Platform Card */}
         <Card className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-8 md:p-12 border-4 border-purple-200 shadow-2xl mb-12">
           <div className="text-center mb-8">
             <h3 className="text-3xl md:text-4xl font-bold text-purple-800 mb-4">
-              🎓 Full Learning Platform Access
+              🚀 Interactive Kids Learning Platform
             </h3>
             <p className="text-gray-700 text-lg max-w-3xl mx-auto">
-              Get instant access to our complete kids learning platform with hundreds of activities, 
-              interactive lessons, games, worksheets, and educational resources - everything your child needs!
+              A complete web-based learning platform with AI-powered features, interactive games, 
+              and educational activities - accessible anytime, anywhere!
             </p>
           </div>
 
-          {/* Screenshot Gallery */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="space-y-2">
-              <img 
-                src="/lovable-uploads/012a16e7-1d39-4676-911a-d55fc31ccf4c.png" 
-                alt="Alphabet tracing activities"
-                className="rounded-lg shadow-lg w-full h-40 object-cover transform hover:scale-105 transition-transform border-2 border-purple-200"
-              />
-              <p className="text-sm font-semibold text-gray-700 text-center">Alphabet Learning</p>
+          {/* Main Features Showcase */}
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {/* AI Story Generator */}
+            <div className="bg-white rounded-xl p-6 border-2 border-purple-200 hover:shadow-xl transition-all">
+              <div className="bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg p-4 mb-4 flex items-center justify-center">
+                <Wand2 className="w-12 h-12 text-white" />
+              </div>
+              <h4 className="text-xl font-bold text-gray-800 mb-2">🎨 AI Story Creator</h4>
+              <p className="text-gray-600 mb-4">
+                Kids create personalized stories with AI! Choose characters, settings, and themes - 
+                the AI generates unique illustrated stories instantly.
+              </p>
+              <div className="space-y-2 text-sm text-gray-700">
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Generate custom stories with AI</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>AI-generated illustrations</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Save & share creations</span>
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <img 
-                src="/lovable-uploads/0cc9d733-7771-46ef-97e1-3c3208a21a21.png" 
-                alt="Math worksheets"
-                className="rounded-lg shadow-lg w-full h-40 object-cover transform hover:scale-105 transition-transform border-2 border-purple-200"
-              />
-              <p className="text-sm font-semibold text-gray-700 text-center">Math Practice</p>
+
+            {/* AI Tutor */}
+            <div className="bg-white rounded-xl p-6 border-2 border-purple-200 hover:shadow-xl transition-all">
+              <div className="bg-gradient-to-br from-blue-400 to-cyan-400 rounded-lg p-4 mb-4 flex items-center justify-center">
+                <MessageCircle className="w-12 h-12 text-white" />
+              </div>
+              <h4 className="text-xl font-bold text-gray-800 mb-2">🤖 AI Learning Tutor</h4>
+              <p className="text-gray-600 mb-4">
+                24/7 AI assistant that helps with homework, explains concepts, and provides 
+                personalized learning support for every child.
+              </p>
+              <div className="space-y-2 text-sm text-gray-700">
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Instant homework help</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Explains difficult concepts</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Adapts to learning style</span>
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <img 
-                src="/lovable-uploads/5d136223-da36-45ba-9203-4822b9d6d04c.png" 
-                alt="Emotions learning"
-                className="rounded-lg shadow-lg w-full h-40 object-cover transform hover:scale-105 transition-transform border-2 border-purple-200"
-              />
-              <p className="text-sm font-semibold text-gray-700 text-center">Social Skills</p>
-            </div>
-            <div className="space-y-2">
-              <img 
-                src="/lovable-uploads/65f507f9-c4c2-46d8-94c8-ecc830938f3d.png" 
-                alt="Interactive games"
-                className="rounded-lg shadow-lg w-full h-40 object-cover transform hover:scale-105 transition-transform border-2 border-purple-200"
-              />
-              <p className="text-sm font-semibold text-gray-700 text-center">Fun Games</p>
+
+            {/* Interactive Games */}
+            <div className="bg-white rounded-xl p-6 border-2 border-purple-200 hover:shadow-xl transition-all">
+              <div className="bg-gradient-to-br from-orange-400 to-red-400 rounded-lg p-4 mb-4 flex items-center justify-center">
+                <Gamepad2 className="w-12 h-12 text-white" />
+              </div>
+              <h4 className="text-xl font-bold text-gray-800 mb-2">🎮 Educational Games</h4>
+              <p className="text-gray-600 mb-4">
+                Dozens of interactive games teaching alphabet, numbers, emotions, geography, 
+                and more through engaging play-based learning.
+              </p>
+              <div className="space-y-2 text-sm text-gray-700">
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Drag-and-drop activities</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Interactive puzzles</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500">✓</span>
+                  <span>Progress tracking</span>
+                </div>
+              </div>
             </div>
           </div>
 
+          {/* Additional Features */}
           <div className="bg-white rounded-xl p-6 mb-6">
-            <h4 className="text-xl font-bold text-gray-800 mb-4 text-center">What You Get:</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">200+ Interactive Worksheets</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">Educational Games & Puzzles</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">Story Books with Audio</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">AI Tutor for Help</span>
-                </li>
-              </ul>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">Curriculum-Based Lessons</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">Parent Progress Dashboard</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">Printable Resources</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-xl">✅</span>
-                  <span className="text-gray-700">Regular New Content Updates</span>
-                </li>
-              </ul>
+            <h4 className="text-xl font-bold text-gray-800 mb-4 text-center">Plus So Much More:</h4>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div className="flex items-start gap-2">
+                <span className="text-xl">📚</span>
+                <div>
+                  <p className="font-semibold text-gray-800">Interactive Story Books</p>
+                  <p className="text-gray-600">Audio narration & animations</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-xl">🎨</span>
+                <div>
+                  <p className="font-semibold text-gray-800">Drawing & Coloring</p>
+                  <p className="text-gray-600">Digital art activities</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-xl">📊</span>
+                <div>
+                  <p className="font-semibold text-gray-800">Curriculum Lessons</p>
+                  <p className="text-gray-600">Structured learning path</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-xl">👨‍👩‍👧</span>
+                <div>
+                  <p className="font-semibold text-gray-800">Parent Dashboard</p>
+                  <p className="text-gray-600">Track progress & achievements</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-xl">📄</span>
+                <div>
+                  <p className="font-semibold text-gray-800">Printable Worksheets</p>
+                  <p className="text-gray-600">200+ downloadable activities</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-xl">🌍</span>
+                <div>
+                  <p className="font-semibold text-gray-800">Multi-Language</p>
+                  <p className="text-gray-600">Learn in your language</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -174,34 +214,38 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
               🎯 Get Full Platform Access - Only $39
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
+            <p className="text-gray-600 mt-4">✨ Instant access to everything • Works on any device • Cancel anytime</p>
           </div>
         </Card>
 
-        {/* Activity Categories */}
+        {/* All Features Grid */}
         <div className="mb-12">
           <h3 className="text-2xl font-bold text-gray-800 text-center mb-8">
-            📚 Browse All Activity Categories
+            🌟 Everything Included in Your Platform
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-3 gap-6">
             {platformFeatures.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <Card 
                   key={index}
-                  className="bg-white p-4 hover:shadow-xl transition-all hover:-translate-y-1 border-2 border-purple-100"
+                  className="bg-white p-6 hover:shadow-xl transition-all hover:-translate-y-1 border-2 border-purple-100"
                 >
-                  <img 
-                    src={feature.image} 
-                    alt={feature.title}
-                    className="rounded-lg mb-3 w-full h-32 object-cover"
-                  />
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="bg-gradient-to-br from-purple-400 to-pink-400 p-2 rounded-lg">
-                      <Icon className="w-4 h-4 text-white" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="bg-gradient-to-br from-purple-400 to-pink-400 p-3 rounded-lg">
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <h4 className="font-bold text-gray-800 text-sm">{feature.title}</h4>
+                    <h4 className="font-bold text-gray-800 text-lg">{feature.title}</h4>
                   </div>
-                  <p className="text-gray-600 text-xs">{feature.description}</p>
+                  <p className="text-gray-600 mb-4">{feature.description}</p>
+                  <div className="space-y-1">
+                    {feature.features.map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-sm text-gray-700">
+                        <span className="text-green-500 text-xs">✓</span>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </Card>
               );
             })}
