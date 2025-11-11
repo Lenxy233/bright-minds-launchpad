@@ -4,14 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const BenefitsSection = () => {
   const { t } = useTranslation();
-  const benefits = [
-    "Start your own educational brand with ease",
-    "No experience required - everything is ready-made",
-    "Sell on popular platforms: Amazon, Etsy, Gumroad, Fiverr",
-    "Create your own YouTube educational channel",
-    "PLR rights included - keep 100% profits",
-    "Instant download - start immediately"
-  ];
+  const benefits = (t('benefits.items', { returnObjects: true }) as string[]) || [];
 
   const platforms = [
     { name: "Amazon", image: "/lovable-uploads/39ffc0e5-e1bf-4850-9007-9b5ea749c08e.png" },
@@ -42,7 +35,7 @@ const BenefitsSection = () => {
             ))}
           </div>
           <div className="bg-gradient-to-br from-purple-200 via-blue-200 to-green-200 rounded-3xl p-8 text-center shadow-xl border-4 border-dashed border-purple-300">
-            <h4 className="text-2xl font-bold text-gray-800 mb-6">🎪 Start Selling On 🌈</h4>
+            <h4 className="text-2xl font-bold text-gray-800 mb-6">{t('benefits.startSellingOn')}</h4>
             <div className="grid grid-cols-2 gap-4">
               {platforms.map((platform, index) => (
                 <div key={index} className="bg-white/80 rounded-2xl py-4 px-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-2 border-purple-200">
@@ -54,7 +47,7 @@ const BenefitsSection = () => {
                 </div>
               ))}
             </div>
-            <p className="text-gray-700 mt-6 text-sm font-bold">🎉 And many more platforms! 🌟</p>
+            <p className="text-gray-700 mt-6 text-sm font-bold">{t('benefits.morePlatforms')}</p>
           </div>
         </div>
       </div>

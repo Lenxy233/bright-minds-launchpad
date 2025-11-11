@@ -10,39 +10,39 @@ const FAQSection = () => {
     {
       id: "bundle",
       icon: <Sparkles className="w-5 h-5 text-purple-600" />,
-      question: "What is the BMA Activity Bundle?",
+      question: t('faqSection.questions.bundle.question'),
       answer: (
         <div className="space-y-4">
           <p className="text-gray-700">
-            The Bright Minds Academy Activity Bundle is a comprehensive resource designed to help you create, customize, and even sell beautiful children's books and educational materials.
+            {t('faqSection.questions.bundle.intro')}
           </p>
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
-            <p className="font-semibold text-gray-800 mb-3">The bundle includes:</p>
+            <p className="font-semibold text-gray-800 mb-3">{t('faqSection.questions.bundle.listTitle')}</p>
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">✨</span>
-                600 AI prompts for story and illustration ideas
+                {t('faqSection.questions.bundle.list.i1')}
               </li>
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">📚</span>
-                Over 200 ready-made children's stories
+                {t('faqSection.questions.bundle.list.i2')}
               </li>
               <li className="flex items-start">
                 <span className="text-purple-500 mr-2">🎨</span>
-                A "Build-Your-Book" Canva template
+                {t('faqSection.questions.bundle.list.i3')}
               </li>
               <li className="flex items-start">
                 <span className="text-orange-500 mr-2">🎯</span>
-                More than 1,000 creative and curriculum-based resources
+                {t('faqSection.questions.bundle.list.i4')}
               </li>
               <li className="flex items-start">
                 <span className="text-pink-500 mr-2">🎥</span>
-                Animated Videos to start your Youtube Channel
+                {t('faqSection.questions.bundle.list.i5')}
               </li>
             </ul>
           </div>
           <p className="text-gray-700 font-medium">
-            This is ideal for parents, educators, and content creators looking to produce professional and engaging children's books and activity packs.
+            {t('faqSection.questions.bundle.outro')}
           </p>
         </div>
       )
@@ -50,30 +50,30 @@ const FAQSection = () => {
     {
       id: "license",
       icon: <Shield className="w-5 h-5 text-green-600" />,
-      question: "What kind of license is included?",
+      question: t('faqSection.questions.license.question'),
       answer: (
         <div className="space-y-4">
           <p className="text-gray-700">
-            This product includes a PLR (Private Label Rights) License. This license allows you to:
+            {t('faqSection.questions.license.intro')}
           </p>
           <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4">
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">✅</span>
-                Use the content for your personal or client projects
+                {t('faqSection.questions.license.items.i1')}
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">💰</span>
-                Customize and sell your books on platforms such as Amazon KDP, Etsy, and others
+                {t('faqSection.questions.license.items.i2')}
               </li>
               <li className="flex items-start">
                 <span className="text-purple-500 mr-2">🏷️</span>
-                Rebrand and publish under your own name
+                {t('faqSection.questions.license.items.i3')}
               </li>
             </ul>
           </div>
           <p className="text-gray-700 font-medium">
-            It provides full creative freedom and potential for monetization.
+            {t('faqSection.questions.license.outro')}
           </p>
         </div>
       )
@@ -81,29 +81,25 @@ const FAQSection = () => {
     {
       id: "guarantee",
       icon: <Shield className="w-5 h-5 text-blue-600" />,
-      question: "Do you offer a money-back guarantee?",
+      question: t('faqSection.questions.guarantee.question'),
       answer: (
         <div className="space-y-4">
           <p className="text-gray-700">
-            Yes, we offer a <strong>30-day money-back guarantee</strong> if there is a technical issue with the product that we are unable to resolve.
+            {t('faqSection.questions.guarantee.intro')}
           </p>
           <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-            <p className="font-semibold text-gray-800 mb-2">Please note, refunds are not granted for the following reasons:</p>
+            <p className="font-semibold text-gray-800 mb-2">{t('faqSection.questions.guarantee.noteTitle')}</p>
             <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• Changing your mind</li>
-              <li>• Disliking the product</li>
-              <li>• Inability to use editing software</li>
+              <li>• {t('faqSection.questions.guarantee.notes.n1')}</li>
+              <li>• {t('faqSection.questions.guarantee.notes.n2')}</li>
+              <li>• {t('faqSection.questions.guarantee.notes.n3')}</li>
             </ul>
           </div>
           <p className="text-gray-700">
-            All product features and requirements are clearly stated on the sales page.
+            {t('faqSection.questions.guarantee.outro1')}
           </p>
           <p className="text-gray-700">
-            To request a refund, email us at{" "}
-            <a href="mailto:support@brightmindsacademy.com" className="text-blue-600 hover:underline">
-              support@brightmindsacademy.com
-            </a>
-            . Please do not open disputes through PayPal or your card provider, as this can delay the refund process.
+            {t('faqSection.questions.guarantee.outro2')}
           </p>
         </div>
       )
@@ -111,18 +107,11 @@ const FAQSection = () => {
     {
       id: "upgrades",
       icon: <Gift className="w-5 h-5 text-orange-600" />,
-      question: "Are there any additional upgrades available?",
+      question: t('faqSection.questions.upgrades.question'),
       answer: (
         <div className="space-y-4">
           <p className="text-gray-700">
-            Yes. After purchasing the main bundle, you will have the option to upgrade to the{" "}
-            <Link 
-              to="/new-product-launch" 
-              className="font-bold text-purple-600 hover:text-purple-800 underline hover:no-underline transition-colors"
-            >
-              New Product Launch
-            </Link>
-            , which offers additional content, unique templates, and new niche resources to further enhance your creative library.
+            {t('faqSection.questions.upgrades.intro')}
           </p>
         </div>
       )
@@ -130,15 +119,11 @@ const FAQSection = () => {
     {
       id: "support",
       icon: <Mail className="w-5 h-5 text-red-600" />,
-      question: "How do I contact customer support?",
+      question: t('faqSection.questions.support.question'),
       answer: (
         <div className="space-y-4">
           <p className="text-gray-700">
-            For any assistance or questions, please contact our support team at{" "}
-            <a href="mailto:support@brightmindsacademy.com" className="text-blue-600 hover:underline font-medium">
-              support@brightmindsacademy.com
-            </a>
-            . We are always happy to help.
+            {t('faqSection.questions.support.intro')}
           </p>
         </div>
       )

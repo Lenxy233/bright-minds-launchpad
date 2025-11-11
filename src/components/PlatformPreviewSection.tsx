@@ -12,39 +12,63 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
   const platformFeatures = [
     {
       icon: Wand2,
-      title: "AI Story Generator",
-      description: "Create personalized stories with AI - kids choose characters, themes, and watch their imagination come to life!",
-      features: ["Custom story creation", "AI-powered illustrations", "Interactive storytelling"]
+      title: t('platform.grid.story.title'),
+      description: t('platform.grid.story.description'),
+      features: [
+        t('platform.grid.story.f1'),
+        t('platform.grid.story.f2'),
+        t('platform.grid.story.f3')
+      ]
     },
     {
       icon: MessageCircle,
-      title: "AI Learning Tutor",
-      description: "24/7 AI assistant that helps with homework, answers questions, and provides personalized learning support.",
-      features: ["Instant homework help", "Explains concepts clearly", "Adapts to learning pace"]
+      title: t('platform.grid.tutor.title'),
+      description: t('platform.grid.tutor.description'),
+      features: [
+        t('platform.grid.tutor.f1'),
+        t('platform.grid.tutor.f2'),
+        t('platform.grid.tutor.f3')
+      ]
     },
     {
       icon: Gamepad2,
-      title: "Educational Games",
-      description: "Fun interactive games teaching alphabet, numbers, emotions, geography, and more through play.",
-      features: ["Drag-and-drop activities", "Puzzle challenges", "Progress tracking"]
+      title: t('platform.grid.games.title'),
+      description: t('platform.grid.games.description'),
+      features: [
+        t('platform.grid.games.f1'),
+        t('platform.grid.games.f2'),
+        t('platform.grid.games.f3')
+      ]
     },
     {
       icon: BookOpen,
-      title: "Interactive Stories",
-      description: "Engaging story books with audio narration, animations, and interactive elements for immersive reading.",
-      features: ["Audio narration", "Animated pages", "Reading comprehension"]
+      title: t('platform.grid.stories.title'),
+      description: t('platform.grid.stories.description'),
+      features: [
+        t('platform.grid.stories.f1'),
+        t('platform.grid.stories.f2'),
+        t('platform.grid.stories.f3')
+      ]
     },
     {
       icon: Palette,
-      title: "Creative Activities",
-      description: "Drawing, coloring, and art activities that encourage creativity and fine motor skills development.",
-      features: ["Digital coloring", "Drawing canvas", "Creative challenges"]
+      title: t('platform.grid.creative.title'),
+      description: t('platform.grid.creative.description'),
+      features: [
+        t('platform.grid.creative.f1'),
+        t('platform.grid.creative.f2'),
+        t('platform.grid.creative.f3')
+      ]
     },
     {
       icon: Brain,
-      title: "Curriculum Lessons",
-      description: "Structured lessons covering kindergarten curriculum - math, language, science, and social skills.",
-      features: ["Age-appropriate content", "Step-by-step lessons", "Parent dashboard"]
+      title: t('platform.grid.curriculum.title'),
+      description: t('platform.grid.curriculum.description'),
+      features: [
+        t('platform.grid.curriculum.f1'),
+        t('platform.grid.curriculum.f2'),
+        t('platform.grid.curriculum.f3')
+      ]
     }
   ];
 
@@ -90,15 +114,15 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
               <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Generate custom stories with AI</span>
+                  <span>{t('platform.main.story.b1')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>AI-generated illustrations</span>
+                  <span>{t('platform.main.story.b2')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Save & share creations</span>
+                  <span>{t('platform.main.story.b3')}</span>
                 </div>
               </div>
             </div>
@@ -115,15 +139,15 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
               <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Instant homework help</span>
+                  <span>{t('platform.main.tutor.b1')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Explains difficult concepts</span>
+                  <span>{t('platform.main.tutor.b2')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Adapts to learning style</span>
+                  <span>{t('platform.main.tutor.b3')}</span>
                 </div>
               </div>
             </div>
@@ -140,15 +164,15 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
               <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Generate games on any topic</span>
+                  <span>{t('platform.main.game.b1')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Multiple game types (quiz, matching, puzzles)</span>
+                  <span>{t('platform.main.game.b2')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Adjustable difficulty & age levels</span>
+                  <span>{t('platform.main.game.b3')}</span>
                 </div>
               </div>
             </div>
