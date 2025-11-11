@@ -100,7 +100,7 @@ const App = () => (
             <Route path="/ai-story-creator" element={<AIStoryCreator />} />
             <Route path="/game-creator" element={<GameCreator />} />
             <Route path="/games/:id" element={<GamePlayer />} />
-            <Route path="/games" element={<GamesLibrary />} />
+            <Route path="/games-library" element={<GamesLibrary />} />
             <Route path="/white-label-admin" element={<WhiteLabelAdmin />} />
             <Route path="/plr-license" element={<PLRLicense />} />
             <Route path="/video-learning" element={<VideoLearning />} />
