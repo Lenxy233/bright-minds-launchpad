@@ -43,7 +43,7 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
                 className="w-full h-auto rounded-2xl shadow-lg"
               />
               <div className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-purple-800 font-bold text-lg px-4 py-2 rounded-full shadow-lg animate-pulse border-2 border-white">
-                🎨 Creativity Unleashed! ✨
+                {t('hero.creativityBadge')}
               </div>
             </div>
           </div>

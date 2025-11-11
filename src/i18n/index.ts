@@ -35,7 +35,7 @@ const initI18n = async () => {
         fallbackLng: 'en',
         debug: false,
         detection: {
-          order: ['navigator', 'htmlTag'],
+          order: ['localStorage', 'navigator', 'htmlTag'],
           caches: ['localStorage'],
         },
         interpolation: {
@@ -46,7 +46,7 @@ const initI18n = async () => {
   return i18n;
 };
 
-// Initialize immediately but asynchronously
+// Initialize immediately
 initI18n();
 
 export default i18n;

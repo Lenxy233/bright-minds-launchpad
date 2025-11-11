@@ -11,8 +11,11 @@ import KindergartenCurriculumSection from "@/components/KindergartenCurriculumSe
 import RewardsDisplay from "@/components/RewardsDisplay";
 import AITutorChat from "@/components/AITutorChat";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const LearningApp = () => {
+  const { t } = useTranslation();
   const [isKidLogin, setIsKidLogin] = useState(false);
   const [username, setUsername] = useState("");
   const [pin, setPin] = useState("");
@@ -38,14 +41,14 @@ const LearningApp = () => {
 
       if (error || !data) {
         toast({
-          title: "Login Failed",
-          description: "Invalid username or PIN. Please try again.",
+          title: t("learningApp.toastLoginFailedTitle"),
+          description: t("learningApp.toastLoginFailedDesc"),
           variant: "destructive"
         });
       } else {
         toast({
-          title: "Welcome back!",
-          description: `Hi ${username}! Let's learn!`,
+          title: t("learningApp.toastWelcomeTitle"),
+          description: t("learningApp.toastWelcomeDesc", { name: username }),
         });
         // Store the kid profile in session and state
         sessionStorage.setItem('kidProfile', JSON.stringify(data));
@@ -53,8 +56,8 @@ const LearningApp = () => {
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: t("learningApp.toastErrorTitle"),
+        description: t("learningApp.toastErrorDesc"),
         variant: "destructive"
       });
     } finally {
@@ -75,24 +78,25 @@ const LearningApp = () => {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2 text-purple-600 hover:text-purple-700">
               <ArrowLeft className="w-5 h-5" />
-              <span className="font-semibold">Back to Main Site</span>
+              <span className="font-semibold">{t('learningApp.back')}</span>
             </Link>
             <div className="flex items-center gap-2">
               <GraduationCap className="w-8 h-8 text-purple-600" />
               <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Kids Learning Platform
+                {t('learningApp.title')}
               </h1>
             </div>
             <div className="flex items-center gap-2">
-              {user && (
-                <Button onClick={() => navigate('/curriculum-lesson-admin')} variant="outline" size="sm">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Manage Lessons
-                </Button>
-              )}
-              <Button onClick={fetchParentAccess} variant="outline">
-                Parent/Teacher Login
+            {user && (
+              <Button onClick={() => navigate('/curriculum-lesson-admin')} variant="outline" size="sm">
+                <Settings className="w-4 h-4 mr-2" />
+                {t('learningApp.manageLessons')}
               </Button>
+            )}
+            <LanguageSwitcher />
+            <Button onClick={fetchParentAccess} variant="outline">
+              {t('learningApp.parentLogin')}
+            </Button>
             </div>
           </div>
         </div>
@@ -103,7 +107,7 @@ const LearningApp = () => {
         {kidProfile && (
           <div className="mb-8 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-bold">Welcome back, {kidProfile.username}! 🎉</h2>
+              <h2 className="text-3xl font-bold">{t('learningApp.welcomeBack', { name: kidProfile.username })}</h2>
               <Button 
                 variant="outline" 
                 onClick={() => {
@@ -112,7 +116,7 @@ const LearningApp = () => {
                   sessionStorage.removeItem('kidProfile');
                 }}
               >
-                Logout
+                {t('learningApp.logout')}
               </Button>
             </div>
             <RewardsDisplay kidId={kidProfile.id} />
@@ -124,11 +128,11 @@ const LearningApp = () => {
             {/* Hero Section */}
             <section className="text-center mb-16">
               <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-                Fun Learning for Bright Minds!
-              </h2>
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                A safe, colorful world where kids explore worksheets, earn badges, and learn at their own pace.
-              </p>
+              {t('learningApp.heroTitle')}
+            </h2>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              {t('learningApp.heroSubtitle')}
+            </p>
               
               <div className="flex gap-4 justify-center">
                 <Button 
@@ -136,17 +140,17 @@ const LearningApp = () => {
                   className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                   onClick={() => setIsKidLogin(true)}
                 >
-                  <Star className="w-5 h-5 mr-2" />
-                  Kid Login
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  onClick={fetchParentAccess}
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  Parent/Teacher Access
-                </Button>
+                <Star className="w-5 h-5 mr-2" />
+                {t('learningApp.kidLogin')}
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={fetchParentAccess}
+              >
+                <Users className="w-5 h-5 mr-2" />
+                {t('learningApp.parentAccess')}
+              </Button>
               </div>
             </section>
 
@@ -158,9 +162,9 @@ const LearningApp = () => {
               >
                 <CardHeader>
                   <BookOpen className="w-12 h-12 text-purple-600 mb-4" />
-                  <CardTitle>Story Books</CardTitle>
+                  <CardTitle>{t('learningApp.cardStoryBooksTitle')}</CardTitle>
                   <CardDescription>
-                    Read along with audio narration. Interactive stories that come alive!
+                    {t('learningApp.cardStoryBooksDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -171,9 +175,9 @@ const LearningApp = () => {
               >
                 <CardHeader>
                   <Sparkles className="w-12 h-12 text-pink-600 mb-4" />
-                  <CardTitle>AI Story Creator</CardTitle>
+                  <CardTitle>{t('learningApp.cardAiStoryTitle')}</CardTitle>
                   <CardDescription>
-                    Create your own custom stories with AI! Pick themes, lessons, and watch magic happen.
+                    {t('learningApp.cardAiStoryDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -184,9 +188,9 @@ const LearningApp = () => {
               >
                 <CardHeader>
                   <Puzzle className="w-12 h-12 text-green-600 mb-4" />
-                  <CardTitle>Puzzles</CardTitle>
+                  <CardTitle>{t('learningApp.cardPuzzlesTitle')}</CardTitle>
                   <CardDescription>
-                    Count, match, and solve fun puzzles. Learn while playing!
+                    {t('learningApp.cardPuzzlesDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -197,9 +201,9 @@ const LearningApp = () => {
               >
                 <CardHeader>
                   <Gamepad2 className="w-12 h-12 text-orange-600 mb-4" />
-                  <CardTitle>Games Library</CardTitle>
+                  <CardTitle>{t('learningApp.cardGamesLibTitle')}</CardTitle>
                   <CardDescription>
-                    Play fun learning games! Quiz games, matching activities, and more.
+                    {t('learningApp.cardGamesLibDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -210,9 +214,9 @@ const LearningApp = () => {
               >
                 <CardHeader>
                   <Sparkles className="w-12 h-12 text-amber-600 mb-4" />
-                  <CardTitle>Create AI Game</CardTitle>
+                  <CardTitle>{t('learningApp.cardCreateAiGameTitle')}</CardTitle>
                   <CardDescription>
-                    Build custom learning games with AI. Make your own educational activities!
+                    {t('learningApp.cardCreateAiGameDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -223,9 +227,9 @@ const LearningApp = () => {
               >
                 <CardHeader>
                   <MessageCircle className="w-12 h-12 text-blue-600 mb-4" />
-                  <CardTitle>AI Tutor</CardTitle>
+                  <CardTitle>{t('learningApp.cardAiTutorTitle')}</CardTitle>
                   <CardDescription>
-                    Ask questions and get help with any topic! Your friendly learning assistant.
+                    {t('learningApp.cardAiTutorDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -236,9 +240,9 @@ const LearningApp = () => {
               >
                 <CardHeader>
                   <PlaySquare className="w-12 h-12 text-red-600 mb-4" />
-                  <CardTitle>Video Learning</CardTitle>
+                  <CardTitle>{t('learningApp.cardVideoTitle')}</CardTitle>
                   <CardDescription>
-                    Watch educational videos and take quizzes! Learn by watching and testing your knowledge.
+                    {t('learningApp.cardVideoDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -246,9 +250,9 @@ const LearningApp = () => {
               <Card className="border-2 border-yellow-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow">
                 <CardHeader>
                   <Trophy className="w-12 h-12 text-yellow-600 mb-4" />
-                  <CardTitle>Earn Rewards</CardTitle>
+                  <CardTitle>{t('learningApp.cardRewardsTitle')}</CardTitle>
                   <CardDescription>
-                    Collect stars, unlock badges, and track your progress. Every activity is a new achievement!
+                    {t('learningApp.cardRewardsDesc')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -259,9 +263,9 @@ const LearningApp = () => {
 
             {/* CTA Section */}
             <section className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-12 text-white text-center mt-16">
-              <h3 className="text-4xl font-bold mb-4">Ready to Start Learning?</h3>
+              <h3 className="text-4xl font-bold mb-4">{t('learningApp.ctaTitle')}</h3>
               <p className="text-xl mb-8 opacity-90">
-                Join thousands of kids on their learning journey!
+                {t('learningApp.ctaSubtitle')}
               </p>
               <Button 
                 size="lg" 
@@ -269,7 +273,7 @@ const LearningApp = () => {
                 className="bg-white text-purple-600 hover:bg-gray-100"
                 onClick={() => setIsKidLogin(true)}
               >
-                Get Started Now
+                {t('learningApp.ctaButton')}
               </Button>
             </section>
           </>
@@ -281,25 +285,25 @@ const LearningApp = () => {
                 <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full mx-auto mb-4 flex items-center justify-center">
                   <Star className="w-10 h-10 text-white" />
                 </div>
-                <CardTitle className="text-3xl">Welcome Back!</CardTitle>
-                <CardDescription>Enter your username and PIN to continue learning</CardDescription>
+                <CardTitle className="text-3xl">{t('learningApp.formWelcome')}</CardTitle>
+                <CardDescription>{t('learningApp.formSubtitle')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleKidLogin} className="space-y-4">
                   <div>
-                    <Label htmlFor="username">Username</Label>
+                    <Label htmlFor="username">{t('learningApp.formUsername')}</Label>
                     <Input
                       id="username"
                       type="text"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Your username"
+                      placeholder={t('learningApp.formPlaceholderUsername')}
                       required
                       className="text-lg"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="pin">PIN (4 digits)</Label>
+                    <Label htmlFor="pin">{t('learningApp.formPin')}</Label>
                     <Input
                       id="pin"
                       type="password"
@@ -307,7 +311,7 @@ const LearningApp = () => {
                       maxLength={4}
                       value={pin}
                       onChange={(e) => setPin(e.target.value)}
-                      placeholder="••••"
+                      placeholder={t('learningApp.formPlaceholderPin')}
                       required
                       className="text-lg text-center tracking-widest"
                     />
@@ -317,16 +321,16 @@ const LearningApp = () => {
                     className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                     disabled={isLoading}
                   >
-                    {isLoading ? "Logging in..." : "Start Learning!"}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="w-full"
-                    onClick={() => setIsKidLogin(false)}
-                  >
-                    Back
-                  </Button>
+                  {isLoading ? t('learningApp.formLoggingIn') : t('learningApp.formLogin')}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full"
+                  onClick={() => setIsKidLogin(false)}
+                >
+                  {t('learningApp.formBack')}
+                </Button>
                 </form>
               </CardContent>
             </Card>
