@@ -274,11 +274,11 @@ const GamePlayer = () => {
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
-              onClick={() => navigate("/game-creator")}
+              onClick={() => navigate("/games-library")}
               className="gap-2"
             >
               <ArrowLeft className="w-5 h-5" />
-              Back
+              Back to Library
             </Button>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 bg-yellow-100 px-4 py-2 rounded-full">
