@@ -1,14 +1,16 @@
+import { useTranslation } from "react-i18next";
 
 const VideoSection = () => {
+  const { t } = useTranslation();
   return (
     <section className="py-20 px-4 bg-gradient-to-r from-purple-100/60 via-pink-100/60 to-blue-100/60 backdrop-blur-sm relative">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-            🎬 Watch Our Educational Products in Action! 🌟
+            {t('video.title')}
           </h3>
           <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">
-            See how our amazing educational bundle can transform learning! 🚀
+            {t('video.subtitle')}
           </p>
         </div>
 
@@ -49,9 +51,7 @@ const VideoSection = () => {
             </div>
             
             <div className="text-center mt-6">
-              <p className="text-gray-600 text-lg bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-purple-300">
-                🔊 <strong>Click to play with sound</strong> and discover the magic of our educational resources! ✨
-              </p>
+              <p className="text-gray-600 text-lg bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-purple-300" dangerouslySetInnerHTML={{ __html: t('video.clickPlay') }} />
               <div className="mt-4">
                 <a 
                   href="https://www.canva.com/design/DAGpJt_RJJ4/BmqGyRKbmD1QJ3LtDldYZQ/watch" 

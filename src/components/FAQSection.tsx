@@ -2,8 +2,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, Mail, Shield, Sparkles, Gift } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const FAQSection = () => {
+  const { t } = useTranslation();
   const faqs = [
     {
       id: "bundle",
@@ -148,10 +150,10 @@ const FAQSection = () => {
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-16">
           <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            🤔 Frequently Asked Questions 💭
+            {t('faqSection.title')}
           </h3>
           <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">
-            Everything you need to know about the Bright Minds Academy Bundle! ✨
+            {t('faqSection.subtitle')}
           </p>
         </div>
 
@@ -181,17 +183,17 @@ const FAQSection = () => {
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 inline-block shadow-xl border-4 border-dashed border-blue-400">
             <HelpCircle className="w-12 h-12 text-blue-600 mx-auto mb-4" />
             <p className="text-lg font-bold text-gray-800 mb-2">
-              Still have questions? 🤗
+              {t('faqSection.stillQuestions')}
             </p>
             <p className="text-gray-600 mb-4">
-              Our friendly support team is here to help you succeed!
+              {t('faqSection.supportText')}
             </p>
             <a 
               href="mailto:support@brightmindsacademy.com"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               <Mail className="w-4 h-4" />
-              Contact Support ✨
+              {t('faqSection.contactSupport')}
             </a>
           </div>
         </div>

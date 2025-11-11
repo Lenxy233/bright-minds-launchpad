@@ -1,24 +1,26 @@
+import { useTranslation } from "react-i18next";
 
 const AmazonKDPSection = () => {
+  const { t } = useTranslation();
   return (
     <section className="py-20 px-4 bg-gradient-to-r from-cyan-100/60 via-blue-100/60 to-teal-100/60 backdrop-blur-sm relative">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
-            📚 Amazon KDP Ready Books 🌟
+            {t('amazonKdp.title')}
           </h3>
           <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">
-            Professional children's book designs ready for immediate publishing on Amazon KDP! 🚀
+            {t('amazonKdp.subtitle')}
           </p>
         </div>
 
         <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-4 border-dashed border-cyan-300">
           <div className="text-center mb-8">
             <h4 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
-              🎨 Professional Book Cover Designs
+              {t('amazonKdp.heading')}
             </h4>
             <p className="text-lg text-gray-700 bg-gradient-to-r from-cyan-100 to-blue-100 rounded-2xl p-4 inline-block shadow-lg">
-              High-quality, eye-catching designs that stand out in the marketplace! ✨
+              {t('amazonKdp.quality')}
             </p>
           </div>
           
@@ -31,16 +33,14 @@ const AmazonKDPSection = () => {
               />
               <div className="mt-4 text-center">
                 <div className="bg-gradient-to-r from-cyan-400 to-blue-400 text-white font-bold text-sm px-4 py-2 rounded-full shadow-lg inline-block border-2 border-white">
-                  📚 Ready-to-Publish Designs 🌟
+                  {t('amazonKdp.badge')}
                 </div>
               </div>
             </div>
           </div>
 
           <div className="text-center mt-8">
-            <p className="text-gray-600 text-lg bg-cyan-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-cyan-300">
-              💡 <strong>Perfect for Amazon KDP sellers</strong> looking to publish high-quality children's books! 📖
-            </p>
+            <p className="text-gray-600 text-lg bg-cyan-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-cyan-300" dangerouslySetInnerHTML={{ __html: t('amazonKdp.perfect') }} />
           </div>
         </div>
       </div>

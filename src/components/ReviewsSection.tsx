@@ -9,8 +9,10 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import { useTranslation } from "react-i18next";
 
 const ReviewsSection = () => {
+  const { t } = useTranslation();
   const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
@@ -69,14 +71,14 @@ const ReviewsSection = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-            💖 What Our Amazing Customers Say 🌟
+            {t('reviews.title')}
           </h3>
-          <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">🎉 Join thousands of successful educators and entrepreneurs! 🚀</p>
+          <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">{t('reviews.subtitle')}</p>
           <div className="flex items-center justify-center gap-1 mt-4 bg-yellow-100 rounded-full p-3 inline-flex shadow-lg">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400 animate-bounce" style={{animationDelay: `${i * 0.1}s`}} />
             ))}
-            <span className="ml-2 text-gray-700 font-bold">✨ 4.9/5 from 10,000+ reviews 🎯</span>
+            <span className="ml-2 text-gray-700 font-bold">{t('reviews.rating')}</span>
           </div>
         </div>
 

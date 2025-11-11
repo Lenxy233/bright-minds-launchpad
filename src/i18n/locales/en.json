@@ -77,5 +77,94 @@
     "retry": "Try Again",
     "back": "Back",
     "home": "Home"
+  },
+  "reviews": {
+    "title": "💖 What Our Amazing Customers Say 🌟",
+    "subtitle": "🎉 Join thousands of successful educators and entrepreneurs! 🚀",
+    "rating": "✨ 4.9/5 from 10,000+ reviews 🎯"
+  },
+  "video": {
+    "title": "🎬 Watch Our Educational Products in Action! 🌟",
+    "subtitle": "See how our amazing educational bundle can transform learning! 🚀",
+    "clickPlay": "🔊 <strong>Click to play with sound</strong> and discover the magic of our educational resources! ✨"
+  },
+  "amazonKdp": {
+    "title": "📚 Amazon KDP Ready Books 🌟",
+    "subtitle": "Professional children's book designs ready for immediate publishing on Amazon KDP! 🚀",
+    "heading": "🎨 Professional Book Cover Designs",
+    "quality": "High-quality, eye-catching designs that stand out in the marketplace! ✨",
+    "badge": "📚 Ready-to-Publish Designs 🌟",
+    "perfect": "💡 <strong>Perfect for Amazon KDP sellers</strong> looking to publish high-quality children's books! 📖"
+  },
+  "science": {
+    "title": "🧪 Amazing Science Experiments at Home! 🔬",
+    "subtitle": "Transform your kitchen into a magical science lab with 40+ simple experiments! ✨",
+    "slimeHeading": "Homemade Slime & More! 🌟",
+    "slimeDesc": "Watch your child's eyes light up as they create colorful slime, erupting volcanoes, and magical color-changing potions using simple household ingredients! 🎨",
+    "experiments": "40+ Experiments",
+    "experimentsSafe": "Easy & Safe",
+    "stem": "STEM Learning",
+    "stemFun": "Hands-On Fun",
+    "discoverTitle": "What You'll Discover:",
+    "discover1": "Create rainbow slime with different textures",
+    "discover2": "Make volcanoes erupt with safe ingredients",
+    "discover3": "Mix magical color-changing potions",
+    "discover4": "Learn real science while having fun!",
+    "ctaTitle": "🚀 Ready to Start Your Science Adventure? 🚀",
+    "ctaSubtitle": "Join thousands of families already having fun with science at home!",
+    "ctaButton": "Get Instant Access Now! ✨"
+  },
+  "platform": {
+    "badge": "Live Platform Preview",
+    "title": "See The Magic In Action! ✨",
+    "subtitle": "Get instant access to our interactive kids learning platform with hundreds of engaging activities",
+    "aiTitle": "🚀 AI-Powered Content Creation Platform",
+    "aiSubtitle": "Create unlimited personalized content with AI! Generate stories, get tutoring help, and create custom games - all powered by cutting-edge AI technology.",
+    "storyTitle": "🎨 AI Story Creator",
+    "storyDesc": "Kids create personalized stories with AI! Choose characters, settings, and themes - the AI generates unique illustrated stories instantly.",
+    "tutorTitle": "🤖 AI Learning Tutor",
+    "tutorDesc": "24/7 AI assistant that helps with homework, explains concepts, and provides personalized learning support for every child.",
+    "gameTitle": "🎮 AI Game Creator",
+    "gameDesc": "Generate custom educational games instantly with AI! Create quiz games, matching activities, and puzzles tailored to any topic or skill level.",
+    "moreTitle": "Plus So Much More:",
+    "storyBooks": "Interactive Story Books",
+    "storyBooksDesc": "Audio narration & animations",
+    "drawing": "Drawing & Coloring",
+    "drawingDesc": "Digital art activities",
+    "curriculum": "Curriculum Lessons",
+    "curriculumDesc": "Structured learning path",
+    "parentDash": "Parent Dashboard",
+    "parentDashDesc": "Track progress & achievements",
+    "worksheets": "Printable Worksheets",
+    "worksheetsDesc": "200+ downloadable activities",
+    "multiLang": "Multi-Language",
+    "multiLangDesc": "Learn in your language",
+    "ctaButton": "🎯 Get Full Platform Access - Only $39",
+    "instant": "✨ Instant access to everything • Works on any device • Cancel anytime",
+    "allTitle": "🌟 Everything Included in Your Platform",
+    "trustTitle": "🎉 Join 10,000+ Happy Parents & Teachers!",
+    "trustSubtitle": "Start your child's learning journey today with instant access to all resources"
+  },
+  "curriculum": {
+    "title": "🎓 Kindergarten Curriculum Resources",
+    "subtitle": "Comprehensive learning materials covering all essential areas of kindergarten development",
+    "footer": "✨ All resources are printable, easy-to-use, and aligned with kindergarten standards"
+  },
+  "floatingButton": {
+    "text": "🎯 Get Instant Access Now ✨"
+  },
+  "faqSection": {
+    "title": "🤔 Frequently Asked Questions 💭",
+    "subtitle": "Everything you need to know about the Bright Minds Academy Bundle! ✨",
+    "stillQuestions": "Still have questions? 🤗",
+    "supportText": "Our friendly support team is here to help you succeed!",
+    "contactSupport": "Contact Support ✨"
+  },
+  "footerSection": {
+    "tagline": "🌟 Empowering the next generation through innovative educational products 🎨",
+    "privacyPolicy": "Privacy Policy",
+    "dataProtection": "Data Protection Policy",
+    "termsConditions": "Terms & Conditions",
+    "copyright": "© 2024 Bright Minds Academy. All rights reserved. ✨"
   }
 }

@@ -14,8 +14,10 @@ import Footer from "@/components/Footer";
 import PurchaseNotifications from "@/components/PurchaseNotifications";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Index = () => {
+  const { t } = useTranslation();
   const handlePurchase = () => {
     window.open("https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c", "_blank");
   };
@@ -55,7 +57,7 @@ const Index = () => {
           className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-purple-800 hover:text-purple-900 text-lg px-8 py-4 rounded-full font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 border-4 border-white"
         >
           <Sparkles className="mr-2 w-5 h-5 animate-spin" />
-          🎯 Get Instant Access Now ✨
+          {t('floatingButton.text')}
           <ArrowRight className="ml-2 w-5 h-5" />
         </Button>
       </div>

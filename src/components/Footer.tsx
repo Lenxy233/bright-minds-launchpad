@@ -2,8 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
   const handleSocialClick = (platform: string) => {
     const socialUrls = {
       instagram: "https://instagram.com/brightmindsacademy",
@@ -56,30 +58,30 @@ const Footer = () => {
           </Button>
         </div>
         
-        <p className="text-gray-300 mb-4 font-semibold">🌟 Empowering the next generation through innovative educational products 🎨</p>
+        <p className="text-gray-300 mb-4 font-semibold">{t('footerSection.tagline')}</p>
         
         <div className="mb-4 space-y-2">
           <Link 
             to="/legal#privacy-policy" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
-            Privacy Policy
+            {t('footerSection.privacyPolicy')}
           </Link>
           <Link 
             to="/legal#data-protection-policy" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
-            Data Protection Policy
+            {t('footerSection.dataProtection')}
           </Link>
           <Link 
             to="/legal#terms-and-conditions" 
             className="text-gray-300 hover:text-white underline text-sm transition-colors block"
           >
-            Terms & Conditions
+            {t('footerSection.termsConditions')}
           </Link>
         </div>
         
-        <p className="text-sm text-gray-400">© 2024 Bright Minds Academy. All rights reserved. ✨</p>
+        <p className="text-sm text-gray-400">{t('footerSection.copyright')}</p>
       </div>
     </footer>
   );

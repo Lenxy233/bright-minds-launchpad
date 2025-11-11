@@ -2,8 +2,10 @@ import { BookOpen, Palette, Music, Calculator, Globe, Heart, ChevronRight, Plane
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "react-i18next";
 
 const KindergartenCurriculumSection = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [customLessons, setCustomLessons] = useState<any[]>([]);
@@ -129,10 +131,10 @@ const KindergartenCurriculumSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            🎓 Kindergarten Curriculum Resources
+            {t('curriculum.title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive learning materials covering all essential areas of kindergarten development
+            {t('curriculum.subtitle')}
           </p>
         </div>
 
@@ -200,7 +202,7 @@ const KindergartenCurriculumSection = () => {
 
         <div className="mt-12 text-center">
           <p className="text-lg text-gray-700 font-semibold">
-            ✨ All resources are printable, easy-to-use, and aligned with kindergarten standards
+            {t('curriculum.footer')}
           </p>
         </div>
       </div>

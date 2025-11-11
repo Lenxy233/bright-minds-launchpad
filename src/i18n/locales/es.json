@@ -77,5 +77,94 @@
     "retry": "Intentar de Nuevo",
     "back": "Atrás",
     "home": "Inicio"
+  },
+  "reviews": {
+    "title": "💖 Lo Que Dicen Nuestros Increíbles Clientes 🌟",
+    "subtitle": "🎉 ¡Únete a miles de educadores y emprendedores exitosos! 🚀",
+    "rating": "✨ 4.9/5 de más de 10,000 reseñas 🎯"
+  },
+  "video": {
+    "title": "🎬 ¡Mira Nuestros Productos Educativos en Acción! 🌟",
+    "subtitle": "¡Descubre cómo nuestro increíble paquete educativo puede transformar el aprendizaje! 🚀",
+    "clickPlay": "🔊 <strong>Haz clic para reproducir con sonido</strong> y descubre la magia de nuestros recursos educativos! ✨"
+  },
+  "amazonKdp": {
+    "title": "📚 Libros Listos para Amazon KDP 🌟",
+    "subtitle": "¡Diseños profesionales de libros infantiles listos para publicar inmediatamente en Amazon KDP! 🚀",
+    "heading": "🎨 Diseños Profesionales de Portadas",
+    "quality": "¡Diseños de alta calidad y llamativos que destacan en el mercado! ✨",
+    "badge": "📚 Diseños Listos para Publicar 🌟",
+    "perfect": "💡 <strong>Perfecto para vendedores de Amazon KDP</strong> que buscan publicar libros infantiles de alta calidad! 📖"
+  },
+  "science": {
+    "title": "🧪 ¡Experimentos Científicos Increíbles en Casa! 🔬",
+    "subtitle": "¡Transforma tu cocina en un laboratorio científico mágico con más de 40 experimentos simples! ✨",
+    "slimeHeading": "¡Slime Casero y Más! 🌟",
+    "slimeDesc": "¡Observa cómo se iluminan los ojos de tus hijos mientras crean slime colorido, volcanes en erupción y pociones mágicas que cambian de color usando ingredientes simples del hogar! 🎨",
+    "experiments": "Más de 40 Experimentos",
+    "experimentsSafe": "Fáciles y Seguros",
+    "stem": "Aprendizaje STEM",
+    "stemFun": "Diversión Práctica",
+    "discoverTitle": "Lo Que Descubrirás:",
+    "discover1": "Crea slime arcoíris con diferentes texturas",
+    "discover2": "Haz que los volcanes entren en erupción con ingredientes seguros",
+    "discover3": "Mezcla pociones mágicas que cambian de color",
+    "discover4": "¡Aprende ciencia real mientras te diviertes!",
+    "ctaTitle": "🚀 ¿Listo para Comenzar tu Aventura Científica? 🚀",
+    "ctaSubtitle": "¡Únete a miles de familias que ya se divierten con la ciencia en casa!",
+    "ctaButton": "¡Obtén Acceso Instantáneo Ahora! ✨"
+  },
+  "platform": {
+    "badge": "Vista Previa de la Plataforma en Vivo",
+    "title": "¡Mira la Magia en Acción! ✨",
+    "subtitle": "Obtén acceso instantáneo a nuestra plataforma interactiva de aprendizaje para niños con cientos de actividades atractivas",
+    "aiTitle": "🚀 Plataforma de Creación de Contenido con IA",
+    "aiSubtitle": "¡Crea contenido personalizado ilimitado con IA! Genera historias, obtén ayuda de tutoría y crea juegos personalizados, todo impulsado por tecnología de IA de vanguardia.",
+    "storyTitle": "🎨 Creador de Historias con IA",
+    "storyDesc": "¡Los niños crean historias personalizadas con IA! Elige personajes, escenarios y temas: la IA genera historias ilustradas únicas al instante.",
+    "tutorTitle": "🤖 Tutor de Aprendizaje con IA",
+    "tutorDesc": "Asistente de IA disponible 24/7 que ayuda con la tarea, explica conceptos y proporciona apoyo de aprendizaje personalizado para cada niño.",
+    "gameTitle": "🎮 Creador de Juegos con IA",
+    "gameDesc": "¡Genera juegos educativos personalizados al instante con IA! Crea juegos de preguntas, actividades de emparejamiento y rompecabezas adaptados a cualquier tema o nivel de habilidad.",
+    "moreTitle": "Además Mucho Más:",
+    "storyBooks": "Libros de Cuentos Interactivos",
+    "storyBooksDesc": "Narración de audio y animaciones",
+    "drawing": "Dibujo y Coloreo",
+    "drawingDesc": "Actividades de arte digital",
+    "curriculum": "Lecciones de Currículo",
+    "curriculumDesc": "Ruta de aprendizaje estructurada",
+    "parentDash": "Panel para Padres",
+    "parentDashDesc": "Seguimiento de progreso y logros",
+    "worksheets": "Hojas de Trabajo Imprimibles",
+    "worksheetsDesc": "Más de 200 actividades descargables",
+    "multiLang": "Multiidioma",
+    "multiLangDesc": "Aprende en tu idioma",
+    "ctaButton": "🎯 Obtén Acceso Completo a la Plataforma - Solo $39",
+    "instant": "✨ Acceso instantáneo a todo • Funciona en cualquier dispositivo • Cancela en cualquier momento",
+    "allTitle": "🌟 Todo Incluido en Tu Plataforma",
+    "trustTitle": "🎉 ¡Únete a más de 10,000 Padres y Maestros Felices!",
+    "trustSubtitle": "Comienza el viaje de aprendizaje de tu hijo hoy con acceso instantáneo a todos los recursos"
+  },
+  "curriculum": {
+    "title": "🎓 Recursos del Currículo de Kindergarten",
+    "subtitle": "Materiales de aprendizaje completos que cubren todas las áreas esenciales del desarrollo de kindergarten",
+    "footer": "✨ Todos los recursos son imprimibles, fáciles de usar y alineados con los estándares de kindergarten"
+  },
+  "floatingButton": {
+    "text": "🎯 Obtener Acceso Instantáneo Ahora ✨"
+  },
+  "faqSection": {
+    "title": "🤔 Preguntas Frecuentes 💭",
+    "subtitle": "¡Todo lo que necesitas saber sobre el Paquete Bright Minds Academy! ✨",
+    "stillQuestions": "¿Aún tienes preguntas? 🤗",
+    "supportText": "¡Nuestro amigable equipo de soporte está aquí para ayudarte a tener éxito!",
+    "contactSupport": "Contactar Soporte ✨"
+  },
+  "footerSection": {
+    "tagline": "🌟 Empoderando a la próxima generación a través de productos educativos innovadores 🎨",
+    "privacyPolicy": "Política de Privacidad",
+    "dataProtection": "Política de Protección de Datos",
+    "termsConditions": "Términos y Condiciones",
+    "copyright": "© 2024 Bright Minds Academy. Todos los derechos reservados. ✨"
   }
 }
