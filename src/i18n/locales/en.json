@@ -5,7 +5,8 @@
     "cta": "Get Your Bundle Now - Only $19.99!"
   },
   "products": {
-    "title": "Choose Your Perfect Bundle",
+    "title": "🎨 What's Included in Your Fun Bundle 🎪",
+    "subtitle": "✨ Everything you need to launch your educational products business! 🚀",
     "kidsBundle": {
       "title": "Kids Curriculum Bundle",
       "description": "Complete educational activities and lesson plans for ages 3-12",
@@ -23,7 +24,8 @@
     }
   },
   "benefits": {
-    "title": "Why Parents Love Our Bundles",
+    "title": "🌟 Why Choose Bright Minds Academy? 🎯",
+    "subtitle": "🚀 Turn your passion for education into a profitable business! 💰",
     "instant": "Instant Download",
     "instantDesc": "Get immediate access to all materials",
     "quality": "High Quality Content",
@@ -46,8 +48,8 @@
     "hoursAgo": "hours ago"
   },
   "cta": {
-    "title": "Ready to Transform Your Child's Learning?",
-    "subtitle": "Join thousands of parents who have already discovered the joy of fun, educational activities.",
+    "title": "🚀 Ready to Start Your Educational Empire? 🌟",
+    "subtitle": "🎉 Join thousands of successful entrepreneurs who've launched their educational brands with our proven system! 💫",
     "button": "Get Your Bundle Now - $19.99"
   },
   "footer": {
@@ -58,12 +60,16 @@
     "contact": "Contact Us",
     "rights": "All rights reserved."
   },
+  "header": {
+    "getStarted": "Get Started Now"
+  },
   "auth": {
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "email": "Email",
     "password": "Password",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "kidsLearning": "Kids Learning"
   },
   "common": {
     "loading": "Loading...",

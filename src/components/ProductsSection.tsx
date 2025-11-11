@@ -1,7 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Brain, Gamepad2, Video, Palette, Lightbulb, Rocket, DollarSign } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ProductsSection = () => {
+  const { t } = useTranslation();
   const products = [
     { icon: BookOpen, title: "200 Ready-Made Illustrated Stories", description: "Professionally crafted stories ready for publishing" },
     { icon: Brain, title: "50+ Brain-Boosting Riddles", description: "Engaging puzzles to enhance critical thinking" },
@@ -22,9 +24,9 @@ const ProductsSection = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-            🎨 What's Included in Your Fun Bundle 🎪
+            {t('products.title')}
           </h3>
-          <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">✨ Everything you need to launch your educational products business! 🚀</p>
+          <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">{t('products.subtitle')}</p>
         </div>
 
         <div className="w-full mb-16">

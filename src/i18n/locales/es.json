@@ -5,7 +5,8 @@
     "cta": "¡Obtén tu Paquete Ahora - Solo $19.99!"
   },
   "products": {
-    "title": "Elige tu Paquete Perfecto",
+    "title": "🎨 Qué Incluye tu Paquete Divertido 🎪",
+    "subtitle": "✨ ¡Todo lo que necesitas para lanzar tu negocio de productos educativos! 🚀",
     "kidsBundle": {
       "title": "Paquete de Currículo Infantil",
       "description": "Actividades educativas completas y planes de lección para edades 3-12",
@@ -23,7 +24,8 @@
     }
   },
   "benefits": {
-    "title": "Por qué los Padres Aman Nuestros Paquetes",
+    "title": "🌟 ¿Por Qué Elegir Bright Minds Academy? 🎯",
+    "subtitle": "🚀 ¡Convierte tu pasión por la educación en un negocio rentable! 💰",
     "instant": "Descarga Instantánea",
     "instantDesc": "Acceso inmediato a todos los materiales",
     "quality": "Contenido de Alta Calidad",
@@ -46,8 +48,8 @@
     "hoursAgo": "horas atrás"
   },
   "cta": {
-    "title": "¿Listo para Transformar el Aprendizaje de tu Hijo?",
-    "subtitle": "Únete a miles de padres que ya han descubierto la alegría de actividades educativas divertidas.",
+    "title": "🚀 ¿Listo para Comenzar tu Imperio Educativo? 🌟",
+    "subtitle": "🎉 ¡Únete a miles de emprendedores exitosos que han lanzado sus marcas educativas con nuestro sistema comprobado! 💫",
     "button": "Obtén tu Paquete Ahora - $19.99"
   },
   "footer": {

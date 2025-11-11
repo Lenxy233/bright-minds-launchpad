@@ -1,12 +1,14 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface CTASectionProps {
   onPurchase: () => void;
 }
 
 const CTASection = ({ onPurchase }: CTASectionProps) => {
+  const { t } = useTranslation();
   return (
     <section className="py-20 px-4 bg-gradient-to-r from-pink-600 via-purple-600 via-blue-600 to-green-600 text-white relative overflow-hidden">
       <div className="absolute inset-0 opacity-20">
@@ -17,10 +19,10 @@ const CTASection = ({ onPurchase }: CTASectionProps) => {
       
       <div className="container mx-auto text-center max-w-4xl relative z-10">
         <h3 className="text-4xl font-bold mb-6">
-          🚀 Ready to Start Your Educational Empire? 🌟
+          {t('cta.title')}
         </h3>
         <p className="text-xl mb-8 opacity-90">
-          🎉 Join thousands of successful entrepreneurs who've launched their educational brands with our proven system! 💫
+          {t('cta.subtitle')}
         </p>
         
         <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 mb-8 border-4 border-dashed border-white/40 shadow-2xl">

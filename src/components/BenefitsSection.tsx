@@ -1,7 +1,9 @@
 
 import { CheckCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const BenefitsSection = () => {
+  const { t } = useTranslation();
   const benefits = [
     "Start your own educational brand with ease",
     "No experience required - everything is ready-made",
@@ -25,9 +27,9 @@ const BenefitsSection = () => {
       <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-16">
           <h3 className="text-4xl font-bold mb-4 bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-            🌟 Why Choose Bright Minds Academy? 🎯
+            {t('benefits.title')}
           </h3>
-          <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">🚀 Turn your passion for education into a profitable business! 💰</p>
+          <p className="text-xl text-gray-700 bg-white/50 backdrop-blur-sm rounded-2xl p-4 inline-block shadow-lg">{t('benefits.subtitle')}</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
