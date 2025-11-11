@@ -1,6 +1,7 @@
 
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import PlatformPreviewSection from "@/components/PlatformPreviewSection";
 import ProductsSection from "@/components/ProductsSection";
 import AmazonKDPSection from "@/components/AmazonKDPSection";
 import VideoSection from "@/components/VideoSection";
@@ -32,6 +33,7 @@ const Index = () => {
 
       <Header onPurchase={handlePurchase} />
       <HeroSection onPurchase={handlePurchase} />
+      <PlatformPreviewSection onPurchase={handlePurchase} />
       <ProductsSection />
       <AmazonKDPSection />
       <VideoSection />
