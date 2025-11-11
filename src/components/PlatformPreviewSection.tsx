@@ -67,11 +67,11 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
         <Card className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-8 md:p-12 border-4 border-purple-200 shadow-2xl mb-12">
           <div className="text-center mb-8">
             <h3 className="text-3xl md:text-4xl font-bold text-purple-800 mb-4">
-              🚀 Interactive Kids Learning Platform
+              🚀 AI-Powered Content Creation Platform
             </h3>
             <p className="text-gray-700 text-lg max-w-3xl mx-auto">
-              A complete web-based learning platform with AI-powered features, interactive games, 
-              and educational activities - accessible anytime, anywhere!
+              Create unlimited personalized content with AI! Generate stories, get tutoring help, 
+              and create custom games - all powered by cutting-edge AI technology.
             </p>
           </div>
 
@@ -129,28 +129,28 @@ const PlatformPreviewSection = ({ onPurchase }: PlatformPreviewSectionProps) => 
               </div>
             </div>
 
-            {/* Interactive Games */}
+            {/* AI Game Creator */}
             <div className="bg-white rounded-xl p-6 border-2 border-purple-200 hover:shadow-xl transition-all">
               <div className="bg-gradient-to-br from-orange-400 to-red-400 rounded-lg p-4 mb-4 flex items-center justify-center">
                 <Gamepad2 className="w-12 h-12 text-white" />
               </div>
-              <h4 className="text-xl font-bold text-gray-800 mb-2">🎮 Educational Games</h4>
+              <h4 className="text-xl font-bold text-gray-800 mb-2">🎮 AI Game Creator</h4>
               <p className="text-gray-600 mb-4">
-                Dozens of interactive games teaching alphabet, numbers, emotions, geography, 
-                and more through engaging play-based learning.
+                Generate custom educational games instantly with AI! Create quiz games, matching 
+                activities, and puzzles tailored to any topic or skill level.
               </p>
               <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Drag-and-drop activities</span>
+                  <span>Generate games on any topic</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Interactive puzzles</span>
+                  <span>Multiple game types (quiz, matching, puzzles)</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-500">✓</span>
-                  <span>Progress tracking</span>
+                  <span>Adjustable difficulty & age levels</span>
                 </div>
               </div>
             </div>
