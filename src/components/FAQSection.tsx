@@ -6,129 +6,23 @@ import { useTranslation } from "react-i18next";
 
 const FAQSection = () => {
   const { t } = useTranslation();
-  const faqs = [
-    {
-      id: "bundle",
-      icon: <Sparkles className="w-5 h-5 text-purple-600" />,
-      question: t('faqSection.questions.bundle.question'),
-      answer: (
-        <div className="space-y-4">
-          <p className="text-gray-700">
-            {t('faqSection.questions.bundle.intro')}
-          </p>
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
-            <p className="font-semibold text-gray-800 mb-3">{t('faqSection.questions.bundle.listTitle')}</p>
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-start">
-                <span className="text-blue-500 mr-2">✨</span>
-                {t('faqSection.questions.bundle.list.i1')}
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">📚</span>
-                {t('faqSection.questions.bundle.list.i2')}
-              </li>
-              <li className="flex items-start">
-                <span className="text-purple-500 mr-2">🎨</span>
-                {t('faqSection.questions.bundle.list.i3')}
-              </li>
-              <li className="flex items-start">
-                <span className="text-orange-500 mr-2">🎯</span>
-                {t('faqSection.questions.bundle.list.i4')}
-              </li>
-              <li className="flex items-start">
-                <span className="text-pink-500 mr-2">🎥</span>
-                {t('faqSection.questions.bundle.list.i5')}
-              </li>
-            </ul>
-          </div>
-          <p className="text-gray-700 font-medium">
-            {t('faqSection.questions.bundle.outro')}
-          </p>
-        </div>
-      )
-    },
-    {
-      id: "license",
-      icon: <Shield className="w-5 h-5 text-green-600" />,
-      question: t('faqSection.questions.license.question'),
-      answer: (
-        <div className="space-y-4">
-          <p className="text-gray-700">
-            {t('faqSection.questions.license.intro')}
-          </p>
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4">
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">✅</span>
-                {t('faqSection.questions.license.items.i1')}
-              </li>
-              <li className="flex items-start">
-                <span className="text-blue-500 mr-2">💰</span>
-                {t('faqSection.questions.license.items.i2')}
-              </li>
-              <li className="flex items-start">
-                <span className="text-purple-500 mr-2">🏷️</span>
-                {t('faqSection.questions.license.items.i3')}
-              </li>
-            </ul>
-          </div>
-          <p className="text-gray-700 font-medium">
-            {t('faqSection.questions.license.outro')}
-          </p>
-        </div>
-      )
-    },
-    {
-      id: "guarantee",
-      icon: <Shield className="w-5 h-5 text-blue-600" />,
-      question: t('faqSection.questions.guarantee.question'),
-      answer: (
-        <div className="space-y-4">
-          <p className="text-gray-700">
-            {t('faqSection.questions.guarantee.intro')}
-          </p>
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-            <p className="font-semibold text-gray-800 mb-2">{t('faqSection.questions.guarantee.noteTitle')}</p>
-            <ul className="space-y-1 text-gray-700 text-sm">
-              <li>• {t('faqSection.questions.guarantee.notes.n1')}</li>
-              <li>• {t('faqSection.questions.guarantee.notes.n2')}</li>
-              <li>• {t('faqSection.questions.guarantee.notes.n3')}</li>
-            </ul>
-          </div>
-          <p className="text-gray-700">
-            {t('faqSection.questions.guarantee.outro1')}
-          </p>
-          <p className="text-gray-700">
-            {t('faqSection.questions.guarantee.outro2')}
-          </p>
-        </div>
-      )
-    },
-    {
-      id: "upgrades",
-      icon: <Gift className="w-5 h-5 text-orange-600" />,
-      question: t('faqSection.questions.upgrades.question'),
-      answer: (
-        <div className="space-y-4">
-          <p className="text-gray-700">
-            {t('faqSection.questions.upgrades.intro')}
-          </p>
-        </div>
-      )
-    },
-    {
-      id: "support",
-      icon: <Mail className="w-5 h-5 text-red-600" />,
-      question: t('faqSection.questions.support.question'),
-      answer: (
-        <div className="space-y-4">
-          <p className="text-gray-700">
-            {t('faqSection.questions.support.intro')}
-          </p>
-        </div>
-      )
-    }
+  const questions = (t('faqSection.questions', { returnObjects: true }) as Array<{ question: string; answer: string }>) || [];
+  
+  const icons = [
+    <Sparkles className="w-5 h-5 text-purple-600" />,
+    <Shield className="w-5 h-5 text-green-600" />,
+    <HelpCircle className="w-5 h-5 text-blue-600" />,
+    <Gift className="w-5 h-5 text-orange-600" />,
+    <Mail className="w-5 h-5 text-red-600" />,
+    <Shield className="w-5 h-5 text-pink-600" />
   ];
+
+  const faqs = questions.map((q, index) => ({
+    id: `faq-${index}`,
+    icon: icons[index % icons.length],
+    question: q.question,
+    answer: q.answer
+  }));
 
   return (
     <section className="py-20 px-4 bg-gradient-to-r from-blue-100/60 via-purple-100/60 to-pink-100/60 backdrop-blur-sm relative">
@@ -156,7 +50,7 @@ const FAQSection = () => {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="pt-4 pb-6">
-                    {faq.answer}
+                    <p className="text-gray-700">{faq.answer}</p>
                   </AccordionContent>
                 </AccordionItem>
               ))}

@@ -67,12 +67,16 @@
   "benefits": {
     "title": "🌟 Why Choose Bright Minds Academy? 🎯",
     "subtitle": "🚀 Turn your passion for education into a profitable business! 💰",
-    "instant": "Instant Download",
-    "instantDesc": "Get immediate access to all materials",
-    "quality": "High Quality Content",
-    "qualityDesc": "Professionally designed educational materials",
-    "support": "Lifetime Support",
-    "supportDesc": "Get help whenever you need it"
+    "items": [
+      "💰 Start Your Own Business - Sell on Amazon, Etsy, or your own website!",
+      "📚 Ready-Made Content - No creation time needed, just rebrand and sell",
+      "🎨 Full PLR Rights - Complete ownership to customize and resell",
+      "💻 Digital Products - No inventory, shipping, or overhead costs",
+      "🌍 Global Market - Reach customers worldwide with instant downloads",
+      "⚡ Quick Launch - Get your business running in days, not months"
+    ],
+    "startSellingOn": "Start Selling On:",
+    "morePlatforms": "...and many more platforms!"
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -197,6 +201,32 @@
   "faqSection": {
     "title": "🤔 Frequently Asked Questions 💭",
     "subtitle": "Everything you need to know about the Bright Minds Academy Bundle! ✨",
+    "questions": [
+      {
+        "question": "🎨 What formats are the files in?",
+        "answer": "All materials come in easy-to-use PDF format, perfect for printing or digital use. Some items also include editable formats for customization!"
+      },
+      {
+        "question": "💰 Can I really sell these products?",
+        "answer": "Absolutely! You get full PLR (Private Label Rights), which means you can rebrand, modify, and sell these products as your own. Build your educational empire!"
+      },
+      {
+        "question": "📚 Is this suitable for complete beginners?",
+        "answer": "Yes! Everything is ready to use right away. No special skills needed - just download, rebrand (or use as-is), and start selling!"
+      },
+      {
+        "question": "⚡ How quickly can I access everything?",
+        "answer": "Instantly! After purchase, you'll get immediate access to download all materials. Start your business today!"
+      },
+      {
+        "question": "🌍 Can I sell in multiple languages?",
+        "answer": "Yes! The visual content works globally, and you can translate text materials into any language you want!"
+      },
+      {
+        "question": "💻 Do I need a website to sell?",
+        "answer": "Not required! You can sell on platforms like Amazon KDP, Etsy, Gumroad, or Teachers Pay Teachers. But having your own website gives you even more opportunities!"
+      }
+    ],
     "stillQuestions": "Still have questions? 🤗",
     "supportText": "Our friendly support team is here to help you succeed!",
     "contactSupport": "Contact Support ✨"

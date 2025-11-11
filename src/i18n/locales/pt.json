@@ -67,12 +67,16 @@
   "benefits": {
     "title": "🌟 Por Que Escolher Bright Minds Academy? 🎯",
     "subtitle": "🚀 Transforme sua paixão pela educação em um negócio lucrativo! 💰",
-    "instant": "Download Instantâneo",
-    "instantDesc": "Acesso imediato a todos os materiais",
-    "quality": "Conteúdo de Alta Qualidade",
-    "qualityDesc": "Materiais educativos projetados profissionalmente",
-    "support": "Suporte Vitalício",
-    "supportDesc": "Obtenha ajuda sempre que precisar"
+    "items": [
+      "💰 Inicie Seu Próprio Negócio - Venda na Amazon, Etsy ou em seu próprio site!",
+      "📚 Conteúdo Pronto - Sem tempo de criação necessário, apenas renomeie e venda",
+      "🎨 Direitos PLR Completos - Propriedade completa para personalizar e revender",
+      "💻 Produtos Digitais - Sem estoque, envio ou custos indiretos",
+      "🌍 Mercado Global - Alcance clientes em todo o mundo com downloads instantâneos",
+      "⚡ Lançamento Rápido - Coloque seu negócio em funcionamento em dias, não meses"
+    ],
+    "startSellingOn": "Comece a Vender Em:",
+    "morePlatforms": "...e muitas outras plataformas!"
   },
   "faq": {
     "title": "Perguntas Frequentes",
@@ -197,6 +201,32 @@
   "faqSection": {
     "title": "🤔 Perguntas Frequentes 💭",
     "subtitle": "Tudo que você precisa saber sobre o Pacote Bright Minds Academy! ✨",
+    "questions": [
+      {
+        "question": "🎨 Em quais formatos estão os arquivos?",
+        "answer": "Todos os materiais vêm em formato PDF fácil de usar, perfeito para impressão ou uso digital. Alguns itens também incluem formatos editáveis para personalização!"
+      },
+      {
+        "question": "💰 Posso realmente vender esses produtos?",
+        "answer": "Absolutamente! Você obtém direitos PLR completos (Private Label Rights), o que significa que você pode renomear, modificar e vender esses produtos como seus. Construa seu império educacional!"
+      },
+      {
+        "question": "📚 Isso é adequado para iniciantes completos?",
+        "answer": "Sim! Tudo está pronto para usar imediatamente. Nenhuma habilidade especial necessária - basta baixar, renomear (ou usar como está) e começar a vender!"
+      },
+      {
+        "question": "⚡ Quão rápido posso acessar tudo?",
+        "answer": "Instantaneamente! Após a compra, você terá acesso imediato para baixar todos os materiais. Comece seu negócio hoje!"
+      },
+      {
+        "question": "🌍 Posso vender em vários idiomas?",
+        "answer": "Sim! O conteúdo visual funciona globalmente e você pode traduzir materiais de texto para qualquer idioma que desejar!"
+      },
+      {
+        "question": "💻 Preciso de um site para vender?",
+        "answer": "Não é obrigatório! Você pode vender em plataformas como Amazon KDP, Etsy, Gumroad ou Teachers Pay Teachers. Mas ter seu próprio site oferece ainda mais oportunidades!"
+      }
+    ],
     "stillQuestions": "Ainda tem perguntas? 🤗",
     "supportText": "Nossa equipe de suporte amigável está aqui para ajudá-lo a ter sucesso!",
     "contactSupport": "Contatar Suporte ✨"

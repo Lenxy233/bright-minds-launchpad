@@ -67,12 +67,16 @@
   "benefits": {
     "title": "🌟 Pourquoi Choisir Bright Minds Academy? 🎯",
     "subtitle": "🚀 Transformez votre passion pour l'éducation en une entreprise rentable! 💰",
-    "instant": "Téléchargement Instantané",
-    "instantDesc": "Accès immédiat à tous les matériaux",
-    "quality": "Contenu de Haute Qualité",
-    "qualityDesc": "Matériaux éducatifs conçus professionnellement",
-    "support": "Support à Vie",
-    "supportDesc": "Obtenez de l'aide quand vous en avez besoin"
+    "items": [
+      "💰 Lancez Votre Propre Entreprise - Vendez sur Amazon, Etsy ou votre propre site web!",
+      "📚 Contenu Prêt à l'Emploi - Pas de temps de création nécessaire, juste rebaptisez et vendez",
+      "🎨 Droits PLR Complets - Propriété complète pour personnaliser et revendre",
+      "💻 Produits Numériques - Pas d'inventaire, d'expédition ou de frais généraux",
+      "🌍 Marché Mondial - Atteignez des clients du monde entier avec des téléchargements instantanés",
+      "⚡ Lancement Rapide - Faites fonctionner votre entreprise en quelques jours, pas en mois"
+    ],
+    "startSellingOn": "Commencez à Vendre Sur:",
+    "morePlatforms": "...et bien d'autres plateformes!"
   },
   "faq": {
     "title": "Questions Fréquemment Posées",
@@ -197,6 +201,32 @@
   "faqSection": {
     "title": "🤔 Questions Fréquemment Posées 💭",
     "subtitle": "Tout ce que vous devez savoir sur le Pack Bright Minds Academy! ✨",
+    "questions": [
+      {
+        "question": "🎨 Dans quels formats sont les fichiers?",
+        "answer": "Tous les matériaux sont au format PDF facile à utiliser, parfait pour l'impression ou l'utilisation numérique. Certains articles incluent également des formats modifiables pour la personnalisation!"
+      },
+      {
+        "question": "💰 Puis-je vraiment vendre ces produits?",
+        "answer": "Absolument! Vous obtenez les droits PLR complets (Private Label Rights), ce qui signifie que vous pouvez rebaptiser, modifier et vendre ces produits comme les vôtres. Construisez votre empire éducatif!"
+      },
+      {
+        "question": "📚 Est-ce adapté aux débutants complets?",
+        "answer": "Oui! Tout est prêt à être utilisé immédiatement. Aucune compétence particulière nécessaire - il suffit de télécharger, de rebaptiser (ou d'utiliser tel quel) et de commencer à vendre!"
+      },
+      {
+        "question": "⚡ À quelle vitesse puis-je accéder à tout?",
+        "answer": "Instantanément! Après l'achat, vous obtiendrez un accès immédiat pour télécharger tous les matériaux. Commencez votre entreprise aujourd'hui!"
+      },
+      {
+        "question": "🌍 Puis-je vendre dans plusieurs langues?",
+        "answer": "Oui! Le contenu visuel fonctionne à l'échelle mondiale et vous pouvez traduire les matériaux textuels dans la langue que vous souhaitez!"
+      },
+      {
+        "question": "💻 Ai-je besoin d'un site web pour vendre?",
+        "answer": "Pas obligatoire! Vous pouvez vendre sur des plateformes comme Amazon KDP, Etsy, Gumroad ou Teachers Pay Teachers. Mais avoir votre propre site web vous donne encore plus d'opportunités!"
+      }
+    ],
     "stillQuestions": "Vous avez encore des questions? 🤗",
     "supportText": "Notre équipe de support amicale est là pour vous aider à réussir!",
     "contactSupport": "Contacter le Support ✨"
