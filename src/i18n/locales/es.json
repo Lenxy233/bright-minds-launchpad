@@ -58,12 +58,16 @@
     "contact": "Contáctanos",
     "rights": "Todos los derechos reservados."
   },
+  "header": {
+    "getStarted": "Comenzar Ahora"
+  },
   "auth": {
     "signIn": "Iniciar Sesión",
     "signUp": "Registrarse",
     "email": "Correo Electrónico",
     "password": "Contraseña",
-    "dashboard": "Panel"
+    "dashboard": "Panel",
+    "kidsLearning": "Aprendizaje Infantil"
   },
   "common": {
     "loading": "Cargando...",
