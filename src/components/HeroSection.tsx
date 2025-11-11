@@ -51,22 +51,22 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
 
         {/* Target Group Section */}
         <div className="mb-8 bg-white/50 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">🎯 Perfect For</h3>
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">{t('hero.perfectTitle')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-4 border-2 border-blue-200 transform hover:scale-105 transition-all duration-300">
               <GraduationCap className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <h4 className="font-bold text-gray-800 mb-1">👩‍🏫 Teachers</h4>
-              <p className="text-sm text-gray-600">Create engaging classroom materials and supplementary resources</p>
+              <h4 className="font-bold text-gray-800 mb-1">{t('hero.perfectTeachersTitle')}</h4>
+              <p className="text-sm text-gray-600">{t('hero.perfectTeachersDesc')}</p>
             </div>
             <div className="bg-gradient-to-r from-green-100 to-teal-100 rounded-2xl p-4 border-2 border-green-200 transform hover:scale-105 transition-all duration-300">
               <Home className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <h4 className="font-bold text-gray-800 mb-1">👨‍👩‍👧‍👦 Parents</h4>
-              <p className="text-sm text-gray-600">Support your child's learning journey at home with fun activities</p>
+              <h4 className="font-bold text-gray-800 mb-1">{t('hero.perfectParentsTitle')}</h4>
+              <p className="text-sm text-gray-600">{t('hero.perfectParentsDesc')}</p>
             </div>
             <div className="bg-gradient-to-r from-orange-100 to-yellow-100 rounded-2xl p-4 border-2 border-orange-200 transform hover:scale-105 transition-all duration-300">
               <ShoppingBag className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-              <h4 className="font-bold text-gray-800 mb-1">📚 Book Sellers</h4>
-              <p className="text-sm text-gray-600">Expand your inventory with digital educational products</p>
+              <h4 className="font-bold text-gray-800 mb-1">{t('hero.perfectSellersTitle')}</h4>
+              <p className="text-sm text-gray-600">{t('hero.perfectSellersDesc')}</p>
             </div>
           </div>
         </div>
@@ -107,19 +107,19 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
           <div className="text-center p-4 bg-gradient-to-r from-pink-200 to-purple-200 rounded-2xl backdrop-blur-sm shadow-lg transform hover:scale-105 transition-all duration-300 border-2 border-pink-300">
             <Clock className="w-8 h-8 text-purple-600 mx-auto mb-2 animate-spin" />
-            <p className="font-bold text-gray-800">⚡ Instant Download</p>
+            <p className="font-bold text-gray-800">{t('hero.statsInstant')}</p>
           </div>
           <div className="text-center p-4 bg-gradient-to-r from-blue-200 to-green-200 rounded-2xl backdrop-blur-sm shadow-lg transform hover:scale-105 transition-all duration-300 border-2 border-blue-300">
             <Users className="w-8 h-8 text-blue-600 mx-auto mb-2 animate-bounce" />
-            <p className="font-bold text-gray-800">👥 10,000+ Users</p>
+            <p className="font-bold text-gray-800">{t('hero.statsUsers')}</p>
           </div>
           <div className="text-center p-4 bg-gradient-to-r from-green-200 to-yellow-200 rounded-2xl backdrop-blur-sm shadow-lg transform hover:scale-105 transition-all duration-300 border-2 border-green-300">
             <DollarSign className="w-8 h-8 text-green-600 mx-auto mb-2 animate-pulse" />
-            <p className="font-bold text-gray-800">💰 PLR Rights</p>
+            <p className="font-bold text-gray-800">{t('hero.statsPlr')}</p>
           </div>
           <div className="text-center p-4 bg-gradient-to-r from-yellow-200 to-pink-200 rounded-2xl backdrop-blur-sm shadow-lg transform hover:scale-105 transition-all duration-300 border-2 border-yellow-300">
             <CheckCircle className="w-8 h-8 text-pink-600 mx-auto mb-2 animate-bounce" />
-            <p className="font-bold text-gray-800">🎁 Complete Bundle</p>
+            <p className="font-bold text-gray-800">{t('hero.statsBundle')}</p>
           </div>
         </div>
       </div>

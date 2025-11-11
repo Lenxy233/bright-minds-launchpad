@@ -2,10 +2,26 @@
   "hero": {
     "title": "Transformez l'Apprentissage de votre Enfant avec des Activités Éducatives Amusantes!",
     "subtitle": "Téléchargez instantanément et regardez vos enfants apprendre en s'amusant avec nos activités et plans de cours engageants.",
-    "cta": "Obtenez votre Pack Maintenant - Seulement 19,99$!"
+    "cta": "Obtenez votre Pack Maintenant - Seulement 19,99$!",
+    "creativityBadge": "🎨 Créativité Libérée! ✨",
+    "perfectTitle": "🎯 Parfait Pour",
+    "perfectTeachersTitle": "👩‍🏫 Enseignants",
+    "perfectTeachersDesc": "Créez du matériel pédagogique attrayant et des ressources supplémentaires",
+    "perfectParentsTitle": "👨‍👩‍👧‍👦 Parents",
+    "perfectParentsDesc": "Soutenez le parcours d'apprentissage de votre enfant à la maison avec des activités amusantes",
+    "perfectSellersTitle": "📚 Vendeurs de Livres",
+    "perfectSellersDesc": "Élargissez votre inventaire avec des produits éducatifs numériques",
+    "statsInstant": "⚡ Téléchargement Instantané",
+    "statsUsers": "👥 Plus de 10 000 Utilisateurs",
+    "statsPlr": "💰 Droits PLR",
+    "statsBundle": "🎁 Pack Complet"
   },
   "products": {
-    "title": "Choisissez votre Pack Parfait",
+    "title": "🎨 Ce qui est inclus dans votre Pack Amusant 🎪",
+    "subtitle": "✨ Tout ce dont vous avez besoin pour lancer votre entreprise de produits éducatifs! 🚀",
+    "sneakPeekTitle": "🌟 Aperçu de ce que contient le package 🎀",
+    "sneakPeekSubtitle": "Découvrez le contenu incroyable et les designs que vos clients adoreront! 💕",
+    "plusMore": "🎨 <strong>Plus des centaines d'autres</strong> activités, histoires, jeux et matériels éducatifs! 🌈",
     "kidsBundle": {
       "title": "Pack Curriculum Enfants",
       "description": "Activités éducatives complètes et plans de cours pour âges 3-12",
@@ -20,10 +36,37 @@
       "title": "Pack Vidéo d'Animation",
       "description": "Vidéos animées engageantes pour l'apprentissage créatif",
       "price": "19,99$"
+    },
+    "items": {
+      "stories": "200 Histoires Illustrées Prêtes à l'Emploi",
+      "storiesDesc": "Histoires élaborées professionnellement prêtes pour la publication",
+      "riddles": "Plus de 50 Énigmes Stimulantes",
+      "riddlesDesc": "Puzzles engageants pour améliorer la pensée critique",
+      "puzzles": "Plus de 10 Puzzles Interactifs",
+      "puzzlesDesc": "Puzzles numériques amusants pour apprendre",
+      "videos": "Vidéos Animées",
+      "videosDesc": "Contenu vidéo éducatif de haute qualité",
+      "template": "Modèle Créez-Votre-Propre-Livre",
+      "templateDesc": "Modèles personnalisables pour créer des livres uniques",
+      "curriculum": "Ressources Curriculum Maternelle",
+      "curriculumDesc": "Matériels de curriculum complets pour les premiers apprenants",
+      "aiPrompts": "600 Prompts IA pour ChatGPT et MidJourney",
+      "aiPromptsDesc": "Outils de création de contenu alimentés par l'IA",
+      "games": "Plus de 10 Jeux en Ligne Sans Code",
+      "gamesDesc": "Jeux éducatifs prêts à l'emploi",
+      "science": "Plus de 40 Expériences Scientifiques Simples à la Maison",
+      "scienceDesc": "Activités d'apprentissage pratiques",
+      "youtube": "Vidéos Animées YouTube Modifiables",
+      "youtubeDesc": "Contenu adapté aux enfants pour les chaînes YouTube",
+      "robotics": "Introduction à la Robotique",
+      "roboticsDesc": "Ressources d'éducation STEM",
+      "plr": "Droits PLR Inclus",
+      "plrDesc": "Licence commerciale pour vendre des produits"
     }
   },
   "benefits": {
-    "title": "Pourquoi les Parents Adorent nos Packs",
+    "title": "🌟 Pourquoi Choisir Bright Minds Academy? 🎯",
+    "subtitle": "🚀 Transformez votre passion pour l'éducation en une entreprise rentable! 💰",
     "instant": "Téléchargement Instantané",
     "instantDesc": "Accès immédiat à tous les matériaux",
     "quality": "Contenu de Haute Qualité",
@@ -46,9 +89,9 @@
     "hoursAgo": "heures"
   },
   "cta": {
-    "title": "Prêt à Transformer l'Apprentissage de votre Enfant?",
-    "subtitle": "Rejoignez des milliers de parents qui ont déjà découvert la joie des activités éducatives amusantes.",
-    "button": "Obtenez votre Pack Maintenant - 19,99$"
+    "title": "🚀 Prêt à Démarrer votre Empire Éducatif? 🌟",
+    "subtitle": "🎉 Rejoignez des milliers d'entrepreneurs prospères qui ont lancé leurs marques éducatives avec notre système éprouvé! 💫",
+    "button": "Obtenez votre Pack Maintenant - 39$"
   },
   "footer": {
     "company": "Bright Minds Academy",
@@ -58,12 +101,16 @@
     "contact": "Contactez-nous",
     "rights": "Tous droits réservés."
   },
+  "header": {
+    "getStarted": "Commencer Maintenant"
+  },
   "auth": {
     "signIn": "Se Connecter",
     "signUp": "S'inscrire",
     "email": "Email",
     "password": "Mot de Passe",
-    "dashboard": "Tableau de Bord"
+    "dashboard": "Tableau de Bord",
+    "kidsLearning": "Apprentissage Enfants"
   },
   "common": {
     "loading": "Chargement...",
@@ -71,5 +118,140 @@
     "retry": "Réessayer",
     "back": "Retour",
     "home": "Accueil"
+  },
+  "reviews": {
+    "title": "💖 Ce Que Disent Nos Incroyables Clients 🌟",
+    "subtitle": "🎉 Rejoignez des milliers d'éducateurs et d'entrepreneurs prospères! 🚀",
+    "rating": "✨ 4,9/5 sur plus de 10 000 avis 🎯"
+  },
+  "video": {
+    "title": "🎬 Regardez Nos Produits Éducatifs en Action! 🌟",
+    "subtitle": "Découvrez comment notre incroyable pack éducatif peut transformer l'apprentissage! 🚀",
+    "clickPlay": "🔊 <strong>Cliquez pour lire avec le son</strong> et découvrez la magie de nos ressources éducatives! ✨"
+  },
+  "amazonKdp": {
+    "title": "📚 Livres Prêts pour Amazon KDP 🌟",
+    "subtitle": "Designs de livres pour enfants professionnels prêts pour une publication immédiate sur Amazon KDP! 🚀",
+    "heading": "🎨 Designs de Couvertures Professionnels",
+    "quality": "Des designs de haute qualité et accrocheurs qui se démarquent sur le marché! ✨",
+    "badge": "📚 Designs Prêts à Publier 🌟",
+    "perfect": "💡 <strong>Parfait pour les vendeurs Amazon KDP</strong> cherchant à publier des livres pour enfants de haute qualité! 📖"
+  },
+  "science": {
+    "title": "🧪 Expériences Scientifiques Incroyables à la Maison! 🔬",
+    "subtitle": "Transformez votre cuisine en un laboratoire scientifique magique avec plus de 40 expériences simples! ✨",
+    "slimeHeading": "Slime Maison et Plus! 🌟",
+    "slimeDesc": "Regardez les yeux de votre enfant s'illuminer en créant du slime coloré, des volcans en éruption et des potions magiques qui changent de couleur en utilisant de simples ingrédients ménagers! 🎨",
+    "experiments": "Plus de 40 Expériences",
+    "experimentsSafe": "Faciles et Sûres",
+    "stem": "Apprentissage STEM",
+    "stemFun": "Amusement Pratique",
+    "discoverTitle": "Ce Que Vous Découvrirez:",
+    "discover1": "Créez du slime arc-en-ciel avec différentes textures",
+    "discover2": "Faites éclater des volcans avec des ingrédients sûrs",
+    "discover3": "Mélangez des potions magiques qui changent de couleur",
+    "discover4": "Apprenez la vraie science tout en vous amusant!",
+    "ctaTitle": "🚀 Prêt à Commencer votre Aventure Scientifique? 🚀",
+    "ctaSubtitle": "Rejoignez des milliers de familles qui s'amusent déjà avec la science à la maison!",
+    "ctaButton": "Obtenez un Accès Instantané Maintenant! ✨"
+  },
+  "platform": {
+    "badge": "Aperçu de la Plateforme en Direct",
+    "title": "Voyez la Magie en Action! ✨",
+    "subtitle": "Obtenez un accès instantané à notre plateforme d'apprentissage interactive pour enfants avec des centaines d'activités engageantes",
+    "aiTitle": "🚀 Plateforme de Création de Contenu Alimentée par l'IA",
+    "aiSubtitle": "Créez du contenu personnalisé illimité avec l'IA! Générez des histoires, obtenez de l'aide au tutorat et créez des jeux personnalisés - le tout alimenté par une technologie IA de pointe.",
+    "storyTitle": "🎨 Créateur d'Histoires IA",
+    "storyDesc": "Les enfants créent des histoires personnalisées avec l'IA! Choisissez des personnages, des décors et des thèmes - l'IA génère des histoires illustrées uniques instantanément.",
+    "tutorTitle": "🤖 Tuteur d'Apprentissage IA",
+    "tutorDesc": "Assistant IA 24/7 qui aide avec les devoirs, explique les concepts et fournit un soutien d'apprentissage personnalisé pour chaque enfant.",
+    "gameTitle": "🎮 Créateur de Jeux IA",
+    "gameDesc": "Générez des jeux éducatifs personnalisés instantanément avec l'IA! Créez des jeux de quiz, des activités d'appariement et des puzzles adaptés à n'importe quel sujet ou niveau de compétence.",
+    "moreTitle": "Et Bien Plus Encore:",
+    "storyBooks": "Livres d'Histoires Interactifs",
+    "storyBooksDesc": "Narration audio et animations",
+    "drawing": "Dessin et Coloriage",
+    "drawingDesc": "Activités d'art numérique",
+    "curriculum": "Leçons de Curriculum",
+    "curriculumDesc": "Parcours d'apprentissage structuré",
+    "parentDash": "Tableau de Bord Parents",
+    "parentDashDesc": "Suivez les progrès et les réalisations",
+    "worksheets": "Fiches de Travail Imprimables",
+    "worksheetsDesc": "Plus de 200 activités téléchargeables",
+    "multiLang": "Multi-Langues",
+    "multiLangDesc": "Apprenez dans votre langue",
+    "ctaButton": "🎯 Obtenez l'Accès Complet à la Plateforme - Seulement 39$",
+    "instant": "✨ Accès instantané à tout • Fonctionne sur tout appareil • Annulez à tout moment",
+    "allTitle": "🌟 Tout Inclus dans Votre Plateforme",
+    "trustTitle": "🎉 Rejoignez Plus de 10 000 Parents et Enseignants Heureux!",
+    "trustSubtitle": "Commencez le parcours d'apprentissage de votre enfant aujourd'hui avec un accès instantané à toutes les ressources"
+  },
+  "curriculum": {
+    "title": "🎓 Ressources Curriculum Maternelle",
+    "subtitle": "Matériels d'apprentissage complets couvrant tous les domaines essentiels du développement de la maternelle",
+    "footer": "✨ Toutes les ressources sont imprimables, faciles à utiliser et alignées sur les normes de la maternelle"
+  },
+  "floatingButton": {
+    "text": "🎯 Obtenez un Accès Instantané Maintenant ✨"
+  },
+  "faqSection": {
+    "title": "🤔 Questions Fréquemment Posées 💭",
+    "subtitle": "Tout ce que vous devez savoir sur le Pack Bright Minds Academy! ✨",
+    "stillQuestions": "Vous avez encore des questions? 🤗",
+    "supportText": "Notre équipe de support amicale est là pour vous aider à réussir!",
+    "contactSupport": "Contacter le Support ✨"
+  },
+  "footerSection": {
+    "tagline": "🌟 Autonomiser la prochaine génération grâce à des produits éducatifs innovants 🎨",
+    "privacyPolicy": "Politique de Confidentialité",
+    "dataProtection": "Politique de Protection des Données",
+    "termsConditions": "Conditions Générales",
+    "copyright": "© 2024 Bright Minds Academy. Tous droits réservés. ✨"
+  },
+  "learningApp": {
+    "back": "Retour au Site Principal",
+    "title": "Plateforme d'Apprentissage pour Enfants",
+    "manageLessons": "Gérer les Leçons",
+    "parentLogin": "Connexion Parent/Enseignant",
+    "welcomeBack": "Bon retour, {{name}}! 🎉",
+    "logout": "Déconnexion",
+    "heroTitle": "Apprentissage Amusant pour des Esprits Brillants!",
+    "heroSubtitle": "Un monde sûr et coloré où les enfants explorent des fiches, gagnent des badges et apprennent à leur rythme.",
+    "kidLogin": "Connexion Enfant",
+    "parentAccess": "Accès Parent/Enseignant",
+    "cardStoryBooksTitle": "Livres d'Histoires",
+    "cardStoryBooksDesc": "Lisez avec narration audio. Des histoires interactives qui prennent vie!",
+    "cardAiStoryTitle": "Créateur d'Histoires IA",
+    "cardAiStoryDesc": "Créez vos propres histoires avec l'IA! Choisissez des thèmes, des leçons et regardez la magie opérer.",
+    "cardPuzzlesTitle": "Puzzles",
+    "cardPuzzlesDesc": "Comptez, associez et résolvez des puzzles amusants. Apprenez en jouant!",
+    "cardGamesLibTitle": "Bibliothèque de Jeux",
+    "cardGamesLibDesc": "Jouez à des jeux d'apprentissage amusants! Jeux de quiz, activités d'association et plus.",
+    "cardCreateAiGameTitle": "Créer un Jeu IA",
+    "cardCreateAiGameDesc": "Construisez des jeux d'apprentissage avec l'IA. Créez vos propres activités éducatives!",
+    "cardAiTutorTitle": "Tuteur IA",
+    "cardAiTutorDesc": "Posez des questions et obtenez de l'aide sur n'importe quel sujet! Votre assistant d'apprentissage.",
+    "cardVideoTitle": "Apprentissage Vidéo",
+    "cardVideoDesc": "Regardez des vidéos éducatives et faites des quiz! Apprenez en regardant et en testant vos connaissances.",
+    "cardRewardsTitle": "Gagnez des Récompenses",
+    "cardRewardsDesc": "Collectez des étoiles, débloquez des badges et suivez vos progrès. Chaque activité est une nouvelle réalisation!",
+    "ctaTitle": "Prêt à Commencer à Apprendre?",
+    "ctaSubtitle": "Rejoignez des milliers d'enfants dans leur parcours d'apprentissage!",
+    "ctaButton": "Commencer Maintenant",
+    "formWelcome": "Bon Retour!",
+    "formSubtitle": "Entrez votre nom d'utilisateur et PIN pour continuer à apprendre",
+    "formUsername": "Nom d'Utilisateur",
+    "formPin": "PIN (4 chiffres)",
+    "formPlaceholderUsername": "Votre nom d'utilisateur",
+    "formPlaceholderPin": "••••",
+    "formLogin": "Commencer à Apprendre!",
+    "formLoggingIn": "Connexion...",
+    "formBack": "Retour",
+    "toastLoginFailedTitle": "Échec de Connexion",
+    "toastLoginFailedDesc": "Nom d'utilisateur ou PIN invalide. Veuillez réessayer.",
+    "toastWelcomeTitle": "Bon retour!",
+    "toastWelcomeDesc": "Salut {{name}}! Apprenons!",
+    "toastErrorTitle": "Erreur",
+    "toastErrorDesc": "Quelque chose s'est mal passé. Veuillez réessayer."
   }
 }

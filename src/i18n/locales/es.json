@@ -2,11 +2,26 @@
   "hero": {
     "title": "¡Transforma el Aprendizaje de tu Hijo con Actividades Educativas Divertidas!",
     "subtitle": "Descarga instantáneamente y ve a tus hijos aprender mientras se divierten con nuestras actividades y planes de lección atractivos.",
-    "cta": "¡Obtén tu Paquete Ahora - Solo $19.99!"
+    "cta": "¡Obtén tu Paquete Ahora - Solo $19.99!",
+    "creativityBadge": "🎨 ¡Creatividad Desatada! ✨",
+    "perfectTitle": "🎯 Perfecto Para",
+    "perfectTeachersTitle": "👩‍🏫 Maestros",
+    "perfectTeachersDesc": "Crea materiales de aula atractivos y recursos complementarios",
+    "perfectParentsTitle": "👨‍👩‍👧‍👦 Padres",
+    "perfectParentsDesc": "Apoya el viaje de aprendizaje de tu hijo en casa con actividades divertidas",
+    "perfectSellersTitle": "📚 Vendedores de Libros",
+    "perfectSellersDesc": "Amplía tu inventario con productos educativos digitales",
+    "statsInstant": "⚡ Descarga Instantánea",
+    "statsUsers": "👥 Más de 10,000 Usuarios",
+    "statsPlr": "💰 Derechos PLR",
+    "statsBundle": "🎁 Paquete Completo"
   },
   "products": {
     "title": "🎨 Qué Incluye tu Paquete Divertido 🎪",
     "subtitle": "✨ ¡Todo lo que necesitas para lanzar tu negocio de productos educativos! 🚀",
+    "sneakPeekTitle": "🌟 Vista previa de lo que incluye el paquete 🎀",
+    "sneakPeekSubtitle": "¡Obtén una vista previa del increíble contenido y diseños que tus clientes amarán! 💕",
+    "plusMore": "🎨 <strong>Además cientos más</strong> de actividades, historias, juegos y materiales educativos! 🌈",
     "kidsBundle": {
       "title": "Paquete de Currículo Infantil",
       "description": "Actividades educativas completas y planes de lección para edades 3-12",
@@ -21,6 +36,32 @@
       "title": "Paquete de Video Animación",
       "description": "Videos animados atractivos para aprendizaje creativo",
       "price": "$19.99"
+    },
+    "items": {
+      "stories": "200 Historias Ilustradas Listas",
+      "storiesDesc": "Historias elaboradas profesionalmente listas para publicar",
+      "riddles": "Más de 50 Acertijos Estimulantes",
+      "riddlesDesc": "Rompecabezas atractivos para mejorar el pensamiento crítico",
+      "puzzles": "Más de 10 Rompecabezas Interactivos",
+      "puzzlesDesc": "Rompecabezas digitales divertidos para aprender",
+      "videos": "Videos Animados",
+      "videosDesc": "Contenido de video educativo de alta calidad",
+      "template": "Plantilla para Crear tu Propio Libro",
+      "templateDesc": "Plantillas personalizables para crear libros únicos",
+      "curriculum": "Recursos de Currículo de Kindergarten",
+      "curriculumDesc": "Materiales completos de currículo para primeros aprendices",
+      "aiPrompts": "600 Prompts de IA para ChatGPT y MidJourney",
+      "aiPromptsDesc": "Herramientas de creación de contenido impulsadas por IA",
+      "games": "Más de 10 Juegos en Línea Sin Código",
+      "gamesDesc": "Juegos educativos listos para usar",
+      "science": "Más de 40 Experimentos Científicos Caseros Simples",
+      "scienceDesc": "Actividades de aprendizaje práctico",
+      "youtube": "Videos Animados Editables para YouTube",
+      "youtubeDesc": "Contenido amigable para niños para canales de YouTube",
+      "robotics": "Introducción a la Robótica",
+      "roboticsDesc": "Recursos educativos STEM",
+      "plr": "Derechos PLR Incluidos",
+      "plrDesc": "Licencia comercial para vender productos"
     }
   },
   "benefits": {

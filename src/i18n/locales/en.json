@@ -19,6 +19,9 @@
   "products": {
     "title": "🎨 What's Included in Your Fun Bundle 🎪",
     "subtitle": "✨ Everything you need to launch your educational products business! 🚀",
+    "sneakPeekTitle": "🌟 Sneak Peak of what the package entails 🎀",
+    "sneakPeekSubtitle": "Get a glimpse of the amazing content and designs your customers will love! 💕",
+    "plusMore": "🎨 <strong>Plus hundreds more</strong> activities, stories, games, and educational materials! 🌈",
     "kidsBundle": {
       "title": "Kids Curriculum Bundle",
       "description": "Complete educational activities and lesson plans for ages 3-12",
@@ -33,6 +36,32 @@
       "title": "Animation Video Bundle",
       "description": "Engaging animated videos for creative learning",
       "price": "$19.99"
+    },
+    "items": {
+      "stories": "200 Ready-Made Illustrated Stories",
+      "storiesDesc": "Professionally crafted stories ready for publishing",
+      "riddles": "50+ Brain-Boosting Riddles",
+      "riddlesDesc": "Engaging puzzles to enhance critical thinking",
+      "puzzles": "10+ Interactive Puzzles",
+      "puzzlesDesc": "Fun digital puzzles for learning",
+      "videos": "Animated Videos",
+      "videosDesc": "High-quality educational video content",
+      "template": "Build-Your-Own Book Template",
+      "templateDesc": "Customizable templates for creating unique books",
+      "curriculum": "Kindergarten Curriculum Resources",
+      "curriculumDesc": "Complete curriculum materials for early learners",
+      "aiPrompts": "600 AI Prompts for ChatGPT & MidJourney",
+      "aiPromptsDesc": "AI-powered content creation tools",
+      "games": "10+ No-Code Online Games",
+      "gamesDesc": "Ready-to-use educational games",
+      "science": "40+ Simple Home Science Experiments",
+      "scienceDesc": "Hands-on learning activities",
+      "youtube": "Editable Animated YouTube Videos",
+      "youtubeDesc": "Kid-friendly content for YouTube channels",
+      "robotics": "Introduction to Robotics",
+      "roboticsDesc": "STEM education resources",
+      "plr": "PLR Rights Included",
+      "plrDesc": "Commercial license to sell products"
     }
   },
   "benefits": {

@@ -5,18 +5,18 @@ import { useTranslation } from "react-i18next";
 const ProductsSection = () => {
   const { t } = useTranslation();
   const products = [
-    { icon: BookOpen, title: "200 Ready-Made Illustrated Stories", description: "Professionally crafted stories ready for publishing" },
-    { icon: Brain, title: "50+ Brain-Boosting Riddles", description: "Engaging puzzles to enhance critical thinking" },
-    { icon: Gamepad2, title: "10+ Interactive Puzzles", description: "Fun digital puzzles for learning" },
-    { icon: Video, title: "Animated Videos", description: "High-quality educational video content" },
-    { icon: Palette, title: "Build-Your-Own Book Template", description: "Customizable templates for creating unique books" },
-    { icon: Brain, title: "Kindergarten Curriculum Resources", description: "Complete curriculum materials for early learners" },
-    { icon: Lightbulb, title: "600 AI Prompts for ChatGPT & MidJourney", description: "AI-powered content creation tools" },
-    { icon: Gamepad2, title: "10+ No-Code Online Games", description: "Ready-to-use educational games" },
-    { icon: Rocket, title: "40+ Simple Home Science Experiments", description: "Hands-on learning activities" },
-    { icon: Video, title: "Editable Animated YouTube Videos", description: "Kid-friendly content for YouTube channels" },
-    { icon: Rocket, title: "Introduction to Robotics", description: "STEM education resources" },
-    { icon: DollarSign, title: "PLR Rights Included", description: "Commercial license to sell products" }
+    { icon: BookOpen, title: t('products.items.stories'), description: t('products.items.storiesDesc') },
+    { icon: Brain, title: t('products.items.riddles'), description: t('products.items.riddlesDesc') },
+    { icon: Gamepad2, title: t('products.items.puzzles'), description: t('products.items.puzzlesDesc') },
+    { icon: Video, title: t('products.items.videos'), description: t('products.items.videosDesc') },
+    { icon: Palette, title: t('products.items.template'), description: t('products.items.templateDesc') },
+    { icon: Brain, title: t('products.items.curriculum'), description: t('products.items.curriculumDesc') },
+    { icon: Lightbulb, title: t('products.items.aiPrompts'), description: t('products.items.aiPromptsDesc') },
+    { icon: Gamepad2, title: t('products.items.games'), description: t('products.items.gamesDesc') },
+    { icon: Rocket, title: t('products.items.science'), description: t('products.items.scienceDesc') },
+    { icon: Video, title: t('products.items.youtube'), description: t('products.items.youtubeDesc') },
+    { icon: Rocket, title: t('products.items.robotics'), description: t('products.items.roboticsDesc') },
+    { icon: DollarSign, title: t('products.items.plr'), description: t('products.items.plrDesc') }
   ];
 
   return (
@@ -41,10 +41,10 @@ const ProductsSection = () => {
         <div className="mb-16 bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border-4 border-dashed border-purple-300">
           <div className="text-center mb-8">
             <h4 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-              🌟 Sneak Peak of what the package entails 🎀
+              {t('products.sneakPeekTitle')}
             </h4>
             <p className="text-lg text-gray-700 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-4 inline-block shadow-lg">
-              Get a glimpse of the amazing content and designs your customers will love! 💕
+              {t('products.sneakPeekSubtitle')}
             </p>
           </div>
           
@@ -181,9 +181,7 @@ const ProductsSection = () => {
           </div>
           
           <div className="text-center mt-8">
-            <p className="text-gray-600 text-lg bg-yellow-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-yellow-300">
-              🎨 <strong>Plus hundreds more</strong> activities, stories, games, and educational materials! 🌈
-            </p>
+            <p className="text-gray-600 text-lg bg-yellow-100 rounded-2xl p-4 inline-block shadow-lg border-2 border-yellow-300" dangerouslySetInnerHTML={{ __html: t('products.plusMore') }} />
           </div>
         </div>
 

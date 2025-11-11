@@ -33,6 +33,7 @@ const initI18n = async () => {
       .init({
         resources,
         fallbackLng: 'en',
+        lng: 'en',
         debug: false,
         detection: {
           order: ['localStorage', 'navigator', 'htmlTag'],
