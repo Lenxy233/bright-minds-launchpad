@@ -193,13 +193,26 @@ const LearningApp = () => {
 
               <Card 
                 className="border-2 border-orange-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
-                onClick={() => navigate('/game-creator')}
+                onClick={() => navigate('/games-library')}
               >
                 <CardHeader>
                   <Gamepad2 className="w-12 h-12 text-orange-600 mb-4" />
-                  <CardTitle>AI Game Creator</CardTitle>
+                  <CardTitle>Games Library</CardTitle>
                   <CardDescription>
-                    Create custom learning games with AI. Make learning fun and personalized!
+                    Play fun learning games! Quiz games, matching activities, and more.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card 
+                className="border-2 border-amber-200 bg-white/90 backdrop-blur-sm hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => navigate('/game-creator')}
+              >
+                <CardHeader>
+                  <Sparkles className="w-12 h-12 text-amber-600 mb-4" />
+                  <CardTitle>Create AI Game</CardTitle>
+                  <CardDescription>
+                    Build custom learning games with AI. Make your own educational activities!
                   </CardDescription>
                 </CardHeader>
               </Card>
