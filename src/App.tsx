@@ -68,45 +68,45 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/new-product-launch" element={<NewProductLaunch />} />
             <Route path="/learning-app" element={<LearningApp />} />
-            <Route path="/story-books" element={<StoryBooks />} />
-            <Route path="/story-books/:id" element={<StoryBookReader />} />
-            <Route path="/story-books/upload" element={<StoryBookUpload />} />
-            <Route path="/story-books/batch-upload" element={<BatchStoryUpload />} />
-            <Route path="/parent-dashboard" element={<ParentDashboard />} />
-            <Route path="/puzzle" element={<Puzzle />} />
-            <Route path="/puzzle-admin" element={<PuzzleAdmin />} />
-            <Route path="/scissors-cutting" element={<ScissorsCutting />} />
-            <Route path="/alphabet-tracing" element={<AlphabetTracing />} />
-            <Route path="/alphabet-az-tracing" element={<AlphabetAZTracing />} />
-            <Route path="/numbers-tracing" element={<NumbersTracing />} />
-            <Route path="/fruit-drawing" element={<FruitDrawing />} />
-            <Route path="/alphabet-recognition" element={<AlphabetRecognition />} />
-            <Route path="/number-practice" element={<NumberPractice />} />
-            <Route path="/counting-worksheets" element={<CountingWorksheets />} />
-            <Route path="/addition-dots" element={<AdditionWithDots />} />
-            <Route path="/subtraction-numberline" element={<SubtractionNumberLine />} />
-            <Route path="/clock-faces" element={<ClockFaces />} />
-            <Route path="/poems" element={<Poems />} />
-          <Route path="/feelings-emotions" element={<FeelingsEmotions />} />
-          <Route path="/emotion-matching" element={<EmotionMatching />} />
-          <Route path="/emotion-scenarios" element={<EmotionScenarios />} />
-          <Route path="/friendship-activities" element={<FriendshipActivities />} />
-          <Route path="/where-is-thomas" element={<WhereIsThomas />} />
-            <Route path="/activities" element={<Activities />} />
-            <Route path="/activity-builder" element={<ActivityBuilder />} />
-            <Route path="/activity-builder/:id" element={<ActivityBuilder />} />
-            <Route path="/activity-player/:id" element={<ActivityPlayer />} />
-            <Route path="/interactive-story/:id" element={<InteractiveStory />} />
-            <Route path="/ai-story-creator" element={<AIStoryCreator />} />
-            <Route path="/game-creator" element={<GameCreator />} />
-            <Route path="/games/:id" element={<GamePlayer />} />
-            <Route path="/games-library" element={<GamesLibrary />} />
-            <Route path="/white-label-admin" element={<WhiteLabelAdmin />} />
+            <Route path="/story-books" element={<ProtectedRoute requirePurchase><StoryBooks /></ProtectedRoute>} />
+            <Route path="/story-books/:id" element={<ProtectedRoute requirePurchase><StoryBookReader /></ProtectedRoute>} />
+            <Route path="/story-books/upload" element={<ProtectedRoute><StoryBookUpload /></ProtectedRoute>} />
+            <Route path="/story-books/batch-upload" element={<ProtectedRoute><BatchStoryUpload /></ProtectedRoute>} />
+            <Route path="/parent-dashboard" element={<ProtectedRoute requirePurchase><ParentDashboard /></ProtectedRoute>} />
+            <Route path="/puzzle" element={<ProtectedRoute requirePurchase><Puzzle /></ProtectedRoute>} />
+            <Route path="/puzzle-admin" element={<ProtectedRoute><PuzzleAdmin /></ProtectedRoute>} />
+            <Route path="/scissors-cutting" element={<ProtectedRoute requirePurchase><ScissorsCutting /></ProtectedRoute>} />
+            <Route path="/alphabet-tracing" element={<ProtectedRoute requirePurchase><AlphabetTracing /></ProtectedRoute>} />
+            <Route path="/alphabet-az-tracing" element={<ProtectedRoute requirePurchase><AlphabetAZTracing /></ProtectedRoute>} />
+            <Route path="/numbers-tracing" element={<ProtectedRoute requirePurchase><NumbersTracing /></ProtectedRoute>} />
+            <Route path="/fruit-drawing" element={<ProtectedRoute requirePurchase><FruitDrawing /></ProtectedRoute>} />
+            <Route path="/alphabet-recognition" element={<ProtectedRoute requirePurchase><AlphabetRecognition /></ProtectedRoute>} />
+            <Route path="/number-practice" element={<ProtectedRoute requirePurchase><NumberPractice /></ProtectedRoute>} />
+            <Route path="/counting-worksheets" element={<ProtectedRoute requirePurchase><CountingWorksheets /></ProtectedRoute>} />
+            <Route path="/addition-dots" element={<ProtectedRoute requirePurchase><AdditionWithDots /></ProtectedRoute>} />
+            <Route path="/subtraction-numberline" element={<ProtectedRoute requirePurchase><SubtractionNumberLine /></ProtectedRoute>} />
+            <Route path="/clock-faces" element={<ProtectedRoute requirePurchase><ClockFaces /></ProtectedRoute>} />
+            <Route path="/poems" element={<ProtectedRoute requirePurchase><Poems /></ProtectedRoute>} />
+          <Route path="/feelings-emotions" element={<ProtectedRoute requirePurchase><FeelingsEmotions /></ProtectedRoute>} />
+          <Route path="/emotion-matching" element={<ProtectedRoute requirePurchase><EmotionMatching /></ProtectedRoute>} />
+          <Route path="/emotion-scenarios" element={<ProtectedRoute requirePurchase><EmotionScenarios /></ProtectedRoute>} />
+          <Route path="/friendship-activities" element={<ProtectedRoute requirePurchase><FriendshipActivities /></ProtectedRoute>} />
+          <Route path="/where-is-thomas" element={<ProtectedRoute requirePurchase><WhereIsThomas /></ProtectedRoute>} />
+            <Route path="/activities" element={<ProtectedRoute requirePurchase><Activities /></ProtectedRoute>} />
+            <Route path="/activity-builder" element={<ProtectedRoute><ActivityBuilder /></ProtectedRoute>} />
+            <Route path="/activity-builder/:id" element={<ProtectedRoute><ActivityBuilder /></ProtectedRoute>} />
+            <Route path="/activity-player/:id" element={<ProtectedRoute requirePurchase><ActivityPlayer /></ProtectedRoute>} />
+            <Route path="/interactive-story/:id" element={<ProtectedRoute requirePurchase><InteractiveStory /></ProtectedRoute>} />
+            <Route path="/ai-story-creator" element={<ProtectedRoute requirePurchase><AIStoryCreator /></ProtectedRoute>} />
+            <Route path="/game-creator" element={<ProtectedRoute><GameCreator /></ProtectedRoute>} />
+            <Route path="/games/:id" element={<ProtectedRoute requirePurchase><GamePlayer /></ProtectedRoute>} />
+            <Route path="/games-library" element={<ProtectedRoute requirePurchase><GamesLibrary /></ProtectedRoute>} />
+            <Route path="/white-label-admin" element={<ProtectedRoute><WhiteLabelAdmin /></ProtectedRoute>} />
             <Route path="/plr-license" element={<PLRLicense />} />
-            <Route path="/video-learning" element={<VideoLearning />} />
+            <Route path="/video-learning" element={<ProtectedRoute requirePurchase><VideoLearning /></ProtectedRoute>} />
             <Route path="/video-learning-admin" element={<ProtectedRoute><VideoLearningAdmin /></ProtectedRoute>} />
             <Route path="/curriculum-lesson-admin" element={<ProtectedRoute><CurriculumLessonAdmin /></ProtectedRoute>} />
-            <Route path="/curriculum-lesson/:lessonId" element={<CurriculumLessonPlayer />} />
+            <Route path="/curriculum-lesson/:lessonId" element={<ProtectedRoute requirePurchase><CurriculumLessonPlayer /></ProtectedRoute>} />
             <Route path="/legal" element={<Legal />} />
             {/* Redirect old policy routes to the new legal page with anchors */}
             <Route path="/privacy-policy" element={<Legal />} />
