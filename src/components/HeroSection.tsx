@@ -25,7 +25,7 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
           <Badge className="bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 text-purple-800 border-purple-300 shadow-lg text-lg px-4 py-2 animate-bounce">
             🎉 Super Fun Limited Time Offer - 97% OFF! 🎊
           </Badge>
-          <Badge className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white border-red-500 shadow-lg text-lg px-4 py-2 animate-pulse font-bold">
+          <Badge className="bg-black text-white border-gray-800 shadow-lg text-lg px-4 py-2 animate-pulse font-bold">
             🔥 BLACK FRIDAY SPECIAL 🔥
           </Badge>
         </div>
@@ -94,7 +94,7 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <div className="relative inline-block">
-            <div className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-bounce z-10">
+            <div className="absolute -top-3 -right-3 bg-black text-white text-xs font-bold px-2 py-1 rounded-full animate-bounce z-10">
               BLACK FRIDAY
             </div>
             <Button 
