@@ -19,7 +19,7 @@ const CTASection = ({ onPurchase }: CTASectionProps) => {
       
       <div className="container mx-auto text-center max-w-4xl relative z-10">
         <div className="mb-4">
-          <span className="inline-block bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white px-6 py-3 rounded-full text-xl font-bold animate-pulse shadow-2xl border-4 border-white">
+          <span className="inline-block bg-black text-white px-6 py-3 rounded-full text-xl font-bold animate-pulse shadow-2xl border-4 border-white">
             🔥 BLACK FRIDAY DEAL 🔥
           </span>
         </div>
