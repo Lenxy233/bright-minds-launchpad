@@ -21,9 +21,14 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
   return (
     <section className="py-20 px-4 relative">
       <div className="container mx-auto text-center max-w-6xl">
-        <Badge className="mb-6 bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 text-purple-800 border-purple-300 shadow-lg text-lg px-4 py-2 animate-bounce">
-          🎉 Super Fun Limited Time Offer - 97% OFF! 🎊
-        </Badge>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-6">
+          <Badge className="bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 text-purple-800 border-purple-300 shadow-lg text-lg px-4 py-2 animate-bounce">
+            🎉 Super Fun Limited Time Offer - 97% OFF! 🎊
+          </Badge>
+          <Badge className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white border-red-500 shadow-lg text-lg px-4 py-2 animate-pulse font-bold">
+            🔥 BLACK FRIDAY SPECIAL 🔥
+          </Badge>
+        </div>
         
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-8">
           <div className="text-left lg:text-left">
@@ -88,14 +93,19 @@ const HeroSection = ({ onPurchase }: HeroSectionProps) => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button 
-            onClick={onPurchase} 
-            size="lg" 
-            className="bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-green-500 hover:from-pink-600 hover:via-purple-600 hover:via-blue-600 hover:to-green-600 text-lg px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 animate-slide-in-right border-4 border-white"
-          >
-            {t('hero.cta')}
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+          <div className="relative inline-block">
+            <div className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-bounce z-10">
+              BLACK FRIDAY
+            </div>
+            <Button 
+              onClick={onPurchase} 
+              size="lg" 
+              className="bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 to-green-500 hover:from-pink-600 hover:via-purple-600 hover:via-blue-600 hover:to-green-600 text-lg px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 animate-slide-in-right border-4 border-white"
+            >
+              {t('hero.cta')}
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </div>
           <div className="flex items-center gap-1 text-yellow-500 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="w-5 h-5 fill-current animate-pulse" style={{animationDelay: `${i * 0.2}s`}} />
