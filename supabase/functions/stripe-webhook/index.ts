@@ -59,8 +59,8 @@ serve(async (req) => {
       console.log("Processing completed checkout for:", customerEmail);
 
       if (customerEmail) {
-        // Update purchase status to completed
-        const { error: updateError } = await supabaseClient
+        // Update purchase status to completed and return the data
+        const { data: purchaseData, error: updateError } = await supabaseClient
           .from('user_purchases')
           .update({ 
             status: 'completed',
@@ -68,7 +68,11 @@ serve(async (req) => {
             updated_at: new Date().toISOString()
           })
           .eq('email', customerEmail)
-          .eq('status', 'pending');
+          .eq('status', 'pending')
+          .select('bundle_type, amount, email')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
 
         if (updateError) {
           console.error("Error updating purchase:", updateError);
@@ -78,37 +82,33 @@ serve(async (req) => {
           });
         }
 
-        console.log("Successfully updated purchase for:", customerEmail);
+        if (!purchaseData) {
+          console.error("No pending purchase found for:", customerEmail);
+          return new Response(JSON.stringify({ error: "No pending purchase found" }), {
+            status: 404,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
 
-        // Get the purchase details to determine bundle type
-        const { data: purchaseData, error: fetchError } = await supabaseClient
-          .from('user_purchases')
-          .select('bundle_type, amount')
-          .eq('email', customerEmail)
-          .eq('stripe_session_id', sessionId)
-          .single();
+        console.log("Successfully updated purchase for:", customerEmail, "Bundle:", purchaseData.bundle_type);
 
-        if (fetchError) {
-          console.error("Error fetching purchase details:", fetchError);
-        } else if (purchaseData) {
-          // Send confirmation email
-          try {
-            const emailResponse = await supabaseClient.functions.invoke('send-purchase-email', {
-              body: {
-                email: customerEmail,
-                bundleType: purchaseData.bundle_type,
-                amount: purchaseData.amount
-              }
-            });
-
-            if (emailResponse.error) {
-              console.error("Error sending confirmation email:", emailResponse.error);
-            } else {
-              console.log("Confirmation email sent successfully to:", customerEmail);
+        // Send confirmation email
+        try {
+          const emailResponse = await supabaseClient.functions.invoke('send-purchase-email', {
+            body: {
+              email: customerEmail,
+              bundleType: purchaseData.bundle_type,
+              amount: purchaseData.amount
             }
-          } catch (emailError) {
-            console.error("Error invoking email function:", emailError);
+          });
+
+          if (emailResponse.error) {
+            console.error("Error sending confirmation email:", emailResponse.error);
+          } else {
+            console.log("Confirmation email sent successfully to:", customerEmail);
           }
+        } catch (emailError) {
+          console.error("Error invoking email function:", emailError);
         }
       }
     }
