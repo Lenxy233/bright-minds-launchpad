@@ -40,10 +40,10 @@ const NewProductLaunch = () => {
       if (user) {
         const bundleDetails = {
           "bma-bundle": { 
-            baseAmount: 3900,
-            basePrice: 39.00,
-            baseUrl: "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c",
-            withPromptsUrl: "https://buy.stripe.com/cNi14n2Ff4of7ME1eDgMw0e"
+            baseAmount: 1900,
+            basePrice: 19.00,
+            baseUrl: "https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f",
+            withPromptsUrl: "https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f"
           }
         };
 
@@ -74,7 +74,7 @@ const NewProductLaunch = () => {
         }
       } else {
         // For non-authenticated users, redirect directly
-        const url = "https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c";
+        const url = "https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f";
         window.open(url, "_blank");
       }
     } catch (error) {

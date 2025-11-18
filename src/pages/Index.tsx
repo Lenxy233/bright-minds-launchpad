@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 const Index = () => {
   const { t } = useTranslation();
   const handlePurchase = () => {
-    window.open("https://buy.stripe.com/6oUcN54Nn1c35Ew7D1gMw0c", "_blank");
+    window.open("https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f", "_blank");
   };
 
   return (
