@@ -9,7 +9,7 @@ interface BundleSelectorProps {
 
 const BundleSelector = ({ request, setRequest }: BundleSelectorProps) => {
   const bundleOptions = [
-    { value: "bma-bundle", label: "BMA Bundle - $39.00" }
+    { value: "bma-bundle", label: "BMA Bundle - $19.00" }
   ];
 
   return (

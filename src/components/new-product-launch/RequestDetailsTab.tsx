@@ -19,7 +19,7 @@ const RequestDetailsTab = ({
   calculateTotal,
 }: RequestDetailsTabProps) => {
   const getBundlePrice = () => {
-    return "39.00";
+    return "19.00";
   };
 
   return (
