@@ -31,17 +31,65 @@
 - ❌ AI tutor chat won't work
 - ❌ You'll see "API key not configured" errors
 
-### ✅ Step 3: Publish Your Platform (1 min)
+### ✅ Step 3: Connect Your Own Database (3 min) - ⚠️ CRITICAL STEP
+
+**Why this matters:** Without your own database, the platform won't work properly. All user data, stories, and progress tracking require a database connection.
+
+**What you need to do:** Create a FREE Supabase account and connect it to your remixed project.
+
+**Step-by-step instructions:**
+
+1. **Create a Supabase Account** (30 seconds)
+   - Go to [supabase.com](https://supabase.com)
+   - Click "Start your project"
+   - Sign up with GitHub, Google, or email (it's free!)
+
+2. **Create a New Project** (1 minute)
+   - Click "New Project"
+   - Name it (e.g., "Bright Minds Academy")
+   - Set a database password (save this somewhere safe!)
+   - Choose a region close to your target users
+   - Click "Create new project"
+   - Wait 1-2 minutes for setup to complete
+
+3. **Get Your Database Credentials** (30 seconds)
+   - In your Supabase project dashboard, click "Settings" (gear icon)
+   - Click "API" in the left sidebar
+   - You'll need two values:
+     - **Project URL** (looks like: `https://xxxxx.supabase.co`)
+     - **Anon/Public Key** (long string starting with `eyJ...`)
+   - Keep this tab open - you'll need these in the next step
+
+4. **Connect Supabase to Your Lovable Project** (1 minute)
+   - Go back to your remixed Lovable project
+   - In the Lovable editor, type in the AI chat:
+     ```
+     Connect my Supabase project. 
+     Project URL: [paste your URL]
+     Anon Key: [paste your key]
+     ```
+   - The AI will automatically configure everything for you!
+
+**⚠️ What happens if you skip this:**
+- ❌ User registration won't work
+- ❌ Story saving/loading won't work
+- ❌ Progress tracking won't work
+- ❌ Parent dashboard won't work
+- ❌ Most features will be broken
+
+**💰 Cost:** Supabase is FREE for up to 500MB database + 2GB bandwidth per month (plenty for getting started!)
+
+### ✅ Step 4: Publish Your Platform (1 min)
 1. Click the **"Publish"** button in the top right
 2. Your platform goes live at: `yourname.lovable.app`
 3. That's it! Your platform is now online 🎉
 
-### ✅ Step 4: Access Additional Resources (1 min)
+### ✅ Step 5: Access Additional Resources (1 min)
 1. Check your purchase email for the **Google Drive link**
 2. Download any editable templates or bonus files you need
 3. These are yours to use and customize however you like
 
-### ✅ Step 5: Test Everything (1 min)
+### ✅ Step 6: Test Everything (1 min)
 1. Visit your live site
 2. Try the AI Story Generator
 3. Try the AI Game Creator
