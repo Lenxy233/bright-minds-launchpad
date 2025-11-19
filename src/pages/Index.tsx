@@ -15,40 +15,12 @@ import PurchaseNotifications from "@/components/PurchaseNotifications";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { Sparkles, ArrowRight } from "lucide-react";
-import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const [processing, setProcessing] = useState(false);
 
-  const handlePurchase = async () => {
-    if (processing) return;
-    
-    setProcessing(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: {
-          email: user?.email || '',
-          userId: user?.id || '',
-          bundleType: 'bma-bundle'
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.url) {
-        window.open(data.url, '_blank');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Failed to open checkout. Please try again.');
-    } finally {
-      setProcessing(false);
-    }
+  const handlePurchase = () => {
+    window.location.href = 'https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f';
   };
 
   return (
@@ -82,12 +54,11 @@ const Index = () => {
       <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
         <Button 
           onClick={handlePurchase}
-          disabled={processing}
           size="lg" 
-          className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-purple-800 hover:text-purple-900 text-xl px-10 py-6 rounded-full font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 border-4 border-white disabled:opacity-50"
+          className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-purple-800 hover:text-purple-900 text-xl px-10 py-6 rounded-full font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 border-4 border-white"
         >
           <Sparkles className="mr-3 w-6 h-6 animate-spin" />
-          {processing ? 'Processing...' : t('floatingButton.text')}
+          {t('floatingButton.text')}
           <ArrowRight className="ml-3 w-6 h-6" />
         </Button>
       </div>
