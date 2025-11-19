@@ -14,56 +14,13 @@ import Footer from "@/components/Footer";
 import PurchaseNotifications from "@/components/PurchaseNotifications";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
-import { useState } from "react";
 import { Sparkles, ArrowRight } from "lucide-react";
 
 const Index = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const [processing, setProcessing] = useState(false);
 
-  const handlePurchase = async () => {
-    if (processing) return;
-    
-    setProcessing(true);
-    try {
-      console.log('Starting checkout process...');
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: {
-          email: user?.email || '',
-          userId: user?.id || '',
-          bundleType: 'bma-bundle'
-        }
-      });
-
-      console.log('Checkout response:', { data, error });
-
-      if (error) throw error;
-
-      if (data?.url) {
-        console.log('Redirecting to:', data.url);
-        window.location.href = data.url;
-      } else {
-        console.error('No URL in response:', data);
-        toast({
-          title: "Error",
-          description: "No checkout URL received",
-          variant: "destructive",
-        });
-      }
-    } catch (error: any) {
-      console.error('Error creating checkout session:', error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to start checkout process",
-        variant: "destructive",
-      });
-    } finally {
-      setProcessing(false);
-    }
+  const handlePurchase = () => {
+    window.location.href = "https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f";
   };
 
   return (
@@ -98,7 +55,6 @@ const Index = () => {
         <Button 
           onClick={handlePurchase} 
           size="lg" 
-          disabled={processing}
           className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 hover:from-yellow-500 hover:via-orange-500 hover:to-red-500 text-purple-800 hover:text-purple-900 text-lg px-8 py-4 rounded-full font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 border-4 border-white"
         >
           <Sparkles className="mr-2 w-5 h-5 animate-spin" />
