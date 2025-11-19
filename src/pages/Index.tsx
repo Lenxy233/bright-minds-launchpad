@@ -15,11 +15,38 @@ import PurchaseNotifications from "@/components/PurchaseNotifications";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { t } = useTranslation();
-  const handlePurchase = () => {
-    window.open("https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f", "_blank");
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  const handlePurchase = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: {
+          email: user?.email || '',
+          userId: user?.id || '',
+          bundleType: 'bma-bundle'
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Error creating checkout:', error);
+      toast({
+        title: "Error",
+        description: "Failed to start checkout. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
