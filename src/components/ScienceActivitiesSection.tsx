@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { FlaskConical, TestTube, Microscope, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const ScienceActivitiesSection = () => {
+interface ScienceActivitiesSectionProps {
+  onPurchase: () => void;
+}
+
+const ScienceActivitiesSection = ({ onPurchase }: ScienceActivitiesSectionProps) => {
   const { t } = useTranslation();
-  const handlePurchase = () => {
-    window.open("https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f", "_blank");
-  };
 
   return (
     <section className="py-20 px-4 bg-gradient-to-r from-green-100/60 via-blue-100/60 to-purple-100/60 backdrop-blur-sm relative">
@@ -102,7 +103,7 @@ const ScienceActivitiesSection = () => {
               {t('science.ctaSubtitle')}
             </p>
             <Button 
-              onClick={handlePurchase}
+              onClick={onPurchase}
               size="lg" 
               className="bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 hover:from-green-600 hover:via-blue-600 hover:to-purple-600 text-white text-lg px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
