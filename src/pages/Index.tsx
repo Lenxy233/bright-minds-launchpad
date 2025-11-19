@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import PlatformPreviewSection from "@/components/PlatformPreviewSection";
@@ -13,62 +12,16 @@ import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import PurchaseNotifications from "@/components/PurchaseNotifications";
-import GuestEmailDialog from "@/components/GuestEmailDialog";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const { t } = useTranslation();
-  const { toast } = useToast();
-  const { user } = useAuth();
-  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
-  const [processing, setProcessing] = useState(false);
+  const navigate = useNavigate();
 
-  const handlePurchase = async () => {
-    // If user is not logged in, show email dialog
-    if (!user) {
-      setEmailDialogOpen(true);
-      return;
-    }
-
-    // Proceed with logged-in user's email
-    await createCheckoutSession(user.email, user.id);
-  };
-
-  const createCheckoutSession = async (email: string, userId?: string) => {
-    setProcessing(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: {
-          email,
-          userId: userId || '',
-          bundleType: 'bma-bundle'
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.url) {
-        window.location.href = data.url;
-      }
-    } catch (error) {
-      console.error('Error creating checkout:', error);
-      toast({
-        title: "Error",
-        description: "Failed to start checkout. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  const handleGuestEmailSubmit = async (email: string) => {
-    await createCheckoutSession(email);
+  const handlePurchase = () => {
+    // Navigate to payment page where email is required
+    navigate('/new-product-launch');
   };
 
   return (
