@@ -19,11 +19,8 @@ const Header = ({ onPurchase }: HeaderProps) => {
   const platformName = settings?.platform_name || "Bright Minds Academy";
   const logoUrl = settings?.logo_url || "/lovable-uploads/69fc66c6-3b7b-4fa2-9348-5adcf71e90ee.png";
 
-  const scrollToProducts = () => {
-    const productsSection = document.querySelector('#products-section');
-    if (productsSection) {
-      productsSection.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handlePurchaseClick = () => {
+    onPurchase();
   };
 
   return (
@@ -59,7 +56,7 @@ const Header = ({ onPurchase }: HeaderProps) => {
               </Link>
             </Button>
           )}
-          <Button onClick={scrollToProducts} className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in">
+          <Button onClick={handlePurchaseClick} className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 shadow-lg transform hover:scale-105 transition-all duration-300 animate-fade-in">
             <span className="hidden md:inline">{t('header.getStarted', 'Get Started Now')} ✨</span>
             <span className="md:hidden">✨</span>
           </Button>
