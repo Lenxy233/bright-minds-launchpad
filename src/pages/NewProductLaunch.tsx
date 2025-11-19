@@ -76,20 +76,8 @@ const NewProductLaunch = () => {
         }
       }
 
-      // Create Stripe checkout session
-      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: {
-          email: emailToUse,
-          userId: user?.id || '',
-          bundleType: request
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.url) {
-        window.location.href = data.url;
-      }
+      // Redirect to Stripe payment link
+      window.location.href = 'https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f';
     } catch (error) {
       console.error('Error processing purchase:', error);
       toast({
