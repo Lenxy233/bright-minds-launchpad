@@ -30,6 +30,7 @@ const Index = () => {
     
     setProcessing(true);
     try {
+      console.log('Starting checkout process...');
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: {
           email: user?.email || '',
@@ -38,10 +39,20 @@ const Index = () => {
         }
       });
 
+      console.log('Checkout response:', { data, error });
+
       if (error) throw error;
 
       if (data?.url) {
+        console.log('Redirecting to:', data.url);
         window.location.href = data.url;
+      } else {
+        console.error('No URL in response:', data);
+        toast({
+          title: "Error",
+          description: "No checkout URL received",
+          variant: "destructive",
+        });
       }
     } catch (error: any) {
       console.error('Error creating checkout session:', error);
