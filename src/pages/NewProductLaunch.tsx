@@ -33,6 +33,28 @@ const NewProductLaunch = () => {
       return;
     }
 
+    // Validate email for guest users
+    if (!user && !email) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Basic email validation
+    const emailToUse = email || user?.email || '';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailToUse)) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setProcessing(true);
 
     try {
@@ -57,7 +79,7 @@ const NewProductLaunch = () => {
       // Create Stripe checkout session
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: {
-          email: email || user?.email || '',
+          email: emailToUse,
           userId: user?.id || '',
           bundleType: request
         }
@@ -81,7 +103,7 @@ const NewProductLaunch = () => {
   };
 
   const calculateTotal = () => {
-    return "39.00";
+    return "19.00";
   };
 
   return (
