@@ -51,6 +51,7 @@ import VideoLearning from "./pages/VideoLearning";
 import VideoLearningAdmin from "./pages/VideoLearningAdmin";
 import CurriculumLessonAdmin from "./pages/CurriculumLessonAdmin";
 import CurriculumLessonPlayer from "./pages/CurriculumLessonPlayer";
+import PurchaseSuccess from "./pages/PurchaseSuccess";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/new-product-launch" element={<NewProductLaunch />} />
+            <Route path="/purchase-success" element={<PurchaseSuccess />} />
             <Route path="/learning-app" element={<LearningApp />} />
             <Route path="/story-books" element={<ProtectedRoute requirePurchase><StoryBooks /></ProtectedRoute>} />
             <Route path="/story-books/:id" element={<ProtectedRoute requirePurchase><StoryBookReader /></ProtectedRoute>} />

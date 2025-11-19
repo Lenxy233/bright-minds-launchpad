@@ -36,46 +36,37 @@ const NewProductLaunch = () => {
     setProcessing(true);
 
     try {
-      // If user is logged in, save purchase record before redirecting
+      // Create pending purchase record if user is logged in
       if (user) {
-        const bundleDetails = {
-          "bma-bundle": { 
-            baseAmount: 1900,
-            basePrice: 19.00,
-            baseUrl: "https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f",
-            withPromptsUrl: "https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f"
-          }
-        };
+        const { error } = await supabase
+          .from('user_purchases')
+          .insert({
+            user_id: user.id,
+            email: user.email,
+            bundle_type: request,
+            amount: 1900,
+            status: 'pending',
+            includes_ai_prompts: false
+          });
 
-        const bundle = bundleDetails[request as keyof typeof bundleDetails];
-        
-        if (bundle) {
-          const totalAmount = bundle.baseAmount;
-          const checkoutUrl = bundle.baseUrl;
-
-          // Create pending purchase record
-          const { error } = await supabase
-            .from('user_purchases')
-            .insert({
-              user_id: user.id,
-              email: user.email,
-              bundle_type: request,
-              amount: totalAmount,
-              status: 'pending',
-              includes_ai_prompts: false
-            });
-
-          if (error) {
-            console.error('Error creating purchase record:', error);
-          }
-
-          // Redirect to Stripe
-          window.open(checkoutUrl, "_blank");
+        if (error) {
+          console.error('Error creating purchase record:', error);
         }
-      } else {
-        // For non-authenticated users, redirect directly
-        const url = "https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f";
-        window.open(url, "_blank");
+      }
+
+      // Create Stripe checkout session
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: {
+          email: email || user?.email || '',
+          userId: user?.id || '',
+          bundleType: request
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.location.href = data.url;
       }
     } catch (error) {
       console.error('Error processing purchase:', error);
