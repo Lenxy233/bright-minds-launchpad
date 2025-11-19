@@ -2,14 +2,18 @@ import { useEffect, useState } from "react";
 import { CheckCircle2, Mail, Download, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import confetti from "canvas-confetti";
+import FileDownloadList from "@/components/FileDownloadList";
 
 const PurchaseSuccess = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [emailSent, setEmailSent] = useState(false);
+  
+  const bundleType = searchParams.get('bundle_type') || 'bma-bundle';
 
   useEffect(() => {
     // Trigger confetti animation
@@ -147,6 +151,26 @@ const PurchaseSuccess = () => {
                 </p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="mb-8 border-2 border-green-200 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50">
+            <CardTitle className="flex items-center gap-2 text-2xl">
+              <Download className="w-6 h-6 text-green-600" />
+              Your Purchase Content
+            </CardTitle>
+            <CardDescription className="text-base">
+              Access and download your files immediately
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="pt-6">
+            <FileDownloadList 
+              bundleType={bundleType}
+              purchaseStatus="completed"
+              includesAiPrompts={false}
+            />
           </CardContent>
         </Card>
 
