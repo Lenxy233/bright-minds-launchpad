@@ -44,11 +44,11 @@ const Dashboard = () => {
 
   const fetchUserData = async () => {
     try {
-      // Fetch purchases
+      // Fetch purchases - query by both user_id and email to get purchases made before account creation
       const { data: purchasesData, error: purchasesError } = await supabase
         .from('user_purchases')
         .select('*, includes_ai_prompts')
-        .eq('user_id', user?.id)
+        .or(`user_id.eq.${user.id},email.eq.${user.email}`)
         .order('purchased_at', { ascending: false });
 
       if (purchasesError) throw purchasesError;

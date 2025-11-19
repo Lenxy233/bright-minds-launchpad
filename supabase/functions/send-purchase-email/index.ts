@@ -44,7 +44,7 @@ const handler = async (req: Request): Promise<Response> => {
     const firstName = customerName || "Friend";
 
     const emailResponse = await resend.emails.send({
-      from: "Bright Minds Academy <membership@brightmindsacademy.de>",
+      from: "Bright Minds Academy <onboarding@resend.dev>",
       to: [email],
       subject: `Congratulations ${firstName}! Welcome to Bright Minds Academy`,
       html: `
