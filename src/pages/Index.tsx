@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import PlatformPreviewSection from "@/components/PlatformPreviewSection";
@@ -12,6 +13,7 @@ import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import PurchaseNotifications from "@/components/PurchaseNotifications";
+import GuestEmailDialog from "@/components/GuestEmailDialog";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -23,13 +25,27 @@ const Index = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const { user } = useAuth();
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   const handlePurchase = async () => {
+    // If user is not logged in, show email dialog
+    if (!user) {
+      setEmailDialogOpen(true);
+      return;
+    }
+
+    // Proceed with logged-in user's email
+    await createCheckoutSession(user.email, user.id);
+  };
+
+  const createCheckoutSession = async (email: string, userId?: string) => {
+    setProcessing(true);
     try {
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: {
-          email: user?.email || '',
-          userId: user?.id || '',
+          email,
+          userId: userId || '',
           bundleType: 'bma-bundle'
         }
       });
@@ -46,7 +62,13 @@ const Index = () => {
         description: "Failed to start checkout. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setProcessing(false);
     }
+  };
+
+  const handleGuestEmailSubmit = async (email: string) => {
+    await createCheckoutSession(email);
   };
 
   return (
@@ -75,6 +97,14 @@ const Index = () => {
 
       {/* Purchase Notifications */}
       <PurchaseNotifications />
+
+      {/* Guest Email Dialog */}
+      <GuestEmailDialog
+        open={emailDialogOpen}
+        onOpenChange={setEmailDialogOpen}
+        onSubmit={handleGuestEmailSubmit}
+        loading={processing}
+      />
 
       {/* Fixed floating button */}
       <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
