@@ -16,14 +16,16 @@ export const usePurchaseVerification = () => {
       }
 
       try {
-        const { data: purchase, error } = await supabase
-          .from('user_purchases')
-          .select('id, status')
-          .eq('email', user.email)
-          .eq('status', 'completed')
-          .maybeSingle();
+        const { data, error } = await supabase.functions.invoke('verify-purchase', {
+          body: { email: user.email },
+        });
 
-        setHasValidPurchase(!error && !!purchase);
+        if (error) {
+          console.error('Error verifying purchase via function:', error);
+          setHasValidPurchase(false);
+        } else {
+          setHasValidPurchase(!!data?.hasValidPurchase);
+        }
       } catch (error) {
         console.error('Error checking purchase:', error);
         setHasValidPurchase(false);

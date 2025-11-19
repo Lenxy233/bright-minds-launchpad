@@ -70,18 +70,17 @@ const PurchaseSuccess = () => {
 
   const verifyPurchase = async (userEmail: string) => {
     try {
-      const { data, error } = await supabase
-        .from('user_purchases')
-        .select('*')
-        .eq('email', userEmail)
-        .eq('status', 'completed')
-        .eq('bundle_type', bundleType)
-        .maybeSingle();
+      const { data, error } = await supabase.functions.invoke('verify-purchase', {
+        body: {
+          email: userEmail,
+          bundleType,
+        },
+      });
 
       if (error) throw error;
 
-      if (data) {
-        setVerifiedPurchase(data);
+      if (data?.hasValidPurchase) {
+        setVerifiedPurchase(data.purchase);
       } else {
         toast({
           title: "No purchase found",
