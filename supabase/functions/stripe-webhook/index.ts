@@ -59,8 +59,8 @@ serve(async (req) => {
       console.log("Processing completed checkout for:", customerEmail);
 
       if (customerEmail) {
-        // Update purchase status to completed and return the data
-        const { data: purchaseData, error: updateError } = await supabaseClient
+        // First, try to update existing pending purchase
+        const { data: existingPurchase, error: updateError } = await supabaseClient
           .from('user_purchases')
           .update({ 
             status: 'completed',
@@ -69,26 +69,58 @@ serve(async (req) => {
           })
           .eq('email', customerEmail)
           .eq('status', 'pending')
-          .select('bundle_type, amount, email')
+          .select('bundle_type, amount, email, user_id')
           .maybeSingle();
 
-        if (updateError) {
+        let purchaseData = existingPurchase;
+
+        // If no pending purchase found, create a new completed purchase
+        if (!existingPurchase && !updateError) {
+          console.log("No pending purchase found, creating new completed purchase for:", customerEmail);
+          
+          // Get or create user based on email
+          const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('id')
+            .eq('email', customerEmail)
+            .maybeSingle();
+
+          const userId = profile?.id || crypto.randomUUID();
+
+          const { data: newPurchase, error: insertError } = await supabaseClient
+            .from('user_purchases')
+            .insert({
+              user_id: userId,
+              email: customerEmail,
+              bundle_type: 'bma-bundle',
+              amount: amountTotal || 1900,
+              status: 'completed',
+              stripe_session_id: sessionId,
+              currency: 'usd',
+              purchased_at: new Date().toISOString()
+            })
+            .select('bundle_type, amount, email')
+            .single();
+
+          if (insertError) {
+            console.error("Error creating purchase:", insertError);
+            return new Response(JSON.stringify({ error: insertError.message }), {
+              status: 500,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          }
+
+          purchaseData = newPurchase;
+          console.log("Successfully created purchase for:", customerEmail);
+        } else if (updateError) {
           console.error("Error updating purchase:", updateError);
           return new Response(JSON.stringify({ error: updateError.message }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
+        } else {
+          console.log("Successfully updated existing purchase for:", customerEmail, "Bundle:", purchaseData?.bundle_type);
         }
-
-        if (!purchaseData) {
-          console.error("No pending purchase found for:", customerEmail);
-          return new Response(JSON.stringify({ error: "No pending purchase found" }), {
-            status: 404,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          });
-        }
-
-        console.log("Successfully updated purchase for:", customerEmail, "Bundle:", purchaseData.bundle_type);
 
         // Send confirmation email
         try {
