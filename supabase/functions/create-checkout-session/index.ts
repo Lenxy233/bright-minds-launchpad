@@ -40,7 +40,7 @@ serve(async (req) => {
       mode: "payment",
       success_url: `${origin}/purchase-success?session_id={CHECKOUT_SESSION_ID}&bundle_type=${bundleType || 'bma-bundle'}`,
       cancel_url: `${origin}/`,
-      customer_email: email,
+      ...(email ? { customer_email: email } : {}),
       metadata: {
         bundle_type: bundleType || "bma-bundle",
         user_id: userId || "",
