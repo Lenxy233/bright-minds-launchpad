@@ -20,7 +20,7 @@ const Index = () => {
   const { t } = useTranslation();
 
   const handlePurchase = () => {
-    window.location.href = 'https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f';
+    window.location.href = 'https://payhip.com/b/Y5eOc';
   };
 
   return (
