@@ -78,19 +78,17 @@ serve(async (req) => {
         if (!existingPurchase && !updateError) {
           console.log("No pending purchase found, creating new completed purchase for:", customerEmail);
           
-          // Get or create user based on email
+          // Check if user exists in profiles
           const { data: profile } = await supabaseClient
             .from('profiles')
             .select('id')
             .eq('email', customerEmail)
             .maybeSingle();
 
-          const userId = profile?.id || crypto.randomUUID();
-
           const { data: newPurchase, error: insertError } = await supabaseClient
             .from('user_purchases')
             .insert({
-              user_id: userId,
+              user_id: profile?.id || null,
               email: customerEmail,
               bundle_type: 'bma-bundle',
               amount: amountTotal || 1900,
