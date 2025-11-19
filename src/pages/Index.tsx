@@ -13,15 +13,44 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import PurchaseNotifications from "@/components/PurchaseNotifications";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const Index = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [processing, setProcessing] = useState(false);
 
-  const handlePurchase = () => {
-    // Navigate to payment page where email is required
-    navigate('/new-product-launch');
+  const handlePurchase = async () => {
+    if (processing) return;
+    
+    setProcessing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: {
+          email: user?.email || '',
+          userId: user?.id || '',
+          bundleType: 'bma-bundle'
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error: any) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to start checkout process",
+        variant: "destructive",
+      });
+    } finally {
+      setProcessing(false);
+    }
   };
 
   return (
