@@ -1,16 +1,31 @@
 import { useEffect, useState } from "react";
-import { CheckCircle2, Mail, Download, Sparkles, ArrowRight } from "lucide-react";
+import { CheckCircle2, Sparkles, Download, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import confetti from "canvas-confetti";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import FileDownloadList from "@/components/FileDownloadList";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const PurchaseSuccess = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const { user, signIn, signUp } = useAuth();
   const [searchParams] = useSearchParams();
-  const [emailSent, setEmailSent] = useState(false);
+  const { toast } = useToast();
+  
+  const [verifiedPurchase, setVerifiedPurchase] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
+  
+  // Auth form states
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   
   const bundleType = searchParams.get('bundle_type') || 'bma-bundle';
 
@@ -19,13 +34,8 @@ const PurchaseSuccess = () => {
     const duration = 3 * 1000;
     const animationEnd = Date.now() + duration;
 
-    const randomInRange = (min: number, max: number) => {
-      return Math.random() * (max - min) + min;
-    };
-
     const interval = setInterval(() => {
       const timeLeft = animationEnd - Date.now();
-
       if (timeLeft <= 0) {
         clearInterval(interval);
         return;
@@ -47,15 +57,101 @@ const PurchaseSuccess = () => {
       });
     }, 250);
 
-    // Simulate email being sent
-    setTimeout(() => setEmailSent(true), 2000);
-
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (user?.email) {
+      verifyPurchase(user.email);
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  const verifyPurchase = async (userEmail: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_purchases')
+        .select('*')
+        .eq('email', userEmail)
+        .eq('status', 'completed')
+        .eq('bundle_type', bundleType)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        setVerifiedPurchase(data);
+      } else {
+        toast({
+          title: "No purchase found",
+          description: "We couldn't find a completed purchase with this email.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error verifying purchase:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    
+    try {
+      const { error } = await signIn(email, password);
+      if (error) {
+        toast({
+          title: "Sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    
+    try {
+      const { error } = await signUp(email, password, firstName, lastName);
+      if (error) {
+        toast({
+          title: "Sign up failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Account created!",
+          description: "Please check your email to verify your account.",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 via-blue-100 to-green-100 py-12 px-4">
-      <div className="container mx-auto max-w-3xl">
+      <div className="container mx-auto max-w-4xl">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6 animate-bounce">
             <CheckCircle2 className="w-12 h-12 text-green-600" />
@@ -70,172 +166,183 @@ const PurchaseSuccess = () => {
           </p>
           
           <p className="text-lg text-gray-600">
-            Thank you for your purchase! You now have access to all our amazing content.
+            Thank you for your purchase! Get instant access to your digital products below.
           </p>
         </div>
 
-        <Card className="mb-8 border-2 border-purple-200 shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <Sparkles className="w-6 h-6 text-purple-600" />
-              What Happens Next?
-            </CardTitle>
-            <CardDescription className="text-base">
-              Follow these simple steps to get started
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent className="pt-6 space-y-6">
-            <div className="flex gap-4 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-              <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white font-bold">
-                  1
+        {loading ? (
+          <Card className="mb-8">
+            <CardContent className="p-8 text-center">
+              <p className="text-gray-600">Verifying your purchase...</p>
+            </CardContent>
+          </Card>
+        ) : user && verifiedPurchase ? (
+          // Authenticated user with verified purchase - show downloads
+          <Card className="mb-8 border-2 border-purple-200 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <Download className="w-6 h-6 text-purple-600" />
+                Your Digital Products
+              </CardTitle>
+              <CardDescription className="text-base">
+                Download your bundle content and access your resources instantly
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="pt-6">
+              <FileDownloadList 
+                bundleType={bundleType}
+                purchaseStatus="completed"
+                includesAiPrompts={verifiedPurchase.includes_ai_prompts}
+              />
+              
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="flex items-start gap-3">
+                  <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      Confirmation email sent!
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      We've also sent all download links and access details to <strong>{user.email}</strong> as a backup.
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg text-gray-900 mb-2 flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-blue-600" />
-                  Check Your Email
-                </h3>
-                <p className="text-gray-700 mb-2">
-                  {emailSent ? (
-                    <span className="text-green-600 font-medium">✓ Confirmation email sent!</span>
-                  ) : (
-                    <span className="text-blue-600">Sending confirmation email...</span>
-                  )}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  We've sent you an email with your purchase details and access instructions. 
-                  <span className="font-medium"> Please check your spam folder</span> if you don't see it in your inbox.
+            </CardContent>
+          </Card>
+        ) : (
+          // Not authenticated - show auth form
+          <Card className="mb-8 border-2 border-purple-200 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <Sparkles className="w-6 h-6 text-purple-600" />
+                Create Your Account
+              </CardTitle>
+              <CardDescription className="text-base">
+                Create an account or sign in to access your purchased content instantly
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="pt-6">
+              <Tabs defaultValue="signup" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="signup">Create Account</TabsTrigger>
+                  <TabsTrigger value="signin">Sign In</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="signup">
+                  <form onSubmit={handleSignUp} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input
+                          id="firstName"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          required
+                          disabled={authLoading}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input
+                          id="lastName"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          required
+                          disabled={authLoading}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email">Email (used in purchase)</Label>
+                      <Input
+                        id="signup-email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter the email you used for purchase"
+                        required
+                        disabled={authLoading}
+                      />
+                      <p className="text-sm text-gray-500">
+                        Use the same email you provided during checkout
+                      </p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password">Create Password</Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        disabled={authLoading}
+                        minLength={6}
+                      />
+                    </div>
+                    
+                    <Button type="submit" className="w-full" disabled={authLoading}>
+                      {authLoading ? "Creating Account..." : "Create Account & Access Downloads"}
+                    </Button>
+                  </form>
+                </TabsContent>
+                
+                <TabsContent value="signin">
+                  <form onSubmit={handleSignIn} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-email">Email</Label>
+                      <Input
+                        id="signin-email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        disabled={authLoading}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-password">Password</Label>
+                      <Input
+                        id="signin-password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        disabled={authLoading}
+                      />
+                    </div>
+                    
+                    <Button type="submit" className="w-full" disabled={authLoading}>
+                      {authLoading ? "Signing In..." : "Sign In & Access Downloads"}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+              
+              <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <p className="text-sm text-gray-700">
+                  <strong>Important:</strong> Create your account using the same email address you provided during checkout to access your purchased content.
                 </p>
               </div>
-            </div>
+            </CardContent>
+          </Card>
+        )}
 
-            <div className="flex gap-4 p-4 bg-yellow-50 rounded-lg border-2 border-yellow-300">
-              <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-yellow-500 text-white font-bold">
-                  2
-                </div>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg text-gray-900 mb-2 flex items-center gap-2">
-                  <Download className="w-5 h-5 text-yellow-600" />
-                  Access Your Content via Email
-                </h3>
-                <p className="text-gray-700 font-medium">
-                  All download links, access credentials, and resources are included in your confirmation email. 
-                  <span className="text-yellow-800 font-semibold"> You MUST check your email to access your purchased content.</span>
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
-              <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white font-bold">
-                  3
-                </div>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg text-gray-900 mb-2 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-green-600" />
-                  Follow Email Instructions
-                </h3>
-                <p className="text-gray-700">
-                  Your email contains step-by-step instructions to download files, access the website template, and start learning. Everything you need is in that email!
-                </p>
-              </div>
-            </div>
+        <Card className="border-2 border-green-200 bg-green-50">
+          <CardContent className="p-6 text-center">
+            <p className="text-gray-700 mb-2">
+              Need help? Contact us at{" "}
+              <a href="mailto:support@brightmindsacademy.com" className="text-purple-600 hover:underline font-medium">
+                support@brightmindsacademy.com
+              </a>
+            </p>
           </CardContent>
         </Card>
-
-        <Card className="mb-8 border-2 border-red-300 bg-red-50 shadow-xl">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl text-red-900">
-              <Mail className="w-6 h-6 text-red-700" />
-              ⚠️ Important: Check Your Email to Access Content
-            </CardTitle>
-            <CardDescription className="text-base text-red-800">
-              Your purchase is not complete until you retrieve the access links from your email
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent className="pt-6">
-            <div className="bg-white p-6 rounded-lg border-2 border-red-300">
-              <p className="text-gray-800 text-lg mb-4 font-semibold">
-                Your confirmation email contains everything you need:
-              </p>
-              <ul className="space-y-3 text-gray-700 mb-6">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  Direct download links to all purchased files and resources
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  Access to the Lovable Remix website template
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  Google Drive folder with all educational materials
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  Step-by-step account creation and setup instructions
-                </li>
-              </ul>
-              <div className="bg-red-100 p-4 rounded-lg border-2 border-red-400 text-center">
-                <p className="text-red-800 font-bold text-lg mb-2">
-                  🔒 Content Access Requires Email Verification
-                </p>
-                <p className="text-red-700">
-                  Without checking your confirmation email, you will not be able to download or access your purchased bundle. 
-                  <span className="font-semibold"> Please check your inbox now (including spam/junk folder).</span>
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {user ? (
-            <Button
-              onClick={() => navigate("/dashboard")}
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold text-lg px-8 py-6"
-            >
-              Go to Dashboard
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          ) : (
-            <>
-              <Button
-                onClick={() => navigate("/auth")}
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold text-lg px-8 py-6"
-              >
-                Create Account / Login
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-              <Button
-                onClick={() => navigate("/")}
-                size="lg"
-                variant="outline"
-                className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-bold text-lg px-8 py-6"
-              >
-                Back to Home
-              </Button>
-            </>
-          )}
-        </div>
-
-        <div className="mt-8 text-center">
-          <p className="text-gray-600 mb-2">Need help?</p>
-          <p className="text-sm text-gray-500">
-            Contact us at{" "}
-            <a href="mailto:support@brightmindsacademy.com" className="text-purple-600 hover:underline font-medium">
-              support@brightmindsacademy.com
-            </a>
-          </p>
-        </div>
       </div>
     </div>
   );
