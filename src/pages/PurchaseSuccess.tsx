@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import confetti from "canvas-confetti";
-import FileDownloadList from "@/components/FileDownloadList";
 
 const PurchaseSuccess = () => {
   const { user } = useAuth();
@@ -112,26 +111,21 @@ const PurchaseSuccess = () => {
               </div>
             </div>
 
-            <div className="flex gap-4 p-4 bg-purple-50 rounded-lg border-2 border-purple-200">
+            <div className="flex gap-4 p-4 bg-yellow-50 rounded-lg border-2 border-yellow-300">
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500 text-white font-bold">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-yellow-500 text-white font-bold">
                   2
                 </div>
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-lg text-gray-900 mb-2 flex items-center gap-2">
-                  <Download className="w-5 h-5 text-purple-600" />
-                  Access Your Content
+                  <Download className="w-5 h-5 text-yellow-600" />
+                  Access Your Content via Email
                 </h3>
-                {user ? (
-                  <p className="text-gray-700">
-                    You're already logged in! Head to your dashboard to access all your resources.
-                  </p>
-                ) : (
-                  <p className="text-gray-700">
-                    Create an account or log in with the email you used for purchase to access your content.
-                  </p>
-                )}
+                <p className="text-gray-700 font-medium">
+                  All download links, access credentials, and resources are included in your confirmation email. 
+                  <span className="text-yellow-800 font-semibold"> You MUST check your email to access your purchased content.</span>
+                </p>
               </div>
             </div>
 
@@ -144,33 +138,60 @@ const PurchaseSuccess = () => {
               <div className="flex-1">
                 <h3 className="font-semibold text-lg text-gray-900 mb-2 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-green-600" />
-                  Start Learning
+                  Follow Email Instructions
                 </h3>
                 <p className="text-gray-700">
-                  Explore worksheets, activities, AI tools, and so much more. Everything is now unlocked for you!
+                  Your email contains step-by-step instructions to download files, access the website template, and start learning. Everything you need is in that email!
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="mb-8 border-2 border-green-200 shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50">
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <Download className="w-6 h-6 text-green-600" />
-              Your Purchase Content
+        <Card className="mb-8 border-2 border-red-300 bg-red-50 shadow-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-2xl text-red-900">
+              <Mail className="w-6 h-6 text-red-700" />
+              ⚠️ Important: Check Your Email to Access Content
             </CardTitle>
-            <CardDescription className="text-base">
-              Access and download your files immediately
+            <CardDescription className="text-base text-red-800">
+              Your purchase is not complete until you retrieve the access links from your email
             </CardDescription>
           </CardHeader>
           
           <CardContent className="pt-6">
-            <FileDownloadList 
-              bundleType={bundleType}
-              purchaseStatus="completed"
-              includesAiPrompts={false}
-            />
+            <div className="bg-white p-6 rounded-lg border-2 border-red-300">
+              <p className="text-gray-800 text-lg mb-4 font-semibold">
+                Your confirmation email contains everything you need:
+              </p>
+              <ul className="space-y-3 text-gray-700 mb-6">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  Direct download links to all purchased files and resources
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  Access to the Lovable Remix website template
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  Google Drive folder with all educational materials
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  Step-by-step account creation and setup instructions
+                </li>
+              </ul>
+              <div className="bg-red-100 p-4 rounded-lg border-2 border-red-400 text-center">
+                <p className="text-red-800 font-bold text-lg mb-2">
+                  🔒 Content Access Requires Email Verification
+                </p>
+                <p className="text-red-700">
+                  Without checking your confirmation email, you will not be able to download or access your purchased bundle. 
+                  <span className="font-semibold"> Please check your inbox now (including spam/junk folder).</span>
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
