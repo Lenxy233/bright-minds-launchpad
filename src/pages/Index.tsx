@@ -20,8 +20,7 @@ const Index = () => {
   const { t } = useTranslation();
 
   const handlePurchase = () => {
-    console.log('Redirecting to Stripe checkout');
-    window.open('https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f', '_blank');
+    window.location.href = 'https://buy.stripe.com/6oU00ja7HcULc2Uf5tgMw0f';
   };
 
   return (
