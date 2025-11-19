@@ -70,9 +70,7 @@ serve(async (req) => {
           .eq('email', customerEmail)
           .eq('status', 'pending')
           .select('bundle_type, amount, email')
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
+          .maybeSingle();
 
         if (updateError) {
           console.error("Error updating purchase:", updateError);
