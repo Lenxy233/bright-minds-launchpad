@@ -27,12 +27,9 @@ const FileDownloadList = ({ bundleType, purchaseStatus, includesAiPrompts }: Fil
   const { toast } = useToast();
 
   useEffect(() => {
-    if (purchaseStatus === 'completed') {
-      fetchFiles();
-    } else {
-      setLoading(false);
-    }
-  }, [bundleType, purchaseStatus]);
+    // Always fetch files on success page
+    fetchFiles();
+  }, [bundleType]);
 
   const fetchFiles = async () => {
     try {
@@ -235,14 +232,6 @@ const FileDownloadList = ({ bundleType, purchaseStatus, includesAiPrompts }: Fil
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  if (purchaseStatus !== 'completed') {
-    return (
-      <div className="text-sm text-gray-500 mt-2">
-        Files will be available once payment is completed.
-      </div>
-    );
-  }
-
   if (loading) {
     return (
       <div className="flex items-center gap-2 mt-3 text-sm text-gray-600">
@@ -254,8 +243,13 @@ const FileDownloadList = ({ bundleType, purchaseStatus, includesAiPrompts }: Fil
 
   if (files.length === 0) {
     return (
-      <div className="text-sm text-gray-500 mt-2">
-        No files available for download yet.
+      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg mt-3">
+        <p className="text-sm text-yellow-800 font-medium mb-2">
+          ⚠️ No bundle content configured yet
+        </p>
+        <p className="text-xs text-yellow-700">
+          Please add bundle links and files to the database (bundle_links table and product-files storage) for bundle type: <strong>{bundleType}</strong>
+        </p>
       </div>
     );
   }
